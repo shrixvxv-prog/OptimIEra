@@ -45,17 +45,20 @@ OptimIEra is a verifiable prompt-intelligence workspace. It transforms a rough i
 
 ## Live local product tour
 
-These screenshots were captured from the running local frontend at `http://localhost:3000`.
-They show the current responsive shell, public trust surfaces, and wallet-friendly access flow.
+These screenshots were captured from the real running local frontend at `http://localhost:3000` on 2026-07-19. They show the current UI—not mockups—including the public product story, wallet access, trust surfaces, and provider status.
 
-| Surface                       | Desktop / mobile capture                                                       |
-| ----------------------------- | ------------------------------------------------------------------------------ |
-| Homepage                      | ![Live OptimIEra homepage](docs/screenshots/homepage-desktop.png)              |
-| Product vision                | ![Live product vision](docs/screenshots/product-desktop.png)                   |
-| Architecture                  | ![Live architecture](docs/screenshots/architecture-desktop.png)                |
-| Proof Center on mobile        | ![Live mobile Proof Center](docs/screenshots/proof-center-mobile.png)          |
-| Wallet registration on mobile | ![Live mobile wallet registration](docs/screenshots/sign-up-wallet-mobile.png) |
-| Studio entry                  | ![Live Studio entry](docs/screenshots/optimize-entry-desktop.png)              |
+| Surface                      | Real UI capture                                                   |
+| ---------------------------- | ----------------------------------------------------------------- |
+| Homepage                     | ![Real OptimIEra homepage](docs/screenshots/homepage-real.png)    |
+| Product vision               | ![Real product vision](docs/screenshots/product-real.png)         |
+| Architecture                 | ![Real architecture](docs/screenshots/architecture-real.png)      |
+| Sign in                      | ![Real sign-in screen](docs/screenshots/sign-in-real.png)         |
+| Wallet registration          | ![Real wallet registration](docs/screenshots/sign-up-real.png)    |
+| Proof Center                 | ![Real Proof Center](docs/screenshots/proofs-real.png)            |
+| Security                     | ![Real security page](docs/screenshots/security-real.png)         |
+| Optimize and provider status | ![Real Optimize status](docs/screenshots/optimize-entry-real.png) |
+
+The wallet screens visibly offer MetaMask, Rabby, OKX Wallet, and other injected EIP-1193 wallets. The Optimize screen visibly reports the local Rules Engine, 0G Compute model/network, and Nous model status without exposing credentials.
 
 ## Why OptimIEra matters in daily life
 
@@ -137,7 +140,10 @@ OptimIEra’s testnet product implementation is complete and is undergoing final
 - hash-only 0G Chain registry commitments;
 - public certificate verification and Proof Center;
 - authenticated Galileo testnet proof flow with a `FULLY_VERIFIED` certificate;
+- wallet-approved Galileo usage payment flow at exactly `0.0001 0G` per enabled optimization, with receipt and replay validation;
 - APIs, SDK, CLI, monitoring boundaries, and developer documentation.
+
+The local safe profile keeps funded 0G writes and usage payments disabled. Nous and 0G Compute are configured and verified locally, while external execution is explicit and never silently replaces the Rules Engine.
 
 ## Run OptimIEra locally
 
@@ -195,7 +201,7 @@ OptimIEra is designed so private prompt content can remain private. Prompt bodie
 
 ## Roadmap
 
-After production closure, the next isolated scope is operational hardening: managed backup drills, observability, quota tuning, and support runbooks. Mainnet, Agentic ID, marketplace, payments expansion, and data availability remain outside this release.
+After production closure, the next isolated scope is operational hardening: managed backup drills, observability, quota tuning, and support runbooks. Mainnet, Agentic ID, marketplace expansion, and data availability remain outside this release.
 
 ## Documentation
 
