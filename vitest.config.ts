@@ -13,5 +13,8 @@ export default defineConfig({
       '@optimiera/schemas': resolve(__dirname, 'packages/schemas/src/index.ts'),
     },
   },
-  test: { include: ['tests/**/*.test.ts'] },
+  test: {
+    include: ['tests/**/*.test.ts'],
+    setupFiles: ['tests/setup.ts'],
+  },
 });

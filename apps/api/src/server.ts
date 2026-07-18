@@ -3,7 +3,7 @@ import { databaseHealth } from '@optimiera/database';
 
 export function handleRequest(request: IncomingMessage, response: ServerResponse) {
   response.setHeader('content-type', 'application/json');
-  
+
   // Normalize URL path to handle routing consistently
   const url = request.url ? new URL(request.url, 'http://localhost').pathname : '/';
 

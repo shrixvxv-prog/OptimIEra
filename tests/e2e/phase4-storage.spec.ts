@@ -65,7 +65,7 @@ test('Phase 4 evidence authorization denies viewers and other workspaces', async
   await otherPage.goto('/sign-in');
   await otherPage.getByLabel('Email').fill(other.account.email);
   await otherPage.getByLabel('Password').fill(other.account.password);
-  await otherPage.getByRole('button', { name: 'Sign in' }).click();
+  await otherPage.getByRole('button', { name: 'Sign in', exact: true }).click();
   await otherPage.waitForURL(/\/app$/);
   expect(
     (await otherContext.request.get(`/api/v1/optimizations/${optimizationId}/evidence`)).status(),

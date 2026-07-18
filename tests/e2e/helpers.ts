@@ -24,7 +24,7 @@ export async function register(page: Page, label: string, email = uniqueEmail(la
   await page.getByLabel('Name').fill(`E2E ${label}`);
   await page.getByLabel('Email').fill(email);
   await page.getByLabel('Password').fill('StrongPassword12');
-  await page.getByRole('button', { name: 'Create account' }).click();
+  await page.getByRole('button', { name: 'Create account', exact: true }).click();
   await page.waitForURL(/onboarding/);
   return { email, password: 'StrongPassword12' };
 }
@@ -33,7 +33,7 @@ export async function signIn(page: Page, account: { email: string; password: str
   await page.goto('/sign-in');
   await page.getByLabel('Email').fill(account.email);
   await page.getByLabel('Password').fill(account.password);
-  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await page.waitForURL(/\/app$/);
 }
 
