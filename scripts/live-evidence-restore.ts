@@ -37,7 +37,11 @@ function assertProductionTarget() {
 
 async function verifiedManifest() {
   const storage = new OGStorageAdapter(
-    readOGStorageConfig({ ...process.env, OG_STORAGE_ENABLED: 'true', OG_STORAGE_NETWORK: 'testnet' }),
+    readOGStorageConfig({
+      ...process.env,
+      OG_STORAGE_ENABLED: 'true',
+      OG_STORAGE_NETWORK: 'testnet',
+    }),
   );
   const downloaded = await storage.downloadArtifact(LIVE_EVIDENCE.storageRoot);
   if (!downloaded.bytes || downloaded.bytes.byteLength !== LIVE_EVIDENCE.byteSize)
@@ -55,8 +59,12 @@ async function verifiedChain(manifest: Awaited<ReturnType<typeof verifiedManifes
       OPTIMIERA_CHAIN_PRIVATE_KEY: '',
     }),
   );
-  const receipt = await chain.getTransactionReceipt(LIVE_EVIDENCE.proofTransactionHash as `0x${string}`);
-  const proof = (await chain.getProof(LIVE_EVIDENCE.proofId as `0x${string}`)) as readonly unknown[];
+  const receipt = await chain.getTransactionReceipt(
+    LIVE_EVIDENCE.proofTransactionHash as `0x${string}`,
+  );
+  const proof = (await chain.getProof(
+    LIVE_EVIDENCE.proofId as `0x${string}`,
+  )) as readonly unknown[];
   if (String(proof[1]).toLowerCase() !== hex(LIVE_EVIDENCE.manifestHash).toLowerCase())
     throw new Error('LIVE_EVIDENCE_CHAIN_MANIFEST_MISMATCH');
   if (String(proof[2]).toLowerCase() !== LIVE_EVIDENCE.storageRoot.toLowerCase())
@@ -66,64 +74,284 @@ async function verifiedChain(manifest: Awaited<ReturnType<typeof verifiedManifes
   return { proof, receipt };
 }
 
-async function restore(ownerId: string, manifest: Awaited<ReturnType<typeof verifiedManifest>>, proof: readonly unknown[]) {
+async function restore(
+  ownerId: string,
+  manifest: Awaited<ReturnType<typeof verifiedManifest>>,
+  proof: readonly unknown[],
+) {
   const workspace = await db.organization.upsert({
     where: { slug: 'live-galileo-evidence' },
     update: { name: 'OptimIEra Live Galileo Evidence' },
-    create: { id: 'live_galileo_evidence', name: 'OptimIEra Live Galileo Evidence', slug: 'live-galileo-evidence' },
+    create: {
+      id: 'live_galileo_evidence',
+      name: 'OptimIEra Live Galileo Evidence',
+      slug: 'live-galileo-evidence',
+    },
   });
   await db.member.upsert({
     where: { organizationId_userId: { organizationId: workspace.id, userId: ownerId } },
     update: { role: 'OWNER' },
-    create: { id: `member_${workspace.id}_${ownerId}`, organizationId: workspace.id, userId: ownerId, role: 'OWNER' },
+    create: {
+      id: `member_${workspace.id}_${ownerId}`,
+      organizationId: workspace.id,
+      userId: ownerId,
+      role: 'OWNER',
+    },
   });
   const project = await db.project.upsert({
     where: { workspaceId_slug: { workspaceId: workspace.id, slug: 'galileo-live-evidence' } },
     update: {},
-    create: { workspaceId: workspace.id, slug: 'galileo-live-evidence', name: 'Galileo Live Evidence', createdById: ownerId },
+    create: {
+      workspaceId: workspace.id,
+      slug: 'galileo-live-evidence',
+      name: 'Galileo Live Evidence',
+      createdById: ownerId,
+    },
   });
   const prompt = await db.prompt.upsert({
     where: { id: 'live_galileo_prompt' },
     update: {},
-    create: { id: 'live_galileo_prompt', workspaceId: workspace.id, projectId: project.id, title: 'Live Galileo evidence', createdById: ownerId },
+    create: {
+      id: 'live_galileo_prompt',
+      workspaceId: workspace.id,
+      projectId: project.id,
+      title: 'Live Galileo evidence',
+      createdById: ownerId,
+    },
   });
   const source = await db.promptVersion.upsert({
     where: { promptId_versionNumber: { promptId: prompt.id, versionNumber: 1 } },
     update: {},
-    create: { id: manifest.sourcePromptVersionId, promptId: prompt.id, workspaceId: workspace.id, versionNumber: 1, encryptedContent: JSON.stringify(manifest.encryptedOriginalPrompt), contentHash: manifest.originalPromptHash, encryptionStatus: 'ENCRYPTED', lifecycleStatus: 'APPROVED', createdById: ownerId },
+    create: {
+      id: manifest.sourcePromptVersionId,
+      promptId: prompt.id,
+      workspaceId: workspace.id,
+      versionNumber: 1,
+      encryptedContent: JSON.stringify(manifest.encryptedOriginalPrompt),
+      contentHash: manifest.originalPromptHash,
+      encryptionStatus: 'ENCRYPTED',
+      lifecycleStatus: 'APPROVED',
+      createdById: ownerId,
+    },
   });
-  const candidateData = manifest.encryptedCandidates.find((item) => item.candidateId === manifest.selectedCandidateId) ?? manifest.encryptedCandidates[0];
+  const candidateData =
+    manifest.encryptedCandidates.find(
+      (item) => item.candidateId === manifest.selectedCandidateId,
+    ) ?? manifest.encryptedCandidates[0];
   if (!candidateData) throw new Error('LIVE_EVIDENCE_SELECTED_CANDIDATE_MISSING');
   const selected = await db.promptVersion.upsert({
     where: { promptId_versionNumber: { promptId: prompt.id, versionNumber: 2 } },
     update: {},
-    create: { id: 'live_galileo_selected_version', promptId: prompt.id, workspaceId: workspace.id, versionNumber: 2, encryptedContent: JSON.stringify(candidateData.envelope), contentHash: candidateData.contentHash, encryptionStatus: 'ENCRYPTED', lifecycleStatus: 'APPROVED', createdById: ownerId },
+    create: {
+      id: 'live_galileo_selected_version',
+      promptId: prompt.id,
+      workspaceId: workspace.id,
+      versionNumber: 2,
+      encryptedContent: JSON.stringify(candidateData.envelope),
+      contentHash: candidateData.contentHash,
+      encryptionStatus: 'ENCRYPTED',
+      lifecycleStatus: 'APPROVED',
+      createdById: ownerId,
+    },
   });
-  await db.prompt.update({ where: { id: prompt.id }, data: { activeVersionId: selected.id, lifecycleStatus: 'ACTIVE' } });
+  await db.prompt.update({
+    where: { id: prompt.id },
+    data: { activeVersionId: selected.id, lifecycleStatus: 'ACTIVE' },
+  });
   const job = await db.optimizationJob.upsert({
-    where: { workspaceId_idempotencyKey: { workspaceId: workspace.id, idempotencyKey: 'live-galileo-evidence-v1' } },
+    where: {
+      workspaceId_idempotencyKey: {
+        workspaceId: workspace.id,
+        idempotencyKey: 'live-galileo-evidence-v1',
+      },
+    },
     update: {},
-    create: { id: manifest.optimizationId, workspaceId: workspace.id, projectId: project.id, promptId: prompt.id, sourcePromptVersionId: source.id, requestedById: ownerId, createdById: ownerId, mode: 'LIVE_EVIDENCE_RESTORE', status: 'SUCCEEDED', providerType: 'OG_COMPUTE', providerName: '0G Compute Router', analyzerVersion: manifest.analyzerVersion, scoringVersion: manifest.scoringVersion, requestMetadata: JSON.stringify({ providerTrace: { requestId: LIVE_EVIDENCE.computeRequestId, responseId: LIVE_EVIDENCE.computeResponseId, model: LIVE_EVIDENCE.model, latencyMs: LIVE_EVIDENCE.latencyMs, restored: true } }), idempotencyKey: 'live-galileo-evidence-v1', startedAt: new Date(manifest.startedAt), completedAt: new Date(manifest.completedAt), savedPromptVersionId: selected.id },
+    create: {
+      id: manifest.optimizationId,
+      workspaceId: workspace.id,
+      projectId: project.id,
+      promptId: prompt.id,
+      sourcePromptVersionId: source.id,
+      requestedById: ownerId,
+      createdById: ownerId,
+      mode: 'LIVE_EVIDENCE_RESTORE',
+      status: 'SUCCEEDED',
+      providerType: 'OG_COMPUTE',
+      providerName: '0G Compute Router',
+      analyzerVersion: manifest.analyzerVersion,
+      scoringVersion: manifest.scoringVersion,
+      requestMetadata: JSON.stringify({
+        providerTrace: {
+          requestId: LIVE_EVIDENCE.computeRequestId,
+          responseId: LIVE_EVIDENCE.computeResponseId,
+          model: LIVE_EVIDENCE.model,
+          latencyMs: LIVE_EVIDENCE.latencyMs,
+          restored: true,
+        },
+      }),
+      idempotencyKey: 'live-galileo-evidence-v1',
+      startedAt: new Date(manifest.startedAt),
+      completedAt: new Date(manifest.completedAt),
+      savedPromptVersionId: selected.id,
+    },
   });
   const score = Number(proof[7] ?? 0);
   const candidate = await db.candidate.upsert({
     where: { id: candidateData.candidateId },
     update: { savedPromptVersionId: selected.id, recommended: true, selected: true },
-    create: { id: candidateData.candidateId, workspaceId: workspace.id, optimizationJobId: job.id, candidateType: candidateData.candidateType, encryptedContent: JSON.stringify(candidateData.envelope), contentHash: candidateData.contentHash, changeSummary: 'Restored verified Galileo candidate.', scoreData: JSON.stringify({ weightedTotal: score }), providerType: 'OG_COMPUTE', providerName: '0G Compute Router', tokenEstimate: 0, rank: 1, recommended: true, selected: true, savedPromptVersionId: selected.id, generationVersion: 'live-restored-v1' },
+    create: {
+      id: candidateData.candidateId,
+      workspaceId: workspace.id,
+      optimizationJobId: job.id,
+      candidateType: candidateData.candidateType,
+      encryptedContent: JSON.stringify(candidateData.envelope),
+      contentHash: candidateData.contentHash,
+      changeSummary: 'Restored verified Galileo candidate.',
+      scoreData: JSON.stringify({ weightedTotal: score }),
+      providerType: 'OG_COMPUTE',
+      providerName: '0G Compute Router',
+      tokenEstimate: 0,
+      rank: 1,
+      recommended: true,
+      selected: true,
+      savedPromptVersionId: selected.id,
+      generationVersion: 'live-restored-v1',
+    },
   });
-  await db.optimizationJob.update({ where: { id: job.id }, data: { recommendedCandidateId: candidate.id, savedCandidateId: candidate.id, recommendedScore: score } });
+  await db.optimizationJob.update({
+    where: { id: job.id },
+    data: {
+      recommendedCandidateId: candidate.id,
+      savedCandidateId: candidate.id,
+      recommendedScore: score,
+    },
+  });
   const artifact = await db.artifact.upsert({
-    where: { workspaceId_optimizationJobId_kind: { workspaceId: workspace.id, optimizationJobId: job.id, kind: 'OPTIMIZATION_EVIDENCE' } },
+    where: {
+      workspaceId_optimizationJobId_kind: {
+        workspaceId: workspace.id,
+        optimizationJobId: job.id,
+        kind: 'OPTIMIZATION_EVIDENCE',
+      },
+    },
     update: {},
-    create: { workspaceId: workspace.id, optimizationJobId: job.id, kind: 'OPTIMIZATION_EVIDENCE', status: 'DOWNLOAD_VERIFIED', schemaVersion: manifest.schemaVersion, storageProvider: '0G_STORAGE', network: 'testnet', storageMode: 'turbo', rootHash: LIVE_EVIDENCE.storageRoot, transactionHash: LIVE_EVIDENCE.storageTransactionHash, contentHash: LIVE_EVIDENCE.manifestHash, byteSize: LIVE_EVIDENCE.byteSize, uploadStatus: 'STORAGE_VERIFIED', proofVerificationStatus: 'VERIFIED', encryptedManifest: JSON.stringify(manifest), uploadedAt: new Date(), verifiedAt: new Date() },
+    create: {
+      workspaceId: workspace.id,
+      optimizationJobId: job.id,
+      kind: 'OPTIMIZATION_EVIDENCE',
+      status: 'DOWNLOAD_VERIFIED',
+      schemaVersion: manifest.schemaVersion,
+      storageProvider: '0G_STORAGE',
+      network: 'testnet',
+      storageMode: 'turbo',
+      rootHash: LIVE_EVIDENCE.storageRoot,
+      transactionHash: LIVE_EVIDENCE.storageTransactionHash,
+      contentHash: LIVE_EVIDENCE.manifestHash,
+      byteSize: LIVE_EVIDENCE.byteSize,
+      uploadStatus: 'STORAGE_VERIFIED',
+      proofVerificationStatus: 'VERIFIED',
+      encryptedManifest: JSON.stringify(manifest),
+      uploadedAt: new Date(),
+      verifiedAt: new Date(),
+    },
   });
   const chainProof = await db.chainProof.upsert({
-    where: { workspaceId_optimizationJobId: { workspaceId: workspace.id, optimizationJobId: job.id } },
+    where: {
+      workspaceId_optimizationJobId: { workspaceId: workspace.id, optimizationJobId: job.id },
+    },
     update: {},
-    create: { workspaceId: workspace.id, optimizationJobId: job.id, artifactId: artifact.id, proofId: LIVE_EVIDENCE.proofId, contractAddress: LIVE_EVIDENCE.registryAddress, chainId: LIVE_EVIDENCE.chainId, network: 'testnet', manifestHash: hex(LIVE_EVIDENCE.manifestHash), storageRoot: LIVE_EVIDENCE.storageRoot, transactionHash: LIVE_EVIDENCE.proofTransactionHash, blockNumber: BigInt(LIVE_EVIDENCE.blockNumber), aggregateScore: score, status: 'VERIFIED', confirmationCount: 1, submittedAt: new Date(), confirmedAt: new Date(), verifiedAt: new Date() },
+    create: {
+      workspaceId: workspace.id,
+      optimizationJobId: job.id,
+      artifactId: artifact.id,
+      proofId: LIVE_EVIDENCE.proofId,
+      contractAddress: LIVE_EVIDENCE.registryAddress,
+      chainId: LIVE_EVIDENCE.chainId,
+      network: 'testnet',
+      manifestHash: hex(LIVE_EVIDENCE.manifestHash),
+      storageRoot: LIVE_EVIDENCE.storageRoot,
+      transactionHash: LIVE_EVIDENCE.proofTransactionHash,
+      blockNumber: BigInt(LIVE_EVIDENCE.blockNumber),
+      aggregateScore: score,
+      status: 'VERIFIED',
+      confirmationCount: 1,
+      submittedAt: new Date(),
+      confirmedAt: new Date(),
+      verifiedAt: new Date(),
+    },
   });
-  const base = { schemaVersion: 'OptimizationCertificateV1' as const, certificateId: LIVE_EVIDENCE.certificateId, publicSlug: LIVE_EVIDENCE.certificateSlug, optimizationId: job.id, issuerRefHash: `0x${sha(`OptimIEra:issuer:V1:${workspace.id}`)}`, sourcePromptVersionId: source.id, selectedPromptVersionId: selected.id, selectedCandidateId: candidate.id, analyzerVersion: job.analyzerVersion, scoringVersion: job.scoringVersion, providerType: job.providerType, providerName: job.providerName, model: LIVE_EVIDENCE.model, originalPromptHash: source.contentHash, optimizedPromptHash: candidate.contentHash, evaluationHash: manifest.evaluationHash, manifestHash: LIVE_EVIDENCE.manifestHash, storageRoot: LIVE_EVIDENCE.storageRoot, storageTransactionHash: LIVE_EVIDENCE.storageTransactionHash, chainProofId: LIVE_EVIDENCE.proofId, chainTransactionHash: LIVE_EVIDENCE.proofTransactionHash, contractAddress: LIVE_EVIDENCE.registryAddress, chainId: LIVE_EVIDENCE.chainId, network: 'testnet', aggregateScore: score, confidence: manifest.confidence, issuedAt: new Date().toISOString(), expiresAt: null, revokedAt: null, verificationLevel: 'FULLY_VERIFIED' as const };
-  await db.certificate.upsert({ where: { publicSlug: LIVE_EVIDENCE.certificateSlug }, update: {}, create: { workspaceId: workspace.id, optimizationJobId: job.id, sourcePromptVersionId: source.id, selectedPromptVersionId: selected.id, candidateId: candidate.id, status: 'VERIFIED', artifactId: artifact.id, chainProofId: chainProof.id, certificateId: base.certificateId, publicSlug: base.publicSlug, schemaVersion: base.schemaVersion, contentHash: base.manifestHash, certificateContentHash: sha(canonicalCertificate(base)), verificationLevel: base.verificationLevel, aggregateScore: base.aggregateScore, confidence: base.confidence, issuerRefHash: base.issuerRefHash, providerType: base.providerType, providerName: base.providerName, model: base.model, analyzerVersion: base.analyzerVersion, scoringVersion: base.scoringVersion, originalPromptHash: base.originalPromptHash, optimizedPromptHash: base.optimizedPromptHash, evaluationHash: base.evaluationHash, manifestHash: base.manifestHash, storageRoot: base.storageRoot, storageTransactionHash: base.storageTransactionHash, chainProofPublicId: base.chainProofId, chainTransactionHash: base.chainTransactionHash, contractAddress: base.contractAddress, chainId: base.chainId, network: base.network, issuedAt: new Date(base.issuedAt) } });
+  const base = {
+    schemaVersion: 'OptimizationCertificateV1' as const,
+    certificateId: LIVE_EVIDENCE.certificateId,
+    publicSlug: LIVE_EVIDENCE.certificateSlug,
+    optimizationId: job.id,
+    issuerRefHash: `0x${sha(`OptimIEra:issuer:V1:${workspace.id}`)}`,
+    sourcePromptVersionId: source.id,
+    selectedPromptVersionId: selected.id,
+    selectedCandidateId: candidate.id,
+    analyzerVersion: job.analyzerVersion,
+    scoringVersion: job.scoringVersion,
+    providerType: job.providerType,
+    providerName: job.providerName,
+    model: LIVE_EVIDENCE.model,
+    originalPromptHash: source.contentHash,
+    optimizedPromptHash: candidate.contentHash,
+    evaluationHash: manifest.evaluationHash,
+    manifestHash: LIVE_EVIDENCE.manifestHash,
+    storageRoot: LIVE_EVIDENCE.storageRoot,
+    storageTransactionHash: LIVE_EVIDENCE.storageTransactionHash,
+    chainProofId: LIVE_EVIDENCE.proofId,
+    chainTransactionHash: LIVE_EVIDENCE.proofTransactionHash,
+    contractAddress: LIVE_EVIDENCE.registryAddress,
+    chainId: LIVE_EVIDENCE.chainId,
+    network: 'testnet',
+    aggregateScore: score,
+    confidence: manifest.confidence,
+    issuedAt: new Date().toISOString(),
+    expiresAt: null,
+    revokedAt: null,
+    verificationLevel: 'FULLY_VERIFIED' as const,
+  };
+  await db.certificate.upsert({
+    where: { publicSlug: LIVE_EVIDENCE.certificateSlug },
+    update: {},
+    create: {
+      workspaceId: workspace.id,
+      optimizationJobId: job.id,
+      sourcePromptVersionId: source.id,
+      selectedPromptVersionId: selected.id,
+      candidateId: candidate.id,
+      status: 'VERIFIED',
+      artifactId: artifact.id,
+      chainProofId: chainProof.id,
+      certificateId: base.certificateId,
+      publicSlug: base.publicSlug,
+      schemaVersion: base.schemaVersion,
+      contentHash: base.manifestHash,
+      certificateContentHash: sha(canonicalCertificate(base)),
+      verificationLevel: base.verificationLevel,
+      aggregateScore: base.aggregateScore,
+      confidence: base.confidence,
+      issuerRefHash: base.issuerRefHash,
+      providerType: base.providerType,
+      providerName: base.providerName,
+      model: base.model,
+      analyzerVersion: base.analyzerVersion,
+      scoringVersion: base.scoringVersion,
+      originalPromptHash: base.originalPromptHash,
+      optimizedPromptHash: base.optimizedPromptHash,
+      evaluationHash: base.evaluationHash,
+      manifestHash: base.manifestHash,
+      storageRoot: base.storageRoot,
+      storageTransactionHash: base.storageTransactionHash,
+      chainProofPublicId: base.chainProofId,
+      chainTransactionHash: base.chainTransactionHash,
+      contractAddress: base.contractAddress,
+      chainId: base.chainId,
+      network: base.network,
+      issuedAt: new Date(base.issuedAt),
+    },
+  });
 }
 
 async function main() {
@@ -134,7 +362,13 @@ async function main() {
   const manifest = await verifiedManifest();
   const { proof } = await verifiedChain(manifest);
   if (!confirmation) {
-    console.log(JSON.stringify({ status: 'DRY_RUN_VERIFIED', storage: LIVE_EVIDENCE.storageRoot, proof: LIVE_EVIDENCE.proofId }));
+    console.log(
+      JSON.stringify({
+        status: 'DRY_RUN_VERIFIED',
+        storage: LIVE_EVIDENCE.storageRoot,
+        proof: LIVE_EVIDENCE.proofId,
+      }),
+    );
     return;
   }
   await restore(owner.id, manifest, proof);

@@ -7,6 +7,8 @@
 
 ## Unreleased
 
+- Added Wave 2 Vercel production-release preparation: workspace tracing, deterministic install/build commands, Prisma generation/migration deployment, safe demo/live-write flags, readiness endpoints, and an idempotent read-only Galileo evidence restoration workflow.
+
 - Added Phase 1 Prisma 7 schema/client foundation, Better Auth route integration, workspace surfaces, role matrix helpers, seed policy, and domain-rule tests.
 - Added AES-256-GCM prompt encryption, guarded local re-encryption, ciphertext-at-rest integration coverage, Playwright smoke coverage, and PostgreSQL-backed CI setup.
 - Added transaction-backed invitation lifecycle, member role/removal services and UI, prompt review services and routes, recursive audit redaction, audit-log UI, and expanded integration coverage.

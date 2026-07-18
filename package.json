@@ -31,6 +31,7 @@
     "contracts:verify:0g-testnet": "pnpm --filter @optimiera/contracts foundry:verify:testnet",
     "docs:build": "pnpm --filter @optimiera/docs build",
     "web:build": "pnpm --filter @optimiera/web build",
+    "api:build": "pnpm --filter @optimiera/api build",
     "db:generate": "pnpm --filter @optimiera/database db:generate",
     "db:migrate": "pnpm --filter @optimiera/database db:migrate",
     "db:migrate:deploy": "pnpm --filter @optimiera/database db:migrate:deploy",

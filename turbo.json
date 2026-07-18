@@ -1,9 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
-      "NODE_ENV",
-      "OPTIMIERA_DEMO_MODE",
-      "OPTIMIERA_LIVE_WRITES_ENABLED",
+    "NODE_ENV",
+    "OPTIMIERA_DEMO_MODE",
+    "OPTIMIERA_LIVE_WRITES_ENABLED",
     "NEXT_PUBLIC_APP_URL",
     "NEXT_PUBLIC_DOCS_URL",
     "NEXT_PUBLIC_API_URL",
