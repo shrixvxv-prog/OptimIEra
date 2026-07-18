@@ -1,0 +1,294 @@
+{
+  "project": "OptimIEra",
+  "lastVerified": "2026-07-16",
+  "sources": [
+    {
+      "module": "general",
+      "title": "0G Documentation",
+      "url": "https://docs.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Opened; current official documentation landing page."
+    },
+    {
+      "module": "general",
+      "title": "0G Builder Hub",
+      "url": "https://build.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened; current official builder entry point."
+    },
+    {
+      "module": "general",
+      "title": "Awesome 0G",
+      "url": "https://github.com/0gfoundation/awesome-0g",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened; official foundation-curated resource list."
+    },
+    {
+      "module": "general",
+      "title": "0G Agent Skills",
+      "url": "https://github.com/0gfoundation/0g-agent-skills",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened; official foundation repository."
+    },
+    {
+      "module": "network",
+      "title": "Testnet overview",
+      "url": "https://docs.0g.ai/developer-hub/testnet/testnet-overview",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "storage",
+      "title": "Storage SDK TypeScript integration",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/storage/sdk",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Verified @0gfoundation/0g-storage-ts-sdk, ethers peer dependency, MemData, Indexer upload, merkleTree, and proof-enabled downloadToBlob."
+    },
+    {
+      "module": "network",
+      "title": "Mainnet overview",
+      "url": "https://docs.0g.ai/developer-hub/mainnet/mainnet-overview",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "network",
+      "title": "Testnet faucet",
+      "url": "https://faucet.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "network",
+      "title": "Galileo ChainScan",
+      "url": "https://chainscan-galileo.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "network",
+      "title": "Mainnet ChainScan",
+      "url": "https://chainscan.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "network",
+      "title": "Galileo StorageScan",
+      "url": "https://storagescan-galileo.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "network",
+      "title": "Mainnet StorageScan",
+      "url": "https://storagescan.0g.ai/",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "chain",
+      "title": "Deploy contracts on 0G Chain",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/contracts-on-0g/deploy-contracts",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened; contract documentation includes Cancun target guidance."
+    },
+    {
+      "module": "compute",
+      "title": "Compute overview",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/overview",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "compute-router",
+      "title": "Compute Router overview",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/router/overview",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Verified Router selection, server-side OpenAI-compatible API, and separated network endpoints."
+    },
+    {
+      "module": "compute-router",
+      "title": "Compute Router quickstart",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/router/quickstart",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Verified sk- inference key and chat completions request shape."
+    },
+    {
+      "module": "compute-router",
+      "title": "Compute Router models",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/router/models",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Verified GET /v1/models and live catalog fields."
+    },
+    {
+      "module": "compute-router",
+      "title": "Compute Router authentication",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/router/authentication",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Verified server-side API key handling and sk- versus mk- distinction."
+    },
+    {
+      "module": "compute-router",
+      "title": "Compute Router errors",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/router/errors",
+      "official": true,
+      "lastVerified": "2026-07-16",
+      "notes": "Verified HTTP error handling reference."
+    },
+    {
+      "module": "compute",
+      "title": "Inference",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/inference",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "compute",
+      "title": "Account management",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/compute-network/account-management",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "compute",
+      "title": "Compute TypeScript starter kit",
+      "url": "https://github.com/0gfoundation/0g-compute-ts-starter-kit",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened for interface research only; not copied."
+    },
+    {
+      "module": "storage",
+      "title": "Storage SDK",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/storage/sdk",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "storage",
+      "title": "Storage TypeScript starter kit",
+      "url": "https://github.com/0glabs/0g-storage-ts-starter-kit",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened; redirects to the current foundation repository."
+    },
+    {
+      "module": "storage",
+      "title": "Storage web starter kit",
+      "url": "https://github.com/0glabs/0g-storage-web-starter-kit",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened; redirects to the current foundation repository."
+    },
+    {
+      "module": "agentic-id",
+      "title": "Agentic ID overview",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/agentic-id/overview",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "agentic-id",
+      "title": "Agentic ID integration",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/agentic-id/integration",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "agentic-id",
+      "title": "ERC-7857",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/agentic-id/erc7857",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "da",
+      "title": "DA deep dive",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/da-deep-dive",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    },
+    {
+      "module": "authentication",
+      "title": "Better Auth introduction",
+      "url": "https://better-auth.com/docs/introduction",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Verified for email/password, sessions, rate limiting, and plugin architecture."
+    },
+    {
+      "module": "authentication",
+      "title": "Better Auth Next.js integration",
+      "url": "https://better-auth.com/docs/integrations/next",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Verified route handler integration."
+    },
+    {
+      "module": "authentication",
+      "title": "Better Auth Prisma adapter",
+      "url": "https://better-auth.com/docs/adapters/prisma",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Verified Prisma adapter package and Prisma 7 output guidance."
+    },
+    {
+      "module": "authentication",
+      "title": "Better Auth organization plugin",
+      "url": "https://better-auth.com/docs/plugins/organization",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Verified organization, member, invitation, and access-control foundation."
+    },
+    {
+      "module": "authentication",
+      "title": "Better Auth SIWE plugin",
+      "url": "https://better-auth.com/docs/plugins/siwe",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Recorded for wallet-auth integration; implementation remains BLOCKED pending stack verification."
+    },
+    {
+      "module": "database",
+      "title": "Prisma ORM documentation",
+      "url": "https://www.prisma.io/docs",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Verified Prisma 7 explicit client output and config conventions."
+    },
+    {
+      "module": "da",
+      "title": "DA integration",
+      "url": "https://docs.0g.ai/developer-hub/building-on-0g/da-integration",
+      "official": true,
+      "lastVerified": "2026-07-15",
+      "notes": "Opened."
+    }
+  ]
+}

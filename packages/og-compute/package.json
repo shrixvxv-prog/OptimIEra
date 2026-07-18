@@ -1,0 +1,18 @@
+{
+  "name": "@optimiera/og-compute",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@optimiera/config": "workspace:*",
+    "@optimiera/optimizer-core": "workspace:*",
+    "@optimiera/schemas": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

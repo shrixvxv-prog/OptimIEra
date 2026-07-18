@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: optimiera
+      POSTGRES_PASSWORD: optimiera
+      POSTGRES_DB: optimiera
+    ports:
+      - '5432:5432'
+    volumes:
+      - optimiera-postgres:/var/lib/postgresql/data
+volumes:
+  optimiera-postgres:

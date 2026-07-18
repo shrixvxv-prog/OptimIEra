@@ -1,0 +1,610 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum PromptVisibility {
+  PRIVATE
+  WORKSPACE
+  PUBLIC
+}
+
+enum PromptLifecycleStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  DEPRECATED
+  ARCHIVED
+}
+
+enum PromptVersionStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  DEPRECATED
+  ARCHIVED
+}
+
+enum ReviewStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+}
+
+enum OptimizationJobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum EvaluationRunStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum ArtifactStatus {
+  DRAFT
+  PENDING
+  STORED
+  FAILED
+}
+
+enum CertificateStatus {
+  DRAFT
+  STORAGE_PENDING
+  CHAIN_PENDING
+  VERIFIED
+  REVOKED
+  FAILED
+}
+
+enum ApiKeyStatus {
+  ACTIVE
+  REVOKED
+}
+
+model User {
+  id              String           @id
+  name            String
+  email           String           @unique
+  emailVerified   Boolean          @default(false)
+  image           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  members         Member[]
+  invitationsSent Invitation[]     @relation("inviter")
+  projects        Project[]
+  prompts         Prompt[]
+  versions        PromptVersion[]
+  reviews         PromptReview[]
+  auditEvents     AuditEvent[]
+  wallets         WalletIdentity[]
+  walletAddresses WalletAddress[]
+}
+
+model Session {
+  id                   String   @id
+  expiresAt            DateTime
+  token                String   @unique
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+model Organization {
+  id           String             @id
+  name         String
+  slug         String             @unique
+  logo         String?
+  metadata     String?
+  createdAt    DateTime           @default(now())
+  members      Member[]
+  invitations  Invitation[]
+  projects     Project[]
+  prompts      Prompt[]
+  versions     PromptVersion[]
+  reviews      PromptReview[]
+  auditEvents  AuditEvent[]
+  settings     WorkspaceSettings?
+  chainProofs  ChainProof[]
+  certificates Certificate[]
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  userId         String
+  role           String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+}
+
+model Invitation {
+  id             String       @id
+  email          String
+  inviterId      String
+  organizationId String
+  role           String?
+  status         String
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  inviter        User         @relation("inviter", fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([email, status])
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  workspaceId String
+  name        String
+  slug        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  archivedAt  DateTime?
+  workspace   Organization  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy   User          @relation(fields: [createdById], references: [id])
+  prompts     Prompt[]
+
+  @@unique([workspaceId, slug])
+  @@index([workspaceId, status])
+}
+
+model Prompt {
+  id              String                @id @default(cuid())
+  workspaceId     String
+  projectId       String
+  title           String
+  description     String?
+  purpose         String?
+  visibility      PromptVisibility      @default(PRIVATE)
+  lifecycleStatus PromptLifecycleStatus @default(DRAFT)
+  activeVersionId String?               @unique
+  createdById     String
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  archivedAt      DateTime?
+  workspace       Organization          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project         Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy       User                  @relation(fields: [createdById], references: [id])
+  versions        PromptVersion[]
+  activeVersion   PromptVersion?        @relation("activeVersion", fields: [activeVersionId], references: [id])
+
+  @@index([workspaceId, projectId])
+}
+
+model PromptVersion {
+  id                   String              @id @default(cuid())
+  promptId             String
+  workspaceId          String
+  versionNumber        Int
+  encryptedContent     String
+  contentHash          String
+  encryptionStatus     String
+  parentVersionId      String?
+  changeSummary        String?
+  lifecycleStatus      PromptVersionStatus @default(DRAFT)
+  createdById          String
+  createdAt            DateTime            @default(now())
+  prompt               Prompt              @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  workspace            Organization        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy            User                @relation(fields: [createdById], references: [id])
+  parentVersion        PromptVersion?      @relation("versionParent", fields: [parentVersionId], references: [id])
+  childVersions        PromptVersion[]     @relation("versionParent")
+  activeFor            Prompt?             @relation("activeVersion")
+  reviews              PromptReview[]
+  sourceCertificates   Certificate[]       @relation("sourceCertificateVersion")
+  selectedCertificates Certificate[]       @relation("selectedCertificateVersion")
+
+  @@unique([promptId, versionNumber])
+  @@index([workspaceId, promptId])
+}
+
+model PromptReview {
+  id              String        @id @default(cuid())
+  workspaceId     String
+  promptVersionId String
+  reviewerId      String
+  status          ReviewStatus  @default(REQUESTED)
+  note            String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  workspace       Organization  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  promptVersion   PromptVersion @relation(fields: [promptVersionId], references: [id], onDelete: Cascade)
+  reviewer        User          @relation(fields: [reviewerId], references: [id])
+
+  @@index([workspaceId, promptVersionId])
+}
+
+model OptimizationJob {
+  id                     String                @id @default(cuid())
+  workspaceId            String
+  projectId              String
+  promptId               String?
+  sourcePromptVersionId  String?
+  requestedById          String
+  mode                   String
+  status                 OptimizationJobStatus @default(QUEUED)
+  providerType           String
+  providerName           String
+  analyzerVersion        String?
+  scoringVersion         String?
+  requestMetadata        String?
+  encryptedRequestData   String?
+  analysisData           String?
+  originalScore          Int?
+  recommendedScore       Int?
+  recommendedCandidateId String?
+  savedCandidateId       String?
+  savedPromptVersionId   String?
+  idempotencyKey         String?
+  startedAt              DateTime?
+  completedAt            DateTime?
+  failedAt               DateTime?
+  failureCode            String?
+  safeFailureMessage     String?
+  createdById            String
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  candidates             Candidate[]
+  evaluationRuns         EvaluationRun[]
+  artifacts              Artifact[]
+  chainProofs            ChainProof[]
+  certificates           Certificate[]
+
+  @@unique([workspaceId, idempotencyKey])
+  @@index([workspaceId, status])
+  @@index([promptId])
+}
+
+model Candidate {
+  id                   String          @id @default(cuid())
+  workspaceId          String
+  optimizationJobId    String
+  candidateType        String
+  encryptedContent     String
+  contentHash          String
+  changeSummary        String
+  scoreData            String
+  providerType         String
+  providerName         String
+  tokenEstimate        Int
+  rank                 Int
+  recommended          Boolean         @default(false)
+  selected             Boolean         @default(false)
+  savedPromptVersionId String?
+  generationVersion    String
+  createdAt            DateTime        @default(now())
+  optimizationJob      OptimizationJob @relation(fields: [optimizationJobId], references: [id], onDelete: Cascade)
+  certificates         Certificate[]
+
+  @@index([workspaceId])
+  @@index([optimizationJobId])
+}
+
+model EvaluationSuite {
+  id          String     @id @default(cuid())
+  workspaceId String
+  projectId   String
+  name        String
+  description String?
+  createdById String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  testCases   TestCase[]
+
+  @@index([workspaceId])
+}
+
+model TestCase {
+  id               String          @id @default(cuid())
+  suiteId          String
+  input            String
+  expectedBehavior String
+  assertionConfig  String
+  createdAt        DateTime        @default(now())
+  suite            EvaluationSuite @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+}
+
+model EvaluationRun {
+  id                      String              @id @default(cuid())
+  workspaceId             String
+  suiteId                 String?
+  optimizationJobId       String?
+  evaluationVersion       String?
+  scoringDimensions       String?
+  originalScore           Int?
+  winnerCandidateId       String?
+  winnerLabel             String?
+  confidence              Int?
+  warnings                String?
+  recommendationRationale String?
+  executionMetadata       String?
+  status                  EvaluationRunStatus @default(QUEUED)
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  optimizationJob         OptimizationJob?    @relation(fields: [optimizationJobId], references: [id], onDelete: Cascade)
+  results                 EvaluationResult[]
+
+  @@index([workspaceId, status])
+  @@index([optimizationJobId])
+}
+
+model EvaluationResult {
+  id                    String        @id @default(cuid())
+  runId                 String
+  testCaseId            String?
+  candidateId           String?
+  label                 String?
+  weightedTotal         Int?
+  improvementVsOriginal Int?
+  status                String
+  details               String?
+  scoreData             String?
+  createdAt             DateTime      @default(now())
+  run                   EvaluationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+}
+
+model Artifact {
+  id                      String           @id @default(cuid())
+  workspaceId             String
+  optimizationJobId       String?
+  status                  String           @default("LOCAL_CREATED")
+  kind                    String
+  schemaVersion           String?
+  storageProvider         String?
+  network                 String?
+  storageMode             String?
+  indexerHost             String?
+  rootHash                String?
+  transactionHash         String?
+  contentHash             String?
+  byteSize                Int?
+  uploadStatus            String?
+  proofVerificationStatus String?
+  retryCount              Int              @default(0)
+  safeErrorCode           String?
+  safeErrorMessage        String?
+  uploadedAt              DateTime?
+  verifiedAt              DateTime?
+  encryptedManifest       String?
+  storageReference        String?
+  createdAt               DateTime         @default(now())
+  optimizationJob         OptimizationJob? @relation(fields: [optimizationJobId], references: [id], onDelete: Cascade)
+  chainProofs             ChainProof[]
+  certificates            Certificate[]
+
+  @@unique([workspaceId, optimizationJobId, kind])
+  @@index([workspaceId, status])
+  @@index([workspaceId, optimizationJobId])
+}
+
+model ChainProof {
+  id                String          @id @default(cuid())
+  workspaceId       String
+  optimizationJobId String
+  artifactId        String?
+  proofId           String
+  contractAddress   String?
+  chainId           Int
+  network           String
+  manifestHash      String
+  storageRoot       String?
+  transactionHash   String?
+  blockNumber       BigInt?
+  blockHash         String?
+  registrarAddress  String?
+  aggregateScore    Int
+  status            String          @default("LOCAL_READY")
+  confirmationCount Int             @default(0)
+  retryCount        Int             @default(0)
+  safeErrorCode     String?
+  safeErrorMessage  String?
+  submittedAt       DateTime?
+  confirmedAt       DateTime?
+  verifiedAt        DateTime?
+  revokedAt         DateTime?
+  createdAt         DateTime        @default(now())
+  workspace         Organization    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  optimizationJob   OptimizationJob @relation(fields: [optimizationJobId], references: [id], onDelete: Cascade)
+  artifact          Artifact?       @relation(fields: [artifactId], references: [id], onDelete: SetNull)
+  certificates      Certificate[]
+
+  @@unique([workspaceId, optimizationJobId])
+  @@index([workspaceId, status])
+  @@index([proofId])
+}
+
+model Certificate {
+  id                      String            @id @default(cuid())
+  workspaceId             String
+  optimizationJobId       String
+  sourcePromptVersionId   String
+  selectedPromptVersionId String
+  candidateId             String
+  status                  CertificateStatus @default(DRAFT)
+  artifactId              String?
+  chainProofId            String?
+  certificateId           String            @unique
+  publicSlug              String            @unique
+  schemaVersion           String            @default("OptimizationCertificateV1")
+  contentHash             String
+  certificateContentHash  String
+  verificationLevel       String            @default("LOCAL_VERIFIED")
+  aggregateScore          Int
+  confidence              Int
+  issuerRefHash           String
+  providerType            String
+  providerName            String
+  model                   String?
+  analyzerVersion         String?
+  scoringVersion          String?
+  originalPromptHash      String
+  optimizedPromptHash     String
+  evaluationHash          String
+  manifestHash            String
+  storageRoot             String?
+  storageTransactionHash  String?
+  chainProofPublicId      String?
+  chainTransactionHash    String?
+  contractAddress         String?
+  chainId                 Int?
+  network                 String?
+  issuedAt                DateTime          @default(now())
+  expiresAt               DateTime?
+  revokedAt               DateTime?
+  safeFailureCode         String?
+  safeFailureMessage      String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  workspace               Organization      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  optimizationJob         OptimizationJob   @relation(fields: [optimizationJobId], references: [id], onDelete: Cascade)
+  sourcePromptVersion     PromptVersion     @relation("sourceCertificateVersion", fields: [sourcePromptVersionId], references: [id], onDelete: Restrict)
+  selectedPromptVersion   PromptVersion     @relation("selectedCertificateVersion", fields: [selectedPromptVersionId], references: [id], onDelete: Restrict)
+  candidate               Candidate         @relation(fields: [candidateId], references: [id], onDelete: Restrict)
+  artifact                Artifact?         @relation(fields: [artifactId], references: [id], onDelete: SetNull)
+  chainProof              ChainProof?       @relation(fields: [chainProofId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, status])
+  @@index([optimizationJobId])
+  @@index([workspaceId, selectedPromptVersionId])
+}
+
+model ApiKey {
+  id          String       @id @default(cuid())
+  workspaceId String
+  name        String
+  keyHash     String       @unique
+  status      ApiKeyStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  revokedAt   DateTime?
+
+  @@index([workspaceId, status])
+}
+
+model UsageRecord {
+  id          String   @id @default(cuid())
+  workspaceId String
+  metric      String
+  quantity    Int
+  periodStart DateTime
+  periodEnd   DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([workspaceId, createdAt])
+}
+
+model AuditEvent {
+  id               String       @id @default(cuid())
+  workspaceId      String
+  actorUserId      String?
+  action           String
+  resourceType     String
+  resourceId       String?
+  safeMetadata     String?
+  requestId        String?
+  ipHash           String?
+  userAgentSummary String?
+  createdAt        DateTime     @default(now())
+  workspace        Organization @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  actor            User?        @relation(fields: [actorUserId], references: [id])
+
+  @@index([workspaceId, createdAt])
+  @@index([actorUserId])
+}
+
+model WalletIdentity {
+  id                String   @id @default(cuid())
+  userId            String
+  normalizedAddress String   @unique
+  displayAddress    String
+  chainId           Int
+  isPrimary         Boolean  @default(false)
+  verifiedAt        DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model WalletAddress {
+  id        String   @id @default(cuid())
+  userId    String
+  address   String
+  chainId   Int
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([address, chainId])
+  @@index([userId])
+}
+
+model WorkspaceSettings {
+  id                String       @id @default(cuid())
+  workspaceId       String       @unique
+  promptStorageMode String       @default("PLAINTEXT_LOCAL_ONLY")
+  workspace         Organization @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}

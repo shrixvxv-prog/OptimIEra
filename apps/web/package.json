@@ -1,0 +1,29 @@
+{
+  "name": "@optimiera/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@better-auth/prisma-adapter": "^1.6.23",
+    "@optimiera/config": "workspace:*",
+    "@optimiera/database": "workspace:*",
+    "@optimiera/encryption": "workspace:*",
+    "@optimiera/og-chain": "workspace:*",
+    "@optimiera/og-compute": "workspace:*",
+    "@optimiera/og-storage": "workspace:*",
+    "@optimiera/optimizer-core": "workspace:*",
+    "@optimiera/schemas": "workspace:*",
+    "@optimiera/ui": "workspace:*",
+    "better-auth": "^1.6.23",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "viem": "^2.55.2",
+    "zod": "^3.25.76"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@optimiera/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src --max-warnings 0",
+    "typecheck": "tsc -p tsconfig.json",
+    "foundry:fmt": "node ../../scripts/foundry-run.mjs fmt --check",
+    "foundry:build": "node ../../scripts/foundry-run.mjs build",
+    "foundry:test": "node ../../scripts/foundry-run.mjs test",
+    "foundry:deploy:testnet": "node ../../scripts/foundry-run.mjs script script/DeployOptimIEraRegistry.s.sol:DeployOptimIEraRegistry --rpc-url 0g_testnet",
+    "foundry:verify:testnet": "node ../../scripts/foundry-run.mjs verify-contract --chain-id 16602 --verifier custom --verifier-url https://chainscan-galileo.0g.ai/open/api"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1",
+    "viem": "^2.55.2"
+  }
+}

@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+packages/database/src/generated/
+.env.example
+packages/database/prisma/schema.prisma
+packages/contracts/lib/
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/foundry.toml
+packages/contracts/broadcast/

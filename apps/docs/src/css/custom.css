@@ -1,0 +1,17 @@
+:root {
+  --ifm-color-primary: #078d9c;
+  --ifm-font-family-base: 'Space Grotesk', sans-serif;
+  --ifm-font-family-monospace: 'IBM Plex Mono', monospace;
+}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+}
+.hero--primary {
+  background: #121614;
+}
+.navbar__title {
+  letter-spacing: -0.04em;
+}
+.theme-doc-markdown h1 {
+  letter-spacing: -0.05em;
+}

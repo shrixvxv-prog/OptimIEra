@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://optimiera:optimiera@localhost:5432/optimiera
+      E2E_DATABASE_URL: postgresql://optimiera:optimiera@localhost:5432/optimiera_test
+      BETTER_AUTH_SECRET: ci-only-better-auth-secret-change-me
+      BETTER_AUTH_URL: http://localhost:3000
+      PROMPT_STORAGE_MODE: ENCRYPTED
+      OPTIMIERA_ENCRYPTION_MASTER_KEY: MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA=
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: optimiera
+          POSTGRES_PASSWORD: optimiera
+          POSTGRES_DB: optimiera
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U optimiera -d optimiera"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 11.6.0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: PGPASSWORD=optimiera psql -h localhost -U optimiera -d optimiera -c "CREATE DATABASE optimiera_test"
+      - run: pnpm db:generate
+      - run: pnpm --filter @optimiera/database db:migrate:deploy
+      - run: pnpm test
+      - run: pnpm docs:build
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - run: pnpm safety:scan
