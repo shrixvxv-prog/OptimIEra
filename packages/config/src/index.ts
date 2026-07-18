@@ -5,6 +5,8 @@ export const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   NEXT_PUBLIC_DOCS_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_URL: z.string().url().optional(),
+  OPTIMIERA_DEMO_MODE: z.enum(['true', 'false', '']).default(''),
+  OPTIMIERA_LIVE_WRITES_ENABLED: z.enum(['true', 'false', '']).default(''),
   OG_COMPUTE_ENABLED: z.enum(['true', 'false', '']).default(''),
   OG_COMPUTE_NETWORK: z.enum(['mainnet', 'testnet', '']).default(''),
   OG_COMPUTE_BASE_URL: z.string().url().optional().or(z.literal('')),

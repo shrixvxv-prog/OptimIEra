@@ -6,6 +6,7 @@
   "packageManager": "pnpm@11.6.0",
   "scripts": {
     "build": "turbo run build",
+    "vercel-build": "pnpm db:generate && pnpm db:migrate:deploy && pnpm --filter @optimiera/web build",
     "dev": "turbo run dev --parallel",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -22,6 +23,7 @@
     "og:chain:check": "tsx scripts/og-chain-check.ts",
     "og:live:check": "tsx scripts/og-live-check.ts",
     "og:live:activate": "tsx scripts/og-live-activate.ts",
+    "live:evidence:restore": "tsx scripts/live-evidence-restore.ts",
     "contracts:build": "pnpm --filter @optimiera/contracts foundry:build",
     "contracts:fmt": "pnpm --filter @optimiera/contracts foundry:fmt",
     "contracts:test": "pnpm --filter @optimiera/contracts foundry:test",

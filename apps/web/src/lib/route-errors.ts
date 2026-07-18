@@ -51,6 +51,7 @@ const statusByCode: Record<string, number> = {
   STORAGE_PROOF_MISMATCH: 422,
   CHAIN_PROOF_MISMATCH: 422,
   CHAIN_PROOF_REVOKED: 409,
+  LIVE_WRITES_DISABLED: 403,
 };
 
 export function safeRouteError(error: unknown) {

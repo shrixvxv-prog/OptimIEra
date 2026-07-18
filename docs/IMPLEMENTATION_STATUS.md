@@ -34,3 +34,6 @@
 | Unified 0G live activation and evidence preflight | COMPLETE     | testnet-only gated preflight, recovered database/browser verification, and evidence boundary; live status UNCONFIGURED until authenticated proof succeeds            |
 | Phase 8 live Galileo activation                   | COMPLETE     | Authenticated `qwen2.5-omni` structured optimization, encrypted manifest proof download, registry proof/readback, and public `FULLY_VERIFIED` certificate            |
 | Agentic ID, payments, DA                          | PLANNED      | later phase boundary                                                                                                                                                 |
+# Wave 2 — Vercel Production Preparation
+
+Status: **COMPLETE locally; external Vercel provisioning and deployment remain operator-controlled.**

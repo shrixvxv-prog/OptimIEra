@@ -280,7 +280,7 @@ export class OGStorageAdapter implements StorageAdapter {
     }
   }
   async downloadArtifact(storageRoot: string): Promise<ArtifactResponse & { bytes?: Uint8Array }> {
-    if (!this.config.enabled || !this.config.privateKey)
+    if (!this.config.enabled)
       throw new StorageError('STORAGE_UNCONFIGURED', '0G Storage is unconfigured.');
     try {
       const indexer = this.indexerFactory(this.config.indexerUrl);

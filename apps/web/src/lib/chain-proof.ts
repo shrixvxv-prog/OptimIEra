@@ -13,6 +13,7 @@ import { keccak256 } from 'viem';
 import { readOGChainConfig } from '@optimiera/config';
 import { parseVerifiedManifest } from '@optimiera/og-storage';
 import { requireSession, type Role } from './authorization';
+import { assertLiveWritesEnabled } from './runtime-config';
 
 const testChainAdapter = new TestChainAdapter();
 function chainAdapter(config: ReturnType<typeof readOGChainConfig>) {
@@ -138,6 +139,7 @@ export async function registerOptimizationProof(optimizationJobId: string) {
     (!config.enabled || !config.privateKey || !config.registryAddress)
   )
     return local;
+  if (process.env.OG_CHAIN_TEST_ADAPTER !== 'true') assertLiveWritesEnabled();
   if (local.status === 'VERIFIED') return local;
   const claim = await db.chainProof.updateMany({
     where: { id: local.id, status: { in: ['LOCAL_READY', 'FAILED'] } },
@@ -229,6 +231,7 @@ export async function revokeOptimizationProof(optimizationJobId: string, reason:
     (!config.enabled || !config.privateKey || !config.registryAddress)
   )
     throw new Error('CHAIN_UNCONFIGURED');
+  if (process.env.OG_CHAIN_TEST_ADAPTER !== 'true') assertLiveWritesEnabled();
   await chainAdapter(config).revokeProof(
     proof.proofId as `0x${string}`,
     hashText(`OptimIEra:revoke:V1:${reason}`),

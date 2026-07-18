@@ -28,3 +28,8 @@
 
 - Phase 1E had 39 Vitest tests and 5 Playwright workflows passing twice.
 - Phase 2 adds local optimizer unit tests, PostgreSQL optimization persistence tests, and browser optimization workflows.
+# Wave 2 production limitations
+
+- A Vercel project, managed PostgreSQL instance, and production secrets must be provisioned by the operator; this repository does not create them.
+- Wave 2 leaves 0G Storage and Chain writes disabled by default. Existing live evidence can be verified and restored read-only.
+- Live compute, storage, and chain credentials are not included and are never fabricated.

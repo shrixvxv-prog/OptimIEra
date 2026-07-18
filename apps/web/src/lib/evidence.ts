@@ -15,6 +15,7 @@ import {
 } from '@optimiera/og-storage';
 import { readOGComputeConfig, readOGStorageConfig } from '@optimiera/config';
 import { requireSession, type Role } from './authorization';
+import { assertLiveWritesEnabled } from './runtime-config';
 
 const artifactKind = 'OPTIMIZATION_EVIDENCE';
 function role(value: string): Role {
@@ -160,6 +161,7 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
     },
   });
   if (!config.enabled || !config.privateKey) return artifact;
+  assertLiveWritesEnabled();
   const claim = await db.artifact.updateMany({
     where: { id: artifact.id, status: { in: ['LOCAL_CREATED', 'FAILED'] } },
     data: { status: 'UPLOADING', uploadStatus: 'UPLOADING', retryCount: { increment: 1 } },
