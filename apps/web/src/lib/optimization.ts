@@ -21,10 +21,16 @@ import {
 } from '@optimiera/database';
 import type { OptimizationRequest } from '@optimiera/schemas';
 import { can, requireSession, type Role } from './authorization';
-import { OGComputeRouterProvider, type OGComputeError } from '@optimiera/og-compute';
+import {
+  NousPromptIntelligenceProvider,
+  OGComputeRouterProvider,
+  type OGComputeError,
+} from '@optimiera/og-compute';
+import { consumeUsagePayment } from './usage-payment';
 
 const provider = new OptimIEraRulesProvider();
 const ogProvider = new OGComputeRouterProvider();
+const nousProvider = new NousPromptIntelligenceProvider();
 
 function normalizeRole(role: string): Role {
   const normalized = role.toUpperCase();
@@ -45,7 +51,10 @@ async function memberForWorkspace(workspaceId: string, userId: string) {
   return member;
 }
 
-function classifyOptimizationFailure(error: unknown) {
+function classifyOptimizationFailure(
+  error: unknown,
+  providerType?: 'RULES_ENGINE' | 'OG_COMPUTE' | 'NOUS_AI',
+) {
   if (error && typeof error === 'object' && 'code' in error) {
     const code = String((error as OGComputeError).code);
     if (
@@ -61,11 +70,14 @@ function classifyOptimizationFailure(error: unknown) {
         'UNAVAILABLE',
         'SCHEMA_INVALID',
       ].includes(code)
-    )
+    ) {
+      const prefix = providerType === 'NOUS_AI' ? 'NOUS_AI' : 'OG_COMPUTE';
+      const label = providerType === 'NOUS_AI' ? 'Nous AI' : '0G Compute';
       return {
-        code: `OG_COMPUTE_${code}`,
-        message: `0G Compute failed safely (${code}). Choose Retry 0G Compute or run with the Rules Engine.`,
+        code: `${prefix}_${code}`,
+        message: `${label} failed safely (${code}). Retry the same provider or explicitly select another provider.`,
       };
+    }
   }
   if (error instanceof Error) {
     if (
@@ -95,7 +107,8 @@ export async function runOptimization(input: {
   request: OptimizationRequest;
   idempotencyKey?: string;
   requestId?: string;
-  providerType?: 'RULES_ENGINE' | 'OG_COMPUTE';
+  providerType?: 'RULES_ENGINE' | 'OG_COMPUTE' | 'NOUS_AI';
+  paymentTxHash?: string;
 }) {
   const session = await requireSession();
   let request = validateOptimizationRequest(input.request);
@@ -121,6 +134,14 @@ export async function runOptimization(input: {
   const project = await db.project.findFirst({ where: { id: projectId, workspaceId } });
   if (!project) throw new Error('NOT_FOUND');
 
+  await consumeUsagePayment({
+    txHash: input.paymentTxHash,
+    userId: session.user.id,
+    workspaceId,
+    operation: `optimization:${input.providerType ?? 'RULES_ENGINE'}`,
+    idempotencyKey: input.idempotencyKey,
+  });
+
   if (!promptId && request.newPrompt) {
     const created = await createPromptWithInitialVersion({
       workspaceId,
@@ -134,7 +155,12 @@ export async function runOptimization(input: {
     request = { ...request, promptId, sourcePromptVersionId };
   }
 
-  const selectedProvider = input.providerType === 'OG_COMPUTE' ? ogProvider : provider;
+  const selectedProvider =
+    input.providerType === 'OG_COMPUTE'
+      ? ogProvider
+      : input.providerType === 'NOUS_AI'
+        ? nousProvider
+        : provider;
   const job = await createQueuedOptimizationJob({
     workspaceId,
     projectId,
@@ -151,8 +177,8 @@ export async function runOptimization(input: {
   try {
     await markOptimizationRunning(job.id);
     const context = createProviderContext({ requestId: input.requestId });
-    if (selectedProvider === ogProvider) {
-      const combined = await ogProvider.optimizeCombined(request, context);
+    if (selectedProvider instanceof OGComputeRouterProvider) {
+      const combined = await selectedProvider.optimizeCombined(request, context);
       return persistOptimizationSuccess({
         jobId: job.id,
         workspaceId,
@@ -178,7 +204,7 @@ export async function runOptimization(input: {
       requestId: input.requestId,
     });
   } catch (error) {
-    const failure = classifyOptimizationFailure(error);
+    const failure = classifyOptimizationFailure(error, input.providerType);
     await persistOptimizationFailure({
       jobId: job.id,
       workspaceId,
@@ -248,15 +274,23 @@ export async function saveOptimizationCandidate(input: {
   return version;
 }
 
-export async function retryOptimization(optimizationJobId: string) {
+export async function retryOptimization(optimizationJobId: string, paymentTxHash?: string) {
   const session = await requireSession();
   const job = await db.optimizationJob.findUnique({ where: { id: optimizationJobId } });
   if (!job) throw new Error('NOT_FOUND');
   const member = await memberForWorkspace(job.workspaceId, session.user.id);
   requireWriteRole(member.role);
   const request = await getOptimizationRequestForRetry(job.workspaceId, optimizationJobId);
+  const providerType =
+    job.providerType === 'OG_COMPUTE'
+      ? 'OG_COMPUTE'
+      : job.providerType === 'EXTERNAL_MODEL' && job.providerName.includes('Nous')
+        ? 'NOUS_AI'
+        : 'RULES_ENGINE';
   return runOptimization({
     request,
+    providerType,
+    paymentTxHash,
     idempotencyKey: `${optimizationJobId}:retry:${Date.now()}`,
   });
 }

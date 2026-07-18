@@ -16,8 +16,9 @@ export async function createOptimization(formData: FormData) {
   const createNew = promptId === '__new__';
   const result = await runOptimization({
     providerType: String(formData.get('providerType') ?? 'RULES_ENGINE') as
-      'RULES_ENGINE' | 'OG_COMPUTE',
+      'RULES_ENGINE' | 'OG_COMPUTE' | 'NOUS_AI',
     idempotencyKey: String(formData.get('idempotencyKey') ?? ''),
+    paymentTxHash: String(formData.get('paymentTxHash') ?? '') || undefined,
     request: {
       promptId: createNew ? undefined : promptId,
       newPrompt: createNew

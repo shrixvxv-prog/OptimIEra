@@ -16,6 +16,7 @@ Provider architecture:
 - `OG_CHAIN`: implemented with local/test proof workflows and live status gating
 - `CERTIFICATES`: implemented with public-safe verification and revocation
 - `OG_LIVE_PREFLIGHT`: implemented as a secret-safe, Galileo-only gate; current live status is `UNCONFIGURED`
-- `EXTERNAL_MODEL`: planned
+- `EXTERNAL_MODEL`: Nous Hermes provider implemented; authenticated model discovery verified, inference not claimed
+- `USAGE_PAYMENT`: 0.0001 0G Galileo native-transfer verification implemented and mock-tested; live payment not claimed
 
-Agentic ID, Payment, and DA are not executed or verified in this repository yet.
+Agentic ID and DA are not executed or verified in this repository yet.

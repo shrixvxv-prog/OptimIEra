@@ -27,13 +27,15 @@
 | SIWE wallet authentication                        | COMPLETE     | Better Auth SIWE nonce/signature flow with injected EIP-1193 wallet support                                                                                          |
 | 0G Compute                                        | IMPLEMENTED  | Router model discovery, structured single-call adapter, safe retries                                                                                                 |
 | Model-assisted evaluation                         | UNCONFIGURED | explicit provider selection; requires server-side `sk-` key and live model                                                                                           |
+| Nous prompt intelligence                          | IMPLEMENTED  | authenticated model discovery, explicit provider selection, structured response validation; live inference is not claimed                                            |
 | Encrypted evidence manifests                      | COMPLETE     | versioned canonical manifest, encrypted envelopes, local Artifact persistence, browser and authorization coverage                                                    |
 | 0G Storage                                        | COMPLETE     | SDK adapter, Merkle root comparison, proof-enabled download, test-only lifecycle coverage; live status UNCONFIGURED                                                  |
 | 0G Chain                                          | IMPLEMENTED  | hash-only registry, Cancun Foundry setup, viem adapter, local proof persistence, and configured test-adapter browser verification complete; live status UNCONFIGURED |
 | Public certificates and Proof Center              | IMPLEMENTED  | immutable certificate snapshots, honest trust levels, public verification/download, revocation, tamper checks, and test-adapter browser coverage                     |
 | Unified 0G live activation and evidence preflight | COMPLETE     | testnet-only gated preflight, recovered database/browser verification, and evidence boundary; live status UNCONFIGURED until authenticated proof succeeds            |
 | Phase 8 live Galileo activation                   | COMPLETE     | Authenticated `qwen2.5-omni` structured optimization, encrypted manifest proof download, registry proof/readback, and public `FULLY_VERIFIED` certificate            |
-| Agentic ID, payments, DA                          | PLANNED      | later phase boundary                                                                                                                                                 |
+| Galileo usage payments                            | IMPLEMENTED  | wallet-approved native transfer, receipt/chain/recipient/amount/payer validation, and one-use persistence; mock verified, no live transfer claimed                   |
+| Agentic ID and DA                                 | PLANNED      | later phase boundary                                                                                                                                                 |
 
 # Wave 2 — Vercel Production Preparation
 

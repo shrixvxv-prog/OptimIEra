@@ -3,8 +3,10 @@ import { redirect } from 'next/navigation';
 import { db } from '@optimiera/database';
 import { requireSession } from '@/lib/authorization';
 import { createOptimization } from './actions';
-import { readOGComputeConfig } from '@optimiera/config';
-import { OGComputeRouterProvider } from '@optimiera/og-compute';
+import { readNousConfig, readOGComputeConfig } from '@optimiera/config';
+import { NousPromptIntelligenceProvider, OGComputeRouterProvider } from '@optimiera/og-compute';
+import { readUsagePaymentConfig } from '@optimiera/payment';
+import { PaidOptimizationSubmit } from '@/components/paid-optimization-submit';
 
 const modes = ['BALANCED', 'ACCURACY', 'CONCISE', 'STRUCTURED', 'AGENT', 'CREATIVE', 'SAFETY'];
 const outputTypes = [
@@ -51,13 +53,16 @@ export default async function Optimize() {
   const firstWorkspace = writable[0]?.organization;
   const firstProject = firstWorkspace?.projects[0];
   const ogHealth = await new OGComputeRouterProvider(readOGComputeConfig()).healthCheck();
+  const nousHealth = await new NousPromptIntelligenceProvider(readNousConfig()).healthCheck();
+  const paymentConfig = readUsagePaymentConfig();
 
   return (
     <main className="appmain wide">
       <div className="eyebrow">OptimIEra Studio</div>
       <h1>Optimize a prompt</h1>
       <p className="lede">
-        Provider: OptimIEra Rules Engine by default. 0G Compute is selectable when configured.
+        Provider: OptimIEra Rules Engine by default. Choose local deterministic optimization, 0G
+        Compute, or Nous Hermes prompt intelligence.
       </p>
       <section className="card">
         <h3>Provider status</h3>
@@ -65,6 +70,9 @@ export default async function Optimize() {
         <p>
           0G Compute — {ogHealth.state} · network: {ogHealth.network} · model:{' '}
           {ogHealth.model ?? 'not selected'}
+        </p>
+        <p>
+          Nous Hermes — {nousHealth.state} · model: {nousHealth.model ?? 'not selected'}
         </p>
       </section>
       {!writable.length || !firstProject ? (
@@ -78,6 +86,7 @@ export default async function Optimize() {
       ) : (
         <form className="stack" action={createOptimization}>
           <input type="hidden" name="idempotencyKey" value={randomUUID()} />
+          <input type="hidden" name="paymentTxHash" value="" />
           <section className="card form-grid">
             <h3>Input</h3>
             <label>
@@ -88,6 +97,11 @@ export default async function Optimize() {
                   {ogHealth.state === 'AVAILABLE'
                     ? '0G Compute — Live'
                     : `0G Compute — ${ogHealth.state === 'UNCONFIGURED' ? 'Unconfigured' : 'Unavailable'}`}
+                </option>
+                <option value="NOUS_AI" disabled={nousHealth.state !== 'AVAILABLE'}>
+                  {nousHealth.state === 'AVAILABLE'
+                    ? 'Nous Hermes 4 — Enhanced prompt intelligence'
+                    : `Nous Hermes — ${nousHealth.state === 'UNCONFIGURED' ? 'Unconfigured' : 'Unavailable'}`}
                 </option>
               </select>
             </label>
@@ -204,9 +218,12 @@ export default async function Optimize() {
               Structured output schema
               <textarea name="structuredOutputSchema" rows={4} placeholder='{"type":"object"}' />
             </label>
-            <button className="button primary" type="submit">
-              Run optimization
-            </button>
+            <PaidOptimizationSubmit
+              enabled={paymentConfig.enabled}
+              recipient={paymentConfig.recipient}
+              amountWei={paymentConfig.amountWei.toString()}
+              chainId={paymentConfig.chainId}
+            />
           </section>
         </form>
       )}

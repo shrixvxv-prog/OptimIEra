@@ -1,4 +1,9 @@
-import { readOGComputeConfig, type OGComputeConfig } from '@optimiera/config';
+import {
+  readNousConfig,
+  readOGComputeConfig,
+  type NousConfig,
+  type OGComputeConfig,
+} from '@optimiera/config';
 import {
   analyzePrompt,
   evaluateOptimization,
@@ -9,6 +14,7 @@ import {
   type ProviderEvaluation,
   type ProviderHealth,
   type PromptAnalysis,
+  type OptimizationProviderType,
 } from '@optimiera/optimizer-core';
 import type { OptimizationRequest } from '@optimiera/schemas';
 import { z } from 'zod';
@@ -86,13 +92,18 @@ export class OGComputeError extends Error {
     super(message);
   }
 }
-function mapError(status: number, requestId?: string, retryAfter?: string | null) {
+function mapError(
+  status: number,
+  requestId?: string,
+  retryAfter?: string | null,
+  providerName = '0G Compute Router',
+) {
   const code = (
     [400, 401, 402, 403, 429, 502, 503].includes(status) ? String(status) : 'UNAVAILABLE'
   ) as OGComputeError['code'];
   return new OGComputeError(
     code,
-    `0G Compute Router request failed (${code}).`,
+    `${providerName} request failed (${code}).`,
     requestId,
     retryAfter ? Math.max(0, Number(retryAfter) * 1000) : undefined,
   );
@@ -155,15 +166,34 @@ function contextFor(request: OptimizationRequest, analysis: PromptAnalysis) {
 }
 
 export class OGComputeRouterProvider implements OptimizationProvider {
-  readonly id = '0g-compute-router';
-  readonly name = '0G Compute Router';
-  readonly type = 'OG_COMPUTE' as const;
-  readonly version = 'og-router-v1';
+  get id() {
+    return this.identity.id;
+  }
+  get name() {
+    return this.identity.name;
+  }
+  get type(): OptimizationProviderType {
+    return this.identity.type;
+  }
+  get version() {
+    return this.identity.version;
+  }
   private modelsCache?: { expires: number; models: OGModel[] };
   private lastTrace?: OGTrace;
   constructor(
     private readonly config: OGComputeConfig = readOGComputeConfig(),
     private readonly fetchImpl: typeof fetch = fetch,
+    private readonly identity: {
+      id: string;
+      name: string;
+      type: OptimizationProviderType;
+      version: string;
+    } = {
+      id: '0g-compute-router',
+      name: '0G Compute Router',
+      type: 'OG_COMPUTE',
+      version: 'og-router-v1',
+    },
   ) {}
   private headers(): Record<string, string> {
     const headers: Record<string, string> = { 'content-type': 'application/json' };
@@ -179,7 +209,7 @@ export class OGComputeRouterProvider implements OptimizationProvider {
         signal: AbortSignal.timeout(this.config.timeoutMs),
       });
     } catch {
-      throw new OGComputeError('TIMEOUT', '0G Compute Router model discovery timed out.');
+      throw new OGComputeError('TIMEOUT', `${this.name} model discovery timed out.`);
     }
     const body: unknown = await response.json().catch(() => null);
     if (!response.ok)
@@ -187,6 +217,7 @@ export class OGComputeRouterProvider implements OptimizationProvider {
         response.status,
         requestId(response.headers, body),
         response.headers.get('retry-after'),
+        this.name,
       );
     const parsed = z
       .object({
@@ -272,7 +303,7 @@ export class OGComputeRouterProvider implements OptimizationProvider {
     context: ProviderContext,
   ): Promise<OGStructuredResponse> {
     if (!this.config.apiKey || !this.config.model)
-      throw new OGComputeError('UNCONFIGURED' as never, '0G Compute is unconfigured.');
+      throw new OGComputeError('UNCONFIGURED' as never, `${this.name} is unconfigured.`);
     const started = Date.now();
     const model = (await this.listModels()).find((item) => item.id === this.config.model);
     const supportsJsonMode = model?.supportedParameters?.includes('response_format') ?? false;
@@ -296,12 +327,12 @@ export class OGComputeRouterProvider implements OptimizationProvider {
           signal: context.signal ?? AbortSignal.timeout(this.config.timeoutMs),
         });
       } catch {
-        throw new OGComputeError('TIMEOUT', '0G Compute Router timed out.');
+        throw new OGComputeError('TIMEOUT', `${this.name} timed out.`);
       }
       const body: any = await response.json().catch(() => null);
       const id = requestId(response.headers, body);
       if (!response.ok) {
-        const error = mapError(response.status, id, response.headers.get('retry-after'));
+        const error = mapError(response.status, id, response.headers.get('retry-after'), this.name);
         if ((error.code === '429' || error.code === '502') && attempt === 0) {
           await new Promise((resolve) =>
             setTimeout(resolve, Math.min(error.retryAfterMs ?? 250 * 2 ** attempt, 2000)),
@@ -334,10 +365,14 @@ export class OGComputeRouterProvider implements OptimizationProvider {
         };
         return parsed.data;
       } catch {
-        throw new OGComputeError('SCHEMA_INVALID', '0G response failed structured validation.', id);
+        throw new OGComputeError(
+          'SCHEMA_INVALID',
+          `${this.name} response failed structured validation.`,
+          id,
+        );
       }
     }
-    throw new OGComputeError('UNAVAILABLE', '0G Compute Router request failed.');
+    throw new OGComputeError('UNAVAILABLE', `${this.name} request failed.`);
   }
   async optimizeCombined(request: OptimizationRequest, context: ProviderContext) {
     const local = analyzePrompt(request);
@@ -410,6 +445,17 @@ export class OGComputeRouterProvider implements OptimizationProvider {
   }
   async evaluateCandidates(): Promise<ProviderEvaluation> {
     throw new Error('Use optimizeCombined for single-call inference.');
+  }
+}
+
+export class NousPromptIntelligenceProvider extends OGComputeRouterProvider {
+  constructor(config: NousConfig = readNousConfig(), fetchImpl: typeof fetch = fetch) {
+    super(config, fetchImpl, {
+      id: 'nous-prompt-intelligence',
+      name: 'Nous Hermes Prompt Intelligence',
+      type: 'EXTERNAL_MODEL',
+      version: 'nous-hermes-v1',
+    });
   }
 }
 export function redactSecret(value: string) {

@@ -474,6 +474,21 @@ exports.Prisma.UsageRecordScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.UsagePaymentScalarFieldEnum = {
+  id: 'id',
+  txHash: 'txHash',
+  userId: 'userId',
+  workspaceId: 'workspaceId',
+  operation: 'operation',
+  idempotencyKey: 'idempotencyKey',
+  chainId: 'chainId',
+  payerAddress: 'payerAddress',
+  recipientAddress: 'recipientAddress',
+  amountWei: 'amountWei',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AuditEventScalarFieldEnum = {
   id: 'id',
   workspaceId: 'workspaceId',
@@ -617,6 +632,7 @@ exports.Prisma.ModelName = {
   Certificate: 'Certificate',
   ApiKey: 'ApiKey',
   UsageRecord: 'UsageRecord',
+  UsagePayment: 'UsagePayment',
   AuditEvent: 'AuditEvent',
   WalletIdentity: 'WalletIdentity',
   WalletAddress: 'WalletAddress',

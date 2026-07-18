@@ -4,12 +4,30 @@ import { useState } from 'react';
 
 type EthereumProvider = {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;
+  providers?: EthereumProvider[];
+  isMetaMask?: boolean;
+  isRabby?: boolean;
+  isOkxWallet?: boolean;
 };
 
 declare global {
   interface Window {
     ethereum?: EthereumProvider;
+    okxwallet?: EthereumProvider;
   }
+}
+
+type WalletKind = 'MetaMask' | 'Rabby' | 'OKX Wallet' | 'Browser wallet';
+
+function walletProvider(kind: WalletKind) {
+  const injected = window.ethereum;
+  const providers = injected?.providers?.length ? injected.providers : injected ? [injected] : [];
+  if (kind === 'OKX Wallet')
+    return window.okxwallet ?? providers.find((provider) => provider.isOkxWallet);
+  if (kind === 'Rabby') return providers.find((provider) => provider.isRabby);
+  if (kind === 'MetaMask')
+    return providers.find((provider) => provider.isMetaMask && !provider.isRabby);
+  return injected;
 }
 
 function buildSiweMessage(address: string, chainId: number, nonce: string) {
@@ -21,13 +39,13 @@ export function WalletAuthButton({ mode }: { mode: 'sign-in' | 'sign-up' }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  async function connectWallet() {
+  async function connectWallet(kind: WalletKind) {
     setError('');
     setLoading(true);
     try {
-      const provider = window.ethereum;
+      const provider = walletProvider(kind);
       if (!provider) {
-        throw new Error('Install MetaMask, Rabby, OKX Wallet, or another compatible wallet.');
+        throw new Error(`${kind} was not detected. Install or unlock the wallet and try again.`);
       }
       const accounts = (await provider.request({ method: 'eth_requestAccounts' })) as string[];
       const address = accounts[0];
@@ -66,13 +84,21 @@ export function WalletAuthButton({ mode }: { mode: 'sign-in' | 'sign-up' }) {
 
   return (
     <div className="stack">
-      <button className="button" type="button" onClick={connectWallet} disabled={loading}>
-        {loading
-          ? 'Waiting for wallet…'
-          : mode === 'sign-up'
-            ? 'Create account with wallet'
-            : 'Sign in with wallet'}
-      </button>
+      <div className="button-row" aria-label="Wallet options">
+        {(['MetaMask', 'Rabby', 'OKX Wallet', 'Browser wallet'] as const).map((kind) => (
+          <button
+            className="button"
+            type="button"
+            onClick={() => connectWallet(kind)}
+            disabled={loading}
+            key={kind}
+          >
+            {loading
+              ? 'Waiting for wallet…'
+              : `${mode === 'sign-up' ? 'Create account' : 'Sign in'} with ${kind}`}
+          </button>
+        ))}
+      </div>
       <p className="muted">
         Works with MetaMask, Rabby, OKX Wallet, and other injected EIP-1193 wallets.
       </p>

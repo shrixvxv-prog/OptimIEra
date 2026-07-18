@@ -5,6 +5,11 @@ export const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   NEXT_PUBLIC_DOCS_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_URL: z.string().url().optional(),
+  NOUS_ENABLED: z.enum(['true', 'false', '']).default(''),
+  NOUS_BASE_URL: z.string().url().optional().or(z.literal('')),
+  NOUS_API_KEY: z.string().trim().optional().or(z.literal('')),
+  NOUS_MODEL: z.string().trim().optional().or(z.literal('')),
+  NOUS_TIMEOUT_MS: z.coerce.number().int().positive().max(120000).default(60000),
   OPTIMIERA_DEMO_MODE: z.enum(['true', 'false', '']).default(''),
   OPTIMIERA_LIVE_WRITES_ENABLED: z.enum(['true', 'false', '']).default(''),
   OG_COMPUTE_ENABLED: z.enum(['true', 'false', '']).default(''),
@@ -46,6 +51,22 @@ export const ogComputeConfigSchema = z.object({
   temperature: z.number().min(0).max(2).default(0.2),
 });
 export type OGComputeConfig = z.infer<typeof ogComputeConfigSchema>;
+export type NousConfig = OGComputeConfig;
+export const NOUS_INFERENCE_BASE_URL = 'https://inference-api.nousresearch.com/v1';
+export const DEFAULT_NOUS_MODEL = 'nousresearch/hermes-4-70b';
+export function readNousConfig(env: Record<string, string | undefined> = process.env): NousConfig {
+  const apiKey = env.NOUS_API_KEY || undefined;
+  return ogComputeConfigSchema.parse({
+    enabled: env.NOUS_ENABLED === 'true' || (env.NOUS_ENABLED !== 'false' && Boolean(apiKey)),
+    network: 'mainnet',
+    baseUrl: env.NOUS_BASE_URL || NOUS_INFERENCE_BASE_URL,
+    apiKey,
+    model: env.NOUS_MODEL || DEFAULT_NOUS_MODEL,
+    timeoutMs: env.NOUS_TIMEOUT_MS ? Number(env.NOUS_TIMEOUT_MS) : 60000,
+    maxOutputTokens: 2048,
+    temperature: 0.2,
+  });
+}
 export const OG_COMPUTE_ENDPOINTS = {
   mainnet: 'https://router-api.0g.ai/v1',
   testnet: 'https://router-api-testnet.integratenetwork.work/v1',

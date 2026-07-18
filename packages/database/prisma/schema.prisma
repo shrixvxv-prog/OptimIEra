@@ -504,6 +504,23 @@ model UsageRecord {
   createdAt DateTime @default(now())
   @@index([workspaceId, createdAt])
 }
+model UsagePayment {
+  id String @id @default(cuid())
+  txHash String @unique
+  userId String
+  workspaceId String
+  operation String
+  idempotencyKey String
+  chainId Int
+  payerAddress String
+  recipientAddress String
+  amountWei String
+  status String @default("VERIFIED")
+  createdAt DateTime @default(now())
+  @@unique([userId, idempotencyKey])
+  @@index([workspaceId, createdAt])
+  @@index([userId, createdAt])
+}
 model AuditEvent {
   id String @id @default(cuid())
   workspaceId String

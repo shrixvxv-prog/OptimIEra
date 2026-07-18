@@ -1,4 +1,6 @@
 import { readWave2RuntimeConfig } from '../../../lib/runtime-config';
+import { readNousConfig } from '@optimiera/config';
+import { readUsagePaymentConfig } from '@optimiera/payment';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,6 +28,8 @@ export async function GET() {
     checks.database = 'not_ready';
   }
   const runtimeConfig = readWave2RuntimeConfig();
+  const nous = readNousConfig();
+  const payment = readUsagePaymentConfig();
   const ready = Object.values(checks).every((value) => value === 'ready');
   return Response.json(
     {
@@ -33,6 +37,11 @@ export async function GET() {
       checks,
       demoMode: runtimeConfig.demoMode,
       liveWritesEnabled: runtimeConfig.liveWritesEnabled,
+      optionalIntegrations: {
+        nous: nous.enabled && nous.apiKey ? 'configured' : 'unconfigured',
+        usagePayments:
+          payment.enabled && payment.recipient ? 'configured' : 'disabled-or-unconfigured',
+      },
     },
     { status: ready ? 200 : 503 },
   );

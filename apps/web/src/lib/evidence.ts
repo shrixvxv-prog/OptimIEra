@@ -87,8 +87,16 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
     providerType: job.providerType,
     providerName: job.providerName,
     providerTrace: readProviderTrace(job.requestMetadata),
-    model: job.providerType === 'OG_COMPUTE' ? readOGStorageSafeComputeModel() : null,
-    network: job.providerType === 'OG_COMPUTE' ? readOGStorageSafeComputeNetwork() : null,
+    model:
+      job.providerType === 'OG_COMPUTE'
+        ? readOGStorageSafeComputeModel()
+        : (readProviderTrace(job.requestMetadata)?.model ?? null),
+    network:
+      job.providerType === 'OG_COMPUTE'
+        ? readOGStorageSafeComputeNetwork()
+        : job.providerType === 'EXTERNAL_MODEL'
+          ? 'nous-api'
+          : null,
     analyzerVersion: job.analyzerVersion,
     scoringVersion: job.scoringVersion,
     encryptedOriginalPrompt: JSON.parse(source.encryptedContent),
