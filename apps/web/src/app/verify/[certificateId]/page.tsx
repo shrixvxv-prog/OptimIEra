@@ -21,24 +21,71 @@ export default async function Verify({ params }: { params: Promise<{ certificate
             ? 'Public evidence verified.'
             : 'Verification failed or the certificate is revoked.'}
         </p>
-        <p>Aggregate score: {result.certificate.aggregateScore}</p>
-        <p>Confidence: {result.certificate.confidence}</p>
-        <p>Provider: {result.certificate.providerName}</p>
-        <p>Original prompt hash: {result.certificate.originalPromptHash}</p>
-        <p>Optimized prompt hash: {result.certificate.optimizedPromptHash}</p>
-        <p>Evaluation hash: {result.certificate.evaluationHash}</p>
-        <p>Manifest hash: {result.certificate.manifestHash}</p>
-        <p>Issued: {result.certificate.issuedAt}</p>
-        <ul>
-          {result.checks.map((check) => (
-            <li key={check.name}>
-              {check.name}: {check.status}
-            </li>
-          ))}
-        </ul>
-        <a href={`/api/v1/public/certificates/${result.certificate.publicSlug}/download`}>
-          Download certificate JSON
-        </a>
+        <div className="grid">
+          <article className="card">
+            <h2>Compute</h2>
+            <p>Provider: {result.certificate.providerName}</p>
+            <p>Model: {result.certificate.model ?? 'Not recorded'}</p>
+            <p className="mono">Request: {result.providerRequestId ?? 'Not recorded'}</p>
+            {result.providerResponseId && (
+              <p className="mono">Response: {result.providerResponseId}</p>
+            )}
+          </article>
+          <article className="card">
+            <h2>Storage</h2>
+            <p>Status: {result.storageStatus}</p>
+            <p className="mono">Root: {result.certificate.storageRoot ?? 'Local evidence'}</p>
+            {result.certificate.storageTransactionHash && (
+              <a
+                href={`https://storagescan-galileo.0g.ai/transaction/${result.certificate.storageTransactionHash}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Storage transaction
+              </a>
+            )}
+          </article>
+          <article className="card">
+            <h2>0G Chain</h2>
+            <p>Status: {result.chainStatus}</p>
+            <p>Readback: {result.contractReadbackStatus}</p>
+            <p>Chain ID: {result.certificate.chainId ?? 'Local'}</p>
+            <p className="mono">Registry: {result.certificate.contractAddress ?? 'Local proof'}</p>
+            <p className="mono">Proof ID: {result.certificate.chainProofId ?? 'Local proof'}</p>
+            <p>Block: {result.proofBlock ?? 'Not submitted'}</p>
+            {result.certificate.chainTransactionHash && (
+              <a
+                href={`https://chainscan-galileo.0g.ai/tx/${result.certificate.chainTransactionHash}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Proof transaction
+              </a>
+            )}
+          </article>
+        </div>
+        <article className="card">
+          <h2>Certificate integrity</h2>
+          <p>Aggregate score: {result.certificate.aggregateScore}</p>
+          <p>Confidence: {result.certificate.confidence}</p>
+          <p className="mono">Manifest hash: {result.certificate.manifestHash}</p>
+          <p>Issued: {result.certificate.issuedAt}</p>
+          <p>Last verified: {result.verifiedAt}</p>
+          <p className="muted">
+            FULLY_VERIFIED means the encrypted manifest, immutable prompt-version hashes, Storage
+            evidence, and chain commitment agree. It does not reveal the prompt plaintext.
+          </p>
+          <ul>
+            {result.checks.map((check) => (
+              <li key={check.name}>
+                {check.name}: <strong>{check.status}</strong>
+              </li>
+            ))}
+          </ul>
+          <a href={`/api/v1/public/certificates/${result.certificate.publicSlug}/download`}>
+            Download certificate JSON
+          </a>
+        </article>
       </section>
     </main>
   );

@@ -1,5 +1,12 @@
 # Changelog
 
+## Production candidate — 2026-07-19
+
+- Added a responsive authenticated application shell, safer public/provider states, privacy-safe proof details, branded loading/error/404 states, and accessibility coverage.
+- Added testnet-only production validation and transactional per-user/global daily quotas for Compute, Storage, and Chain operations. Rules Engine remains local and external failures never silently fall back.
+- Added managed-database deployment validation, production operations and route inventory, idempotent readback-only Galileo evidence restoration, and remote production smoke coverage.
+- Linked the Vercel project. Managed Preview/Production deployment remains blocked until the account owner accepts Neon Marketplace terms and provisions isolated databases.
+
 ## 0.1.0 — Phase 0 foundation — 2026-07-15
 
 - Established OptimIEra brand, monorepo, public site shell, Studio shell, Atlas hierarchy, typed adapter boundaries, source registry, CI, and roadmap.

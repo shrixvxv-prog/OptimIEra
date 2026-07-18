@@ -77,9 +77,15 @@ export function PaidOptimizationSubmit(props: {
 
   return (
     <div className="stack span-2">
-      <button className="button primary" type="button" onClick={submit} disabled={busy}>
-        {busy ? 'Verifying payment…' : 'Run optimization'}
-      </button>
+      {props.enabled ? (
+        <button className="button primary" type="button" onClick={submit} disabled={busy}>
+          {busy ? 'Verifying payment…' : 'Run optimization'}
+        </button>
+      ) : (
+        <button className="button primary" type="submit">
+          Run optimization
+        </button>
+      )}
       <p className="muted">
         Each optimization costs 0.0001 0G on Galileo testnet when usage payments are enabled.
       </p>

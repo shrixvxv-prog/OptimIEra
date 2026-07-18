@@ -129,6 +129,11 @@ export type UsageRecord = $Result.DefaultSelection<Prisma.$UsageRecordPayload>
  */
 export type UsagePayment = $Result.DefaultSelection<Prisma.$UsagePaymentPayload>
 /**
+ * Model LiveOperationUsage
+ * 
+ */
+export type LiveOperationUsage = $Result.DefaultSelection<Prisma.$LiveOperationUsagePayload>
+/**
  * Model AuditEvent
  * 
  */
@@ -648,6 +653,16 @@ export class PrismaClient<
   get usagePayment(): Prisma.UsagePaymentDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.liveOperationUsage`: Exposes CRUD operations for the **LiveOperationUsage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LiveOperationUsages
+    * const liveOperationUsages = await prisma.liveOperationUsage.findMany()
+    * ```
+    */
+  get liveOperationUsage(): Prisma.LiveOperationUsageDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.auditEvent`: Exposes CRUD operations for the **AuditEvent** model.
     * Example usage:
     * ```ts
@@ -1143,6 +1158,7 @@ export namespace Prisma {
     ApiKey: 'ApiKey',
     UsageRecord: 'UsageRecord',
     UsagePayment: 'UsagePayment',
+    LiveOperationUsage: 'LiveOperationUsage',
     AuditEvent: 'AuditEvent',
     WalletIdentity: 'WalletIdentity',
     WalletAddress: 'WalletAddress',
@@ -1162,7 +1178,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "organization" | "member" | "invitation" | "project" | "prompt" | "promptVersion" | "promptReview" | "optimizationJob" | "candidate" | "evaluationSuite" | "testCase" | "evaluationRun" | "evaluationResult" | "artifact" | "chainProof" | "certificate" | "apiKey" | "usageRecord" | "usagePayment" | "auditEvent" | "walletIdentity" | "walletAddress" | "workspaceSettings"
+      modelProps: "user" | "session" | "account" | "verification" | "organization" | "member" | "invitation" | "project" | "prompt" | "promptVersion" | "promptReview" | "optimizationJob" | "candidate" | "evaluationSuite" | "testCase" | "evaluationRun" | "evaluationResult" | "artifact" | "chainProof" | "certificate" | "apiKey" | "usageRecord" | "usagePayment" | "liveOperationUsage" | "auditEvent" | "walletIdentity" | "walletAddress" | "workspaceSettings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2868,6 +2884,80 @@ export namespace Prisma {
           }
         }
       }
+      LiveOperationUsage: {
+        payload: Prisma.$LiveOperationUsagePayload<ExtArgs>
+        fields: Prisma.LiveOperationUsageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LiveOperationUsageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LiveOperationUsageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>
+          }
+          findFirst: {
+            args: Prisma.LiveOperationUsageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LiveOperationUsageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>
+          }
+          findMany: {
+            args: Prisma.LiveOperationUsageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>[]
+          }
+          create: {
+            args: Prisma.LiveOperationUsageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>
+          }
+          createMany: {
+            args: Prisma.LiveOperationUsageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LiveOperationUsageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>[]
+          }
+          delete: {
+            args: Prisma.LiveOperationUsageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>
+          }
+          update: {
+            args: Prisma.LiveOperationUsageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>
+          }
+          deleteMany: {
+            args: Prisma.LiveOperationUsageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LiveOperationUsageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LiveOperationUsageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>[]
+          }
+          upsert: {
+            args: Prisma.LiveOperationUsageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiveOperationUsagePayload>
+          }
+          aggregate: {
+            args: Prisma.LiveOperationUsageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLiveOperationUsage>
+          }
+          groupBy: {
+            args: Prisma.LiveOperationUsageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LiveOperationUsageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LiveOperationUsageCountArgs<ExtArgs>
+            result: $Utils.Optional<LiveOperationUsageCountAggregateOutputType> | number
+          }
+        }
+      }
       AuditEvent: {
         payload: Prisma.$AuditEventPayload<ExtArgs>
         fields: Prisma.AuditEventFieldRefs
@@ -3295,6 +3385,7 @@ export namespace Prisma {
     apiKey?: ApiKeyOmit
     usageRecord?: UsageRecordOmit
     usagePayment?: UsagePaymentOmit
+    liveOperationUsage?: LiveOperationUsageOmit
     auditEvent?: AuditEventOmit
     walletIdentity?: WalletIdentityOmit
     walletAddress?: WalletAddressOmit
@@ -32257,6 +32348,1071 @@ export namespace Prisma {
 
 
   /**
+   * Model LiveOperationUsage
+   */
+
+  export type AggregateLiveOperationUsage = {
+    _count: LiveOperationUsageCountAggregateOutputType | null
+    _min: LiveOperationUsageMinAggregateOutputType | null
+    _max: LiveOperationUsageMaxAggregateOutputType | null
+  }
+
+  export type LiveOperationUsageMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    workspaceId: string | null
+    operation: string | null
+    dayStart: Date | null
+    idempotencyKey: string | null
+    requestId: string | null
+    status: string | null
+    createdAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type LiveOperationUsageMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    workspaceId: string | null
+    operation: string | null
+    dayStart: Date | null
+    idempotencyKey: string | null
+    requestId: string | null
+    status: string | null
+    createdAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type LiveOperationUsageCountAggregateOutputType = {
+    id: number
+    userId: number
+    workspaceId: number
+    operation: number
+    dayStart: number
+    idempotencyKey: number
+    requestId: number
+    status: number
+    createdAt: number
+    completedAt: number
+    _all: number
+  }
+
+
+  export type LiveOperationUsageMinAggregateInputType = {
+    id?: true
+    userId?: true
+    workspaceId?: true
+    operation?: true
+    dayStart?: true
+    idempotencyKey?: true
+    requestId?: true
+    status?: true
+    createdAt?: true
+    completedAt?: true
+  }
+
+  export type LiveOperationUsageMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    workspaceId?: true
+    operation?: true
+    dayStart?: true
+    idempotencyKey?: true
+    requestId?: true
+    status?: true
+    createdAt?: true
+    completedAt?: true
+  }
+
+  export type LiveOperationUsageCountAggregateInputType = {
+    id?: true
+    userId?: true
+    workspaceId?: true
+    operation?: true
+    dayStart?: true
+    idempotencyKey?: true
+    requestId?: true
+    status?: true
+    createdAt?: true
+    completedAt?: true
+    _all?: true
+  }
+
+  export type LiveOperationUsageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LiveOperationUsage to aggregate.
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiveOperationUsages to fetch.
+     */
+    orderBy?: LiveOperationUsageOrderByWithRelationInput | LiveOperationUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LiveOperationUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiveOperationUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiveOperationUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LiveOperationUsages
+    **/
+    _count?: true | LiveOperationUsageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LiveOperationUsageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LiveOperationUsageMaxAggregateInputType
+  }
+
+  export type GetLiveOperationUsageAggregateType<T extends LiveOperationUsageAggregateArgs> = {
+        [P in keyof T & keyof AggregateLiveOperationUsage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLiveOperationUsage[P]>
+      : GetScalarType<T[P], AggregateLiveOperationUsage[P]>
+  }
+
+
+
+
+  export type LiveOperationUsageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiveOperationUsageWhereInput
+    orderBy?: LiveOperationUsageOrderByWithAggregationInput | LiveOperationUsageOrderByWithAggregationInput[]
+    by: LiveOperationUsageScalarFieldEnum[] | LiveOperationUsageScalarFieldEnum
+    having?: LiveOperationUsageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LiveOperationUsageCountAggregateInputType | true
+    _min?: LiveOperationUsageMinAggregateInputType
+    _max?: LiveOperationUsageMaxAggregateInputType
+  }
+
+  export type LiveOperationUsageGroupByOutputType = {
+    id: string
+    userId: string
+    workspaceId: string
+    operation: string
+    dayStart: Date
+    idempotencyKey: string
+    requestId: string
+    status: string
+    createdAt: Date
+    completedAt: Date | null
+    _count: LiveOperationUsageCountAggregateOutputType | null
+    _min: LiveOperationUsageMinAggregateOutputType | null
+    _max: LiveOperationUsageMaxAggregateOutputType | null
+  }
+
+  type GetLiveOperationUsageGroupByPayload<T extends LiveOperationUsageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LiveOperationUsageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LiveOperationUsageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LiveOperationUsageGroupByOutputType[P]>
+            : GetScalarType<T[P], LiveOperationUsageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LiveOperationUsageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    workspaceId?: boolean
+    operation?: boolean
+    dayStart?: boolean
+    idempotencyKey?: boolean
+    requestId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    completedAt?: boolean
+  }, ExtArgs["result"]["liveOperationUsage"]>
+
+  export type LiveOperationUsageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    workspaceId?: boolean
+    operation?: boolean
+    dayStart?: boolean
+    idempotencyKey?: boolean
+    requestId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    completedAt?: boolean
+  }, ExtArgs["result"]["liveOperationUsage"]>
+
+  export type LiveOperationUsageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    workspaceId?: boolean
+    operation?: boolean
+    dayStart?: boolean
+    idempotencyKey?: boolean
+    requestId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    completedAt?: boolean
+  }, ExtArgs["result"]["liveOperationUsage"]>
+
+  export type LiveOperationUsageSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    workspaceId?: boolean
+    operation?: boolean
+    dayStart?: boolean
+    idempotencyKey?: boolean
+    requestId?: boolean
+    status?: boolean
+    createdAt?: boolean
+    completedAt?: boolean
+  }
+
+  export type LiveOperationUsageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "workspaceId" | "operation" | "dayStart" | "idempotencyKey" | "requestId" | "status" | "createdAt" | "completedAt", ExtArgs["result"]["liveOperationUsage"]>
+
+  export type $LiveOperationUsagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LiveOperationUsage"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      workspaceId: string
+      operation: string
+      dayStart: Date
+      idempotencyKey: string
+      requestId: string
+      status: string
+      createdAt: Date
+      completedAt: Date | null
+    }, ExtArgs["result"]["liveOperationUsage"]>
+    composites: {}
+  }
+
+  type LiveOperationUsageGetPayload<S extends boolean | null | undefined | LiveOperationUsageDefaultArgs> = $Result.GetResult<Prisma.$LiveOperationUsagePayload, S>
+
+  type LiveOperationUsageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LiveOperationUsageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LiveOperationUsageCountAggregateInputType | true
+    }
+
+  export interface LiveOperationUsageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LiveOperationUsage'], meta: { name: 'LiveOperationUsage' } }
+    /**
+     * Find zero or one LiveOperationUsage that matches the filter.
+     * @param {LiveOperationUsageFindUniqueArgs} args - Arguments to find a LiveOperationUsage
+     * @example
+     * // Get one LiveOperationUsage
+     * const liveOperationUsage = await prisma.liveOperationUsage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LiveOperationUsageFindUniqueArgs>(args: SelectSubset<T, LiveOperationUsageFindUniqueArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LiveOperationUsage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LiveOperationUsageFindUniqueOrThrowArgs} args - Arguments to find a LiveOperationUsage
+     * @example
+     * // Get one LiveOperationUsage
+     * const liveOperationUsage = await prisma.liveOperationUsage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LiveOperationUsageFindUniqueOrThrowArgs>(args: SelectSubset<T, LiveOperationUsageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LiveOperationUsage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageFindFirstArgs} args - Arguments to find a LiveOperationUsage
+     * @example
+     * // Get one LiveOperationUsage
+     * const liveOperationUsage = await prisma.liveOperationUsage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LiveOperationUsageFindFirstArgs>(args?: SelectSubset<T, LiveOperationUsageFindFirstArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LiveOperationUsage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageFindFirstOrThrowArgs} args - Arguments to find a LiveOperationUsage
+     * @example
+     * // Get one LiveOperationUsage
+     * const liveOperationUsage = await prisma.liveOperationUsage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LiveOperationUsageFindFirstOrThrowArgs>(args?: SelectSubset<T, LiveOperationUsageFindFirstOrThrowArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LiveOperationUsages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LiveOperationUsages
+     * const liveOperationUsages = await prisma.liveOperationUsage.findMany()
+     * 
+     * // Get first 10 LiveOperationUsages
+     * const liveOperationUsages = await prisma.liveOperationUsage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const liveOperationUsageWithIdOnly = await prisma.liveOperationUsage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LiveOperationUsageFindManyArgs>(args?: SelectSubset<T, LiveOperationUsageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LiveOperationUsage.
+     * @param {LiveOperationUsageCreateArgs} args - Arguments to create a LiveOperationUsage.
+     * @example
+     * // Create one LiveOperationUsage
+     * const LiveOperationUsage = await prisma.liveOperationUsage.create({
+     *   data: {
+     *     // ... data to create a LiveOperationUsage
+     *   }
+     * })
+     * 
+     */
+    create<T extends LiveOperationUsageCreateArgs>(args: SelectSubset<T, LiveOperationUsageCreateArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LiveOperationUsages.
+     * @param {LiveOperationUsageCreateManyArgs} args - Arguments to create many LiveOperationUsages.
+     * @example
+     * // Create many LiveOperationUsages
+     * const liveOperationUsage = await prisma.liveOperationUsage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LiveOperationUsageCreateManyArgs>(args?: SelectSubset<T, LiveOperationUsageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LiveOperationUsages and returns the data saved in the database.
+     * @param {LiveOperationUsageCreateManyAndReturnArgs} args - Arguments to create many LiveOperationUsages.
+     * @example
+     * // Create many LiveOperationUsages
+     * const liveOperationUsage = await prisma.liveOperationUsage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LiveOperationUsages and only return the `id`
+     * const liveOperationUsageWithIdOnly = await prisma.liveOperationUsage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LiveOperationUsageCreateManyAndReturnArgs>(args?: SelectSubset<T, LiveOperationUsageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LiveOperationUsage.
+     * @param {LiveOperationUsageDeleteArgs} args - Arguments to delete one LiveOperationUsage.
+     * @example
+     * // Delete one LiveOperationUsage
+     * const LiveOperationUsage = await prisma.liveOperationUsage.delete({
+     *   where: {
+     *     // ... filter to delete one LiveOperationUsage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LiveOperationUsageDeleteArgs>(args: SelectSubset<T, LiveOperationUsageDeleteArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LiveOperationUsage.
+     * @param {LiveOperationUsageUpdateArgs} args - Arguments to update one LiveOperationUsage.
+     * @example
+     * // Update one LiveOperationUsage
+     * const liveOperationUsage = await prisma.liveOperationUsage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LiveOperationUsageUpdateArgs>(args: SelectSubset<T, LiveOperationUsageUpdateArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LiveOperationUsages.
+     * @param {LiveOperationUsageDeleteManyArgs} args - Arguments to filter LiveOperationUsages to delete.
+     * @example
+     * // Delete a few LiveOperationUsages
+     * const { count } = await prisma.liveOperationUsage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LiveOperationUsageDeleteManyArgs>(args?: SelectSubset<T, LiveOperationUsageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LiveOperationUsages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LiveOperationUsages
+     * const liveOperationUsage = await prisma.liveOperationUsage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LiveOperationUsageUpdateManyArgs>(args: SelectSubset<T, LiveOperationUsageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LiveOperationUsages and returns the data updated in the database.
+     * @param {LiveOperationUsageUpdateManyAndReturnArgs} args - Arguments to update many LiveOperationUsages.
+     * @example
+     * // Update many LiveOperationUsages
+     * const liveOperationUsage = await prisma.liveOperationUsage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LiveOperationUsages and only return the `id`
+     * const liveOperationUsageWithIdOnly = await prisma.liveOperationUsage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LiveOperationUsageUpdateManyAndReturnArgs>(args: SelectSubset<T, LiveOperationUsageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LiveOperationUsage.
+     * @param {LiveOperationUsageUpsertArgs} args - Arguments to update or create a LiveOperationUsage.
+     * @example
+     * // Update or create a LiveOperationUsage
+     * const liveOperationUsage = await prisma.liveOperationUsage.upsert({
+     *   create: {
+     *     // ... data to create a LiveOperationUsage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LiveOperationUsage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LiveOperationUsageUpsertArgs>(args: SelectSubset<T, LiveOperationUsageUpsertArgs<ExtArgs>>): Prisma__LiveOperationUsageClient<$Result.GetResult<Prisma.$LiveOperationUsagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LiveOperationUsages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageCountArgs} args - Arguments to filter LiveOperationUsages to count.
+     * @example
+     * // Count the number of LiveOperationUsages
+     * const count = await prisma.liveOperationUsage.count({
+     *   where: {
+     *     // ... the filter for the LiveOperationUsages we want to count
+     *   }
+     * })
+    **/
+    count<T extends LiveOperationUsageCountArgs>(
+      args?: Subset<T, LiveOperationUsageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LiveOperationUsageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LiveOperationUsage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LiveOperationUsageAggregateArgs>(args: Subset<T, LiveOperationUsageAggregateArgs>): Prisma.PrismaPromise<GetLiveOperationUsageAggregateType<T>>
+
+    /**
+     * Group by LiveOperationUsage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiveOperationUsageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LiveOperationUsageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LiveOperationUsageGroupByArgs['orderBy'] }
+        : { orderBy?: LiveOperationUsageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LiveOperationUsageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLiveOperationUsageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LiveOperationUsage model
+   */
+  readonly fields: LiveOperationUsageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LiveOperationUsage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LiveOperationUsageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LiveOperationUsage model
+   */
+  interface LiveOperationUsageFieldRefs {
+    readonly id: FieldRef<"LiveOperationUsage", 'String'>
+    readonly userId: FieldRef<"LiveOperationUsage", 'String'>
+    readonly workspaceId: FieldRef<"LiveOperationUsage", 'String'>
+    readonly operation: FieldRef<"LiveOperationUsage", 'String'>
+    readonly dayStart: FieldRef<"LiveOperationUsage", 'DateTime'>
+    readonly idempotencyKey: FieldRef<"LiveOperationUsage", 'String'>
+    readonly requestId: FieldRef<"LiveOperationUsage", 'String'>
+    readonly status: FieldRef<"LiveOperationUsage", 'String'>
+    readonly createdAt: FieldRef<"LiveOperationUsage", 'DateTime'>
+    readonly completedAt: FieldRef<"LiveOperationUsage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LiveOperationUsage findUnique
+   */
+  export type LiveOperationUsageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * Filter, which LiveOperationUsage to fetch.
+     */
+    where: LiveOperationUsageWhereUniqueInput
+  }
+
+  /**
+   * LiveOperationUsage findUniqueOrThrow
+   */
+  export type LiveOperationUsageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * Filter, which LiveOperationUsage to fetch.
+     */
+    where: LiveOperationUsageWhereUniqueInput
+  }
+
+  /**
+   * LiveOperationUsage findFirst
+   */
+  export type LiveOperationUsageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * Filter, which LiveOperationUsage to fetch.
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiveOperationUsages to fetch.
+     */
+    orderBy?: LiveOperationUsageOrderByWithRelationInput | LiveOperationUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LiveOperationUsages.
+     */
+    cursor?: LiveOperationUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiveOperationUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiveOperationUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LiveOperationUsages.
+     */
+    distinct?: LiveOperationUsageScalarFieldEnum | LiveOperationUsageScalarFieldEnum[]
+  }
+
+  /**
+   * LiveOperationUsage findFirstOrThrow
+   */
+  export type LiveOperationUsageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * Filter, which LiveOperationUsage to fetch.
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiveOperationUsages to fetch.
+     */
+    orderBy?: LiveOperationUsageOrderByWithRelationInput | LiveOperationUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LiveOperationUsages.
+     */
+    cursor?: LiveOperationUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiveOperationUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiveOperationUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LiveOperationUsages.
+     */
+    distinct?: LiveOperationUsageScalarFieldEnum | LiveOperationUsageScalarFieldEnum[]
+  }
+
+  /**
+   * LiveOperationUsage findMany
+   */
+  export type LiveOperationUsageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * Filter, which LiveOperationUsages to fetch.
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiveOperationUsages to fetch.
+     */
+    orderBy?: LiveOperationUsageOrderByWithRelationInput | LiveOperationUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LiveOperationUsages.
+     */
+    cursor?: LiveOperationUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiveOperationUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiveOperationUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LiveOperationUsages.
+     */
+    distinct?: LiveOperationUsageScalarFieldEnum | LiveOperationUsageScalarFieldEnum[]
+  }
+
+  /**
+   * LiveOperationUsage create
+   */
+  export type LiveOperationUsageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * The data needed to create a LiveOperationUsage.
+     */
+    data: XOR<LiveOperationUsageCreateInput, LiveOperationUsageUncheckedCreateInput>
+  }
+
+  /**
+   * LiveOperationUsage createMany
+   */
+  export type LiveOperationUsageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LiveOperationUsages.
+     */
+    data: LiveOperationUsageCreateManyInput | LiveOperationUsageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LiveOperationUsage createManyAndReturn
+   */
+  export type LiveOperationUsageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * The data used to create many LiveOperationUsages.
+     */
+    data: LiveOperationUsageCreateManyInput | LiveOperationUsageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LiveOperationUsage update
+   */
+  export type LiveOperationUsageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * The data needed to update a LiveOperationUsage.
+     */
+    data: XOR<LiveOperationUsageUpdateInput, LiveOperationUsageUncheckedUpdateInput>
+    /**
+     * Choose, which LiveOperationUsage to update.
+     */
+    where: LiveOperationUsageWhereUniqueInput
+  }
+
+  /**
+   * LiveOperationUsage updateMany
+   */
+  export type LiveOperationUsageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LiveOperationUsages.
+     */
+    data: XOR<LiveOperationUsageUpdateManyMutationInput, LiveOperationUsageUncheckedUpdateManyInput>
+    /**
+     * Filter which LiveOperationUsages to update
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * Limit how many LiveOperationUsages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LiveOperationUsage updateManyAndReturn
+   */
+  export type LiveOperationUsageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * The data used to update LiveOperationUsages.
+     */
+    data: XOR<LiveOperationUsageUpdateManyMutationInput, LiveOperationUsageUncheckedUpdateManyInput>
+    /**
+     * Filter which LiveOperationUsages to update
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * Limit how many LiveOperationUsages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LiveOperationUsage upsert
+   */
+  export type LiveOperationUsageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * The filter to search for the LiveOperationUsage to update in case it exists.
+     */
+    where: LiveOperationUsageWhereUniqueInput
+    /**
+     * In case the LiveOperationUsage found by the `where` argument doesn't exist, create a new LiveOperationUsage with this data.
+     */
+    create: XOR<LiveOperationUsageCreateInput, LiveOperationUsageUncheckedCreateInput>
+    /**
+     * In case the LiveOperationUsage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LiveOperationUsageUpdateInput, LiveOperationUsageUncheckedUpdateInput>
+  }
+
+  /**
+   * LiveOperationUsage delete
+   */
+  export type LiveOperationUsageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+    /**
+     * Filter which LiveOperationUsage to delete.
+     */
+    where: LiveOperationUsageWhereUniqueInput
+  }
+
+  /**
+   * LiveOperationUsage deleteMany
+   */
+  export type LiveOperationUsageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LiveOperationUsages to delete
+     */
+    where?: LiveOperationUsageWhereInput
+    /**
+     * Limit how many LiveOperationUsages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LiveOperationUsage without action
+   */
+  export type LiveOperationUsageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiveOperationUsage
+     */
+    select?: LiveOperationUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiveOperationUsage
+     */
+    omit?: LiveOperationUsageOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model AuditEvent
    */
 
@@ -37172,6 +38328,22 @@ export namespace Prisma {
   export type UsagePaymentScalarFieldEnum = (typeof UsagePaymentScalarFieldEnum)[keyof typeof UsagePaymentScalarFieldEnum]
 
 
+  export const LiveOperationUsageScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    workspaceId: 'workspaceId',
+    operation: 'operation',
+    dayStart: 'dayStart',
+    idempotencyKey: 'idempotencyKey',
+    requestId: 'requestId',
+    status: 'status',
+    createdAt: 'createdAt',
+    completedAt: 'completedAt'
+  };
+
+  export type LiveOperationUsageScalarFieldEnum = (typeof LiveOperationUsageScalarFieldEnum)[keyof typeof LiveOperationUsageScalarFieldEnum]
+
+
   export const AuditEventScalarFieldEnum: {
     id: 'id',
     workspaceId: 'workspaceId',
@@ -39826,6 +40998,84 @@ export namespace Prisma {
     amountWei?: StringWithAggregatesFilter<"UsagePayment"> | string
     status?: StringWithAggregatesFilter<"UsagePayment"> | string
     createdAt?: DateTimeWithAggregatesFilter<"UsagePayment"> | Date | string
+  }
+
+  export type LiveOperationUsageWhereInput = {
+    AND?: LiveOperationUsageWhereInput | LiveOperationUsageWhereInput[]
+    OR?: LiveOperationUsageWhereInput[]
+    NOT?: LiveOperationUsageWhereInput | LiveOperationUsageWhereInput[]
+    id?: StringFilter<"LiveOperationUsage"> | string
+    userId?: StringFilter<"LiveOperationUsage"> | string
+    workspaceId?: StringFilter<"LiveOperationUsage"> | string
+    operation?: StringFilter<"LiveOperationUsage"> | string
+    dayStart?: DateTimeFilter<"LiveOperationUsage"> | Date | string
+    idempotencyKey?: StringFilter<"LiveOperationUsage"> | string
+    requestId?: StringFilter<"LiveOperationUsage"> | string
+    status?: StringFilter<"LiveOperationUsage"> | string
+    createdAt?: DateTimeFilter<"LiveOperationUsage"> | Date | string
+    completedAt?: DateTimeNullableFilter<"LiveOperationUsage"> | Date | string | null
+  }
+
+  export type LiveOperationUsageOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    workspaceId?: SortOrder
+    operation?: SortOrder
+    dayStart?: SortOrder
+    idempotencyKey?: SortOrder
+    requestId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+  }
+
+  export type LiveOperationUsageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_operation_idempotencyKey?: LiveOperationUsageUserIdOperationIdempotencyKeyCompoundUniqueInput
+    AND?: LiveOperationUsageWhereInput | LiveOperationUsageWhereInput[]
+    OR?: LiveOperationUsageWhereInput[]
+    NOT?: LiveOperationUsageWhereInput | LiveOperationUsageWhereInput[]
+    userId?: StringFilter<"LiveOperationUsage"> | string
+    workspaceId?: StringFilter<"LiveOperationUsage"> | string
+    operation?: StringFilter<"LiveOperationUsage"> | string
+    dayStart?: DateTimeFilter<"LiveOperationUsage"> | Date | string
+    idempotencyKey?: StringFilter<"LiveOperationUsage"> | string
+    requestId?: StringFilter<"LiveOperationUsage"> | string
+    status?: StringFilter<"LiveOperationUsage"> | string
+    createdAt?: DateTimeFilter<"LiveOperationUsage"> | Date | string
+    completedAt?: DateTimeNullableFilter<"LiveOperationUsage"> | Date | string | null
+  }, "id" | "userId_operation_idempotencyKey">
+
+  export type LiveOperationUsageOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    workspaceId?: SortOrder
+    operation?: SortOrder
+    dayStart?: SortOrder
+    idempotencyKey?: SortOrder
+    requestId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    _count?: LiveOperationUsageCountOrderByAggregateInput
+    _max?: LiveOperationUsageMaxOrderByAggregateInput
+    _min?: LiveOperationUsageMinOrderByAggregateInput
+  }
+
+  export type LiveOperationUsageScalarWhereWithAggregatesInput = {
+    AND?: LiveOperationUsageScalarWhereWithAggregatesInput | LiveOperationUsageScalarWhereWithAggregatesInput[]
+    OR?: LiveOperationUsageScalarWhereWithAggregatesInput[]
+    NOT?: LiveOperationUsageScalarWhereWithAggregatesInput | LiveOperationUsageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    userId?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    workspaceId?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    operation?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    dayStart?: DateTimeWithAggregatesFilter<"LiveOperationUsage"> | Date | string
+    idempotencyKey?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    requestId?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    status?: StringWithAggregatesFilter<"LiveOperationUsage"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"LiveOperationUsage"> | Date | string
+    completedAt?: DateTimeNullableWithAggregatesFilter<"LiveOperationUsage"> | Date | string | null
   }
 
   export type AuditEventWhereInput = {
@@ -42806,6 +44056,97 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LiveOperationUsageCreateInput = {
+    id?: string
+    userId: string
+    workspaceId: string
+    operation: string
+    dayStart: Date | string
+    idempotencyKey: string
+    requestId: string
+    status?: string
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type LiveOperationUsageUncheckedCreateInput = {
+    id?: string
+    userId: string
+    workspaceId: string
+    operation: string
+    dayStart: Date | string
+    idempotencyKey: string
+    requestId: string
+    status?: string
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type LiveOperationUsageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    operation?: StringFieldUpdateOperationsInput | string
+    dayStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    requestId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type LiveOperationUsageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    operation?: StringFieldUpdateOperationsInput | string
+    dayStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    requestId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type LiveOperationUsageCreateManyInput = {
+    id?: string
+    userId: string
+    workspaceId: string
+    operation: string
+    dayStart: Date | string
+    idempotencyKey: string
+    requestId: string
+    status?: string
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type LiveOperationUsageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    operation?: StringFieldUpdateOperationsInput | string
+    dayStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    requestId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type LiveOperationUsageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    operation?: StringFieldUpdateOperationsInput | string
+    dayStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    requestId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type AuditEventCreateInput = {
     id?: string
     action: string
@@ -44959,6 +46300,51 @@ export namespace Prisma {
 
   export type UsagePaymentSumOrderByAggregateInput = {
     chainId?: SortOrder
+  }
+
+  export type LiveOperationUsageUserIdOperationIdempotencyKeyCompoundUniqueInput = {
+    userId: string
+    operation: string
+    idempotencyKey: string
+  }
+
+  export type LiveOperationUsageCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    workspaceId?: SortOrder
+    operation?: SortOrder
+    dayStart?: SortOrder
+    idempotencyKey?: SortOrder
+    requestId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type LiveOperationUsageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    workspaceId?: SortOrder
+    operation?: SortOrder
+    dayStart?: SortOrder
+    idempotencyKey?: SortOrder
+    requestId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type LiveOperationUsageMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    workspaceId?: SortOrder
+    operation?: SortOrder
+    dayStart?: SortOrder
+    idempotencyKey?: SortOrder
+    requestId?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    completedAt?: SortOrder
   }
 
   export type UserNullableScalarRelationFilter = {

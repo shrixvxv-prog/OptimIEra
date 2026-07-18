@@ -1,6 +1,7 @@
 import { getChainHealth } from '@/lib/chain-proof';
 import { readOGStorageConfig } from '@optimiera/config';
 import { OGStorageAdapter } from '@optimiera/og-storage';
+import { ProofLookup } from '@/components/proof-lookup';
 
 export default async function Proofs() {
   const [chain, storage] = await Promise.all([
@@ -18,9 +19,20 @@ export default async function Proofs() {
             Open an exact public certificate URL to verify a certificate. Private certificates are
             not listed automatically.
           </p>
+          <ProofLookup />
           <p>
-            <a href="/docs/guides/verify-certificate">Verification guide</a>
+            <a href="https://docs.optimiera.dev/guides/verify-certificate">Verification guide</a>
           </p>
+        </div>
+        <div className="card">
+          <h2>Live verified Galileo evidence</h2>
+          <p>
+            <strong>FULLY_VERIFIED</strong> · qwen2.5-omni · chain 16602
+          </p>
+          <p className="mono">Registry: 0xda91a3929107c74f27e2d3288d046e4a37f9b422</p>
+          <a className="button primary" href="/verify/cert_1343d8825f8905d881361fa39d7e2a1e">
+            Open live certificate
+          </a>
         </div>
         <div className="grid">
           <div className="card">

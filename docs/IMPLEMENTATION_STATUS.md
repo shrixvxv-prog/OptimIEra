@@ -3,9 +3,9 @@
 | Capability                                        | Status       | Evidence                                                                                                                                                             |
 | ------------------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Brand, monorepo, quality tooling                  | COMPLETE     | repository files and gates                                                                                                                                           |
-| Public website and Studio shell                   | IN PROGRESS  | `apps/web`                                                                                                                                                           |
-| Atlas hierarchy and source registry               | IN PROGRESS  | `apps/docs`                                                                                                                                                          |
-| API health/readiness/version boundary             | IN PROGRESS  | `apps/api`                                                                                                                                                           |
+| Public website and Studio shell                   | COMPLETE     | responsive public pages, authenticated shell, loading/empty/error states, browser coverage                                                                           |
+| Atlas hierarchy and source registry               | COMPLETE     | `apps/docs`, production operations, official-source registry                                                                                                         |
+| API health/readiness/version boundary             | COMPLETE     | redacted runtime endpoints and build coverage                                                                                                                        |
 | PostgreSQL, Prisma schema/client, seed boundary   | COMPLETE     | migrations and `packages/database`                                                                                                                                   |
 | Better Auth email/password, sessions, auth routes | COMPLETE     | HTTP smoke and Playwright flows                                                                                                                                      |
 | Organization-backed workspaces and role matrix    | COMPLETE     | server mutations, member/invitation UI, browser coverage                                                                                                             |
@@ -34,9 +34,11 @@
 | Public certificates and Proof Center              | IMPLEMENTED  | immutable certificate snapshots, honest trust levels, public verification/download, revocation, tamper checks, and test-adapter browser coverage                     |
 | Unified 0G live activation and evidence preflight | COMPLETE     | testnet-only gated preflight, recovered database/browser verification, and evidence boundary; live status UNCONFIGURED until authenticated proof succeeds            |
 | Phase 8 live Galileo activation                   | COMPLETE     | Authenticated `qwen2.5-omni` structured optimization, encrypted manifest proof download, registry proof/readback, and public `FULLY_VERIFIED` certificate            |
+| Production safety and live-operation quotas       | COMPLETE     | testnet-only production validation, safe-mode default, transactional daily per-user/global quotas, no silent provider fallback                                       |
+| Managed Preview/Production deployment             | BLOCKED      | Vercel project linked; Neon Marketplace terms acceptance and managed database provisioning require the account owner                                                 |
 | Galileo usage payments                            | IMPLEMENTED  | wallet-approved native transfer, receipt/chain/recipient/amount/payer validation, and one-use persistence; mock verified, no live transfer claimed                   |
 | Agentic ID and DA                                 | PLANNED      | later phase boundary                                                                                                                                                 |
 
 # Wave 2 — Vercel Production Preparation
 
-Status: **COMPLETE locally; external Vercel provisioning and deployment remain operator-controlled.**
+Status: **COMPLETE locally; managed Preview/Production provisioning, deployment, restoration, and remote smoke verification remain blocked on an account-owner Vercel Marketplace action.**

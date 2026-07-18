@@ -14,9 +14,9 @@ test.describe('Phase 6 public certificates', () => {
     await page.waitForURL(/\/app\/prompts\/.*\/versions\/.*$/);
     await page.goto(`/app/optimizations/${optimizationId}`);
     await page.getByRole('button', { name: 'Create encrypted evidence' }).click();
-    await page.waitForURL(new RegExp(`/app/optimizations/${optimizationId}`));
+    await expect(page.getByText('LOCAL_CREATED', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Create proof commitment' }).click();
-    await page.waitForURL(new RegExp(`/app/optimizations/${optimizationId}`));
+    await expect(page.getByText('LOCAL_READY', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Register on 0G Chain' }).click();
     await page.waitForURL(new RegExp(`/app/optimizations/${optimizationId}`));
     await expect(page.getByText('VERIFIED', { exact: true })).toBeVisible();

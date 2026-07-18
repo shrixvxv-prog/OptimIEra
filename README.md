@@ -4,7 +4,7 @@
 >
 > Make every AI instruction clearer, safer, more consistent, and easier to trust.
 
-![OptimIEra status](https://img.shields.io/badge/status-Wave%202%20production%20ready-12b8c4?style=for-the-badge)
+![OptimIEra status](https://img.shields.io/badge/status-production%20candidate-12b8c4?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-111827?style=for-the-badge)
 ![Built with Next.js](https://img.shields.io/badge/built%20with-Next.js-111827?style=for-the-badge&logo=next.js)
 ![Powered by TypeScript](https://img.shields.io/badge/powered%20by-TypeScript-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
@@ -42,6 +42,20 @@ OptimIEra is a verifiable prompt-intelligence workspace. It transforms a rough i
 ![OptimIEra sign in](docs/assets/screenshots/sign-in.png)
 
 ![OptimIEra sign up](docs/assets/screenshots/sign-up.png)
+
+## Live local product tour
+
+These screenshots were captured from the running local frontend at `http://localhost:3000`.
+They show the current responsive shell, public trust surfaces, and wallet-friendly access flow.
+
+| Surface                       | Desktop / mobile capture                                                       |
+| ----------------------------- | ------------------------------------------------------------------------------ |
+| Homepage                      | ![Live OptimIEra homepage](docs/screenshots/homepage-desktop.png)              |
+| Product vision                | ![Live product vision](docs/screenshots/product-desktop.png)                   |
+| Architecture                  | ![Live architecture](docs/screenshots/architecture-desktop.png)                |
+| Proof Center on mobile        | ![Live mobile Proof Center](docs/screenshots/proof-center-mobile.png)          |
+| Wallet registration on mobile | ![Live mobile wallet registration](docs/screenshots/sign-up-wallet-mobile.png) |
+| Studio entry                  | ![Live Studio entry](docs/screenshots/optimize-entry-desktop.png)              |
 
 ## Why OptimIEra matters in daily life
 
@@ -111,7 +125,7 @@ Evidence manifest + certificate + optional 0G proof
 
 ## Current implementation
 
-OptimIEra Phase 8 is complete. The current workspace includes:
+OptimIEra’s testnet product implementation is complete and is undergoing final managed-database deployment verification. The current workspace includes:
 
 - complete local Studio optimization workflow;
 - deterministic analyzer, scoring, candidates, comparison, recommendation, and diff;
@@ -148,6 +162,17 @@ Open [http://localhost:3000](http://localhost:3000).
 
 For local encrypted storage, configure `OPTIMIERA_ENCRYPTION_MASTER_KEY` and keep `PROMPT_STORAGE_MODE` aligned with the environment. Never place production secrets in source control.
 
+## Easy Vercel deployment
+
+1. Create separate managed PostgreSQL databases for **Preview** and **Production** in Vercel. If Vercel asks you to accept Neon Marketplace terms, the account owner must approve them once.
+2. Import this repository into Vercel and set **Root Directory** to `apps/web`.
+3. Use Node.js 24.x, install command `cd ../.. && pnpm install --frozen-lockfile`, and build command `cd ../.. && pnpm vercel-build`.
+4. Add the required environment variables from [the Vercel environment matrix](docs/deployment/VERCEL_ENVIRONMENT_MATRIX.md). Keep secrets server-only, use HTTPS auth URLs, and keep all 0G networks on Galileo testnet (`16602`).
+5. Apply migrations through the build command, deploy Preview, and test sign-up, wallet access, Studio optimization, Proof Center, and mobile navigation.
+6. Repeat with Production variables only after Preview passes. Check `/api/health` and `/api/readiness` before sharing the URL.
+
+Never put `.env`, private keys, API keys, or database URLs in Git or browser-exposed variables. Do not run live 0G writes until funded testnet credentials and an explicit activation decision are available.
+
 ## Quality gates
 
 ```powershell
@@ -162,7 +187,7 @@ pnpm build
 pnpm safety:scan
 ```
 
-The project is also prepared for Vercel deployment as a pnpm monorepo. Use the repository root as the project root, install with `pnpm install --frozen-lockfile`, and build the Studio with `pnpm --filter @optimiera/web build`.
+The project is prepared for Vercel deployment as a pnpm monorepo. Configure `apps/web` as the Vercel project root, install with `pnpm install --frozen-lockfile`, and use `cd ../.. && pnpm vercel-build`. Preview and Production require separate managed PostgreSQL databases. See [Vercel deployment](docs/deployment/VERCEL_DEPLOYMENT.md).
 
 ## Privacy promise
 
@@ -170,7 +195,7 @@ OptimIEra is designed so private prompt content can remain private. Prompt bodie
 
 ## Roadmap
 
-The foundation is built for joyful expansion: richer evaluation providers, broader wallet connectivity, stronger team collaboration, more public proof experiences, Agentic ID, payments, and data-availability integrations.
+After production closure, the next isolated scope is operational hardening: managed backup drills, observability, quota tuning, and support runbooks. Mainnet, Agentic ID, marketplace, payments expansion, and data availability remain outside this release.
 
 ## Documentation
 

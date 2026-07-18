@@ -2,11 +2,12 @@ import { randomUUID } from 'node:crypto';
 import { redirect } from 'next/navigation';
 import { db } from '@optimiera/database';
 import { requireSession } from '@/lib/authorization';
-import { createOptimization } from './actions';
 import { readNousConfig, readOGComputeConfig } from '@optimiera/config';
 import { NousPromptIntelligenceProvider, OGComputeRouterProvider } from '@optimiera/og-compute';
 import { readUsagePaymentConfig } from '@optimiera/payment';
 import { PaidOptimizationSubmit } from '@/components/paid-optimization-submit';
+import { readWave2RuntimeConfig } from '@/lib/runtime-config';
+import { OptimizationForm } from '@/components/optimization-form';
 
 const modes = ['BALANCED', 'ACCURACY', 'CONCISE', 'STRUCTURED', 'AGENT', 'CREATIVE', 'SAFETY'];
 const outputTypes = [
@@ -55,6 +56,7 @@ export default async function Optimize() {
   const ogHealth = await new OGComputeRouterProvider(readOGComputeConfig()).healthCheck();
   const nousHealth = await new NousPromptIntelligenceProvider(readNousConfig()).healthCheck();
   const paymentConfig = readUsagePaymentConfig();
+  const runtimeConfig = readWave2RuntimeConfig();
 
   return (
     <main className="appmain wide">
@@ -66,7 +68,7 @@ export default async function Optimize() {
       </p>
       <section className="card">
         <h3>Provider status</h3>
-        <p>OptimIEra Rules Engine — Local deterministic</p>
+        <p>OptimIEra Rules Engine — Local deterministic and available</p>
         <p>
           0G Compute — {ogHealth.state} · network: {ogHealth.network} · model:{' '}
           {ogHealth.model ?? 'not selected'}
@@ -74,6 +76,11 @@ export default async function Optimize() {
         <p>
           Nous Hermes — {nousHealth.state} · model: {nousHealth.model ?? 'not selected'}
         </p>
+        {!runtimeConfig.liveWritesEnabled && (
+          <p className="muted">
+            Safe public mode is active. External model execution and funded 0G writes are disabled.
+          </p>
+        )}
       </section>
       {!writable.length || !firstProject ? (
         <div className="card">
@@ -84,7 +91,7 @@ export default async function Optimize() {
           </p>
         </div>
       ) : (
-        <form className="stack" action={createOptimization}>
+        <OptimizationForm>
           <input type="hidden" name="idempotencyKey" value={randomUUID()} />
           <input type="hidden" name="paymentTxHash" value="" />
           <section className="card form-grid">
@@ -93,12 +100,18 @@ export default async function Optimize() {
               Provider
               <select name="providerType" defaultValue="RULES_ENGINE">
                 <option value="RULES_ENGINE">OptimIEra Rules Engine — Local deterministic</option>
-                <option value="OG_COMPUTE" disabled={ogHealth.state !== 'AVAILABLE'}>
+                <option
+                  value="OG_COMPUTE"
+                  disabled={!runtimeConfig.liveWritesEnabled || ogHealth.state !== 'AVAILABLE'}
+                >
                   {ogHealth.state === 'AVAILABLE'
                     ? '0G Compute — Live'
                     : `0G Compute — ${ogHealth.state === 'UNCONFIGURED' ? 'Unconfigured' : 'Unavailable'}`}
                 </option>
-                <option value="NOUS_AI" disabled={nousHealth.state !== 'AVAILABLE'}>
+                <option
+                  value="NOUS_AI"
+                  disabled={!runtimeConfig.liveWritesEnabled || nousHealth.state !== 'AVAILABLE'}
+                >
                   {nousHealth.state === 'AVAILABLE'
                     ? 'Nous Hermes 4 — Enhanced prompt intelligence'
                     : `Nous Hermes — ${nousHealth.state === 'UNCONFIGURED' ? 'Unconfigured' : 'Unavailable'}`}
@@ -178,6 +191,12 @@ export default async function Optimize() {
                 ))}
               </select>
             </label>
+            <p className="muted span-2">
+              Balanced improves all dimensions together. Accuracy prioritizes precise context and
+              constraints. Concise reduces token cost while preserving intent. Specialized modes
+              tune the same deterministic scoring system for structured, agentic, creative, or
+              safety-focused outcomes.
+            </p>
             <label>
               Expected length
               <input name="expectedLength" defaultValue="As concise as possible while complete" />
@@ -194,6 +213,11 @@ export default async function Optimize() {
                 <option>PUBLIC</option>
               </select>
             </label>
+            <p className="muted span-2" role="note">
+              Do not paste passwords, seed phrases, API keys, or regulated personal data. Private
+              prompt text is encrypted at rest and excluded from public certificates and onchain
+              records.
+            </p>
             <label className="span-2">
               Additional context
               <textarea name="additionalContext" rows={3} />
@@ -225,7 +249,7 @@ export default async function Optimize() {
               chainId={paymentConfig.chainId}
             />
           </section>
-        </form>
+        </OptimizationForm>
       )}
     </main>
   );

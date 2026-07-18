@@ -1,5 +1,6 @@
 import { requireSession } from '@/lib/authorization';
 import { createVersion } from './actions';
+import { RedirectingActionForm } from '@/components/redirecting-action-form';
 
 export default async function NewVersion({ params }: { params: Promise<{ promptId: string }> }) {
   await requireSession();
@@ -8,7 +9,7 @@ export default async function NewVersion({ params }: { params: Promise<{ promptI
     <main className="appmain">
       <div className="eyebrow">Prompt Registry / New version</div>
       <h1>Create an immutable version.</h1>
-      <form className="card" action={createVersion}>
+      <RedirectingActionForm className="card" action={createVersion}>
         <input type="hidden" name="promptId" value={promptId} />
         <label>
           Content
@@ -21,7 +22,7 @@ export default async function NewVersion({ params }: { params: Promise<{ promptI
         <button className="button primary" type="submit">
           Create version
         </button>
-      </form>
+      </RedirectingActionForm>
     </main>
   );
 }

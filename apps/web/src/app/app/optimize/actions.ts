@@ -1,6 +1,5 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { runOptimization } from '@/lib/optimization';
 import type { DesiredOutputType, OptimizationMode, PrivacyLevel } from '@optimiera/schemas';
 
@@ -49,5 +48,5 @@ export async function createOptimization(formData: FormData) {
       additionalContext: String(formData.get('additionalContext') ?? '') || undefined,
     },
   });
-  redirect(`/app/optimizations/${result.job.id}`);
+  return result.job.id;
 }

@@ -1,11 +1,12 @@
 import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
 import { db } from '@optimiera/database';
-import { canonicalCertificate } from '../apps/web/src/lib/certificate';
+import { canonicalCertificate } from '../apps/web/src/lib/certificate-canonical';
 import { OGChainAdapter } from '@optimiera/og-chain';
 import { OGStorageAdapter, parseVerifiedManifest } from '@optimiera/og-storage';
 import { readOGChainConfig, readOGStorageConfig } from '@optimiera/config';
 
-const LIVE_EVIDENCE = {
+export const LIVE_EVIDENCE = {
   network: 'testnet',
   chainId: 16602,
   model: 'qwen2.5-omni',
@@ -22,16 +23,31 @@ const LIVE_EVIDENCE = {
   blockNumber: 44693862,
   certificateId: 'cert_1343d8825f8905d881361fa39d7e2a1e',
   certificateSlug: 'cert_1343d8825f8905d881361fa39d7e2a1e',
+  immutablePromptVersionId: 'cmrqhd8jo0000t8v9np78f9rg',
 } as const;
 
 const confirmation = process.argv.includes('--confirm-production');
-const ownerEmail = process.argv.find((value) => value.startsWith('--owner-email='))?.slice(14);
+const ownerEmail =
+  process.argv.find((value) => value.startsWith('--owner-email='))?.slice(14) ??
+  process.env.LIVE_EVIDENCE_OWNER_EMAIL;
 const sha = (value: string) => createHash('sha256').update(value, 'utf8').digest('hex');
 const hex = (value: string) => `0x${value.replace(/^0x/, '')}`;
 
-function assertProductionTarget() {
-  const url = process.env.DATABASE_URL ?? '';
-  if (process.env.NODE_ENV !== 'production' || !url || /localhost|127\.0\.0\.1/i.test(url))
+export function assertProductionTarget(env: NodeJS.ProcessEnv = process.env) {
+  const url = env.DATABASE_URL ?? '';
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new Error('RESTORE_REQUIRES_PRODUCTION_DATABASE');
+  }
+  if (
+    env.NODE_ENV !== 'production' ||
+    !['postgres:', 'postgresql:'].includes(parsed.protocol) ||
+    /localhost|127\.0\.0\.1|postgres/i.test(parsed.hostname) ||
+    /test|development/i.test(parsed.pathname) ||
+    ['disable', 'allow'].includes(parsed.searchParams.get('sslmode') ?? '')
+  )
     throw new Error('RESTORE_REQUIRES_PRODUCTION_DATABASE');
 }
 
@@ -44,9 +60,54 @@ async function verifiedManifest() {
     }),
   );
   const downloaded = await storage.downloadArtifact(LIVE_EVIDENCE.storageRoot);
+  const verified = await storage.verifyArtifact(
+    LIVE_EVIDENCE.storageRoot,
+    LIVE_EVIDENCE.manifestHash,
+  );
+  if (verified.storageRoot.toLowerCase() !== LIVE_EVIDENCE.storageRoot.toLowerCase())
+    throw new Error('LIVE_EVIDENCE_STORAGE_PROOF_MISMATCH');
   if (!downloaded.bytes || downloaded.bytes.byteLength !== LIVE_EVIDENCE.byteSize)
     throw new Error('LIVE_EVIDENCE_STORAGE_BYTES_MISMATCH');
   return parseVerifiedManifest(downloaded.bytes, LIVE_EVIDENCE.manifestHash);
+}
+
+export function assertChainEvidence(
+  manifest: Awaited<ReturnType<typeof verifiedManifest>>,
+  proof: readonly unknown[],
+  receipt: { status?: string; blockNumber?: bigint },
+  health: { state: string; deployedBytecode?: boolean },
+) {
+  if (health.state !== 'AVAILABLE' || !health.deployedBytecode)
+    throw new Error('LIVE_EVIDENCE_REGISTRY_UNAVAILABLE');
+  if (receipt.status !== 'success') throw new Error('LIVE_EVIDENCE_CHAIN_TRANSACTION_FAILED');
+  if (String(proof[1]).toLowerCase() !== hex(LIVE_EVIDENCE.manifestHash).toLowerCase())
+    throw new Error('LIVE_EVIDENCE_CHAIN_MANIFEST_MISMATCH');
+  if (String(proof[2]).toLowerCase() !== LIVE_EVIDENCE.storageRoot.toLowerCase())
+    throw new Error('LIVE_EVIDENCE_CHAIN_STORAGE_MISMATCH');
+  if (
+    String(proof[3]).replace(/^0x/, '').toLowerCase() !== manifest.originalPromptHash.toLowerCase()
+  )
+    throw new Error('LIVE_EVIDENCE_CHAIN_ORIGINAL_HASH_MISMATCH');
+  const selectedCandidate =
+    manifest.encryptedCandidates.find(
+      (item) => item.candidateId === manifest.selectedCandidateId,
+    ) ?? manifest.encryptedCandidates[0];
+  if (!selectedCandidate) throw new Error('LIVE_EVIDENCE_SELECTED_CANDIDATE_MISSING');
+  if (
+    String(proof[4]).replace(/^0x/, '').toLowerCase() !==
+    selectedCandidate.contentHash.toLowerCase()
+  )
+    throw new Error('LIVE_EVIDENCE_CHAIN_OPTIMIZED_HASH_MISMATCH');
+  if (String(proof[5]).replace(/^0x/, '').toLowerCase() !== manifest.evaluationHash.toLowerCase())
+    throw new Error('LIVE_EVIDENCE_CHAIN_EVALUATION_HASH_MISMATCH');
+  if (/^0x0{64}$/i.test(String(proof[0])) || /^0x0{64}$/i.test(String(proof[6])))
+    throw new Error('LIVE_EVIDENCE_CHAIN_REFERENCE_MISSING');
+  if (!/^0x[0-9a-f]{40}$/i.test(String(proof[7])))
+    throw new Error('LIVE_EVIDENCE_CHAIN_REGISTRAR_INVALID');
+  if (Number(proof[10]) !== 1) throw new Error('LIVE_EVIDENCE_CHAIN_STATUS_INVALID');
+  if (Number(receipt.blockNumber) !== LIVE_EVIDENCE.blockNumber)
+    throw new Error('LIVE_EVIDENCE_CHAIN_BLOCK_MISMATCH');
+  return { selectedCandidate, score: Number(proof[8] ?? 0) };
 }
 
 async function verifiedChain(manifest: Awaited<ReturnType<typeof verifiedManifest>>) {
@@ -65,12 +126,13 @@ async function verifiedChain(manifest: Awaited<ReturnType<typeof verifiedManifes
   const proof = (await chain.getProof(
     LIVE_EVIDENCE.proofId as `0x${string}`,
   )) as readonly unknown[];
-  if (String(proof[1]).toLowerCase() !== hex(LIVE_EVIDENCE.manifestHash).toLowerCase())
-    throw new Error('LIVE_EVIDENCE_CHAIN_MANIFEST_MISMATCH');
-  if (String(proof[2]).toLowerCase() !== LIVE_EVIDENCE.storageRoot.toLowerCase())
-    throw new Error('LIVE_EVIDENCE_CHAIN_STORAGE_MISMATCH');
-  if (Number((receipt as { blockNumber?: bigint }).blockNumber) !== LIVE_EVIDENCE.blockNumber)
-    throw new Error('LIVE_EVIDENCE_CHAIN_BLOCK_MISMATCH');
+  const health = await chain.healthCheck();
+  assertChainEvidence(
+    manifest,
+    proof,
+    receipt as { status?: string; blockNumber?: bigint },
+    health,
+  );
   return { proof, receipt };
 }
 
@@ -143,7 +205,7 @@ async function restore(
     where: { promptId_versionNumber: { promptId: prompt.id, versionNumber: 2 } },
     update: {},
     create: {
-      id: 'live_galileo_selected_version',
+      id: LIVE_EVIDENCE.immutablePromptVersionId,
       promptId: prompt.id,
       workspaceId: workspace.id,
       versionNumber: 2,
@@ -195,7 +257,9 @@ async function restore(
       savedPromptVersionId: selected.id,
     },
   });
-  const score = Number(proof[7] ?? 0);
+  const score = Number(proof[8] ?? 0);
+  if (!Number.isInteger(score) || score < 0 || score > 100)
+    throw new Error('LIVE_EVIDENCE_CHAIN_SCORE_INVALID');
   const candidate = await db.candidate.upsert({
     where: { id: candidateData.candidateId },
     update: { savedPromptVersionId: selected.id, recommended: true, selected: true },
@@ -251,8 +315,8 @@ async function restore(
       uploadStatus: 'STORAGE_VERIFIED',
       proofVerificationStatus: 'VERIFIED',
       encryptedManifest: JSON.stringify(manifest),
-      uploadedAt: new Date(),
-      verifiedAt: new Date(),
+      uploadedAt: new Date(manifest.completedAt),
+      verifiedAt: new Date(manifest.completedAt),
     },
   });
   const chainProof = await db.chainProof.upsert({
@@ -275,9 +339,9 @@ async function restore(
       aggregateScore: score,
       status: 'VERIFIED',
       confirmationCount: 1,
-      submittedAt: new Date(),
-      confirmedAt: new Date(),
-      verifiedAt: new Date(),
+      submittedAt: new Date(Number(proof[9]) * 1000),
+      confirmedAt: new Date(Number(proof[9]) * 1000),
+      verifiedAt: new Date(Number(proof[9]) * 1000),
     },
   });
   const base = {
@@ -307,7 +371,7 @@ async function restore(
     network: 'testnet',
     aggregateScore: score,
     confidence: manifest.confidence,
-    issuedAt: new Date().toISOString(),
+    issuedAt: new Date(manifest.completedAt).toISOString(),
     expiresAt: null,
     revokedAt: null,
     verificationLevel: 'FULLY_VERIFIED' as const,
@@ -375,4 +439,7 @@ async function main() {
   console.log(JSON.stringify({ status: 'RESTORED', certificate: LIVE_EVIDENCE.certificateSlug }));
 }
 
-main().finally(async () => db.$disconnect());
+const invokedPath = process.argv[1];
+if (invokedPath && import.meta.url === pathToFileURL(invokedPath).href) {
+  main().finally(async () => db.$disconnect());
+}

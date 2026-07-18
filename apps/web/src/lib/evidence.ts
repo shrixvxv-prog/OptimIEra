@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { createHash } from 'node:crypto';
 import { db } from '@optimiera/database';
 import {
@@ -16,6 +18,7 @@ import {
 import { readOGComputeConfig, readOGStorageConfig } from '@optimiera/config';
 import { requireSession, type Role } from './authorization';
 import { assertLiveWritesEnabled } from './runtime-config';
+import { completeLiveOperation, reserveLiveOperation } from './live-operation-quota';
 
 const artifactKind = 'OPTIMIZATION_EVIDENCE';
 function role(value: string): Role {
@@ -170,6 +173,12 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
   });
   if (!config.enabled || !config.privateKey) return artifact;
   assertLiveWritesEnabled();
+  const quotaReservation = await reserveLiveOperation({
+    userId: session.user.id,
+    workspaceId: job.workspaceId,
+    operation: 'STORAGE',
+    idempotencyKey: `storage:${artifact.id}`,
+  });
   const claim = await db.artifact.updateMany({
     where: { id: artifact.id, status: { in: ['LOCAL_CREATED', 'FAILED'] } },
     data: { status: 'UPLOADING', uploadStatus: 'UPLOADING', retryCount: { increment: 1 } },
@@ -183,7 +192,7 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
       (await adapter.downloadArtifact(uploaded.storageRoot as string)).bytes as Uint8Array,
       contentHash,
     );
-    return db.artifact.update({
+    const persisted = await db.artifact.update({
       where: { id: artifact.id },
       data: {
         status: 'DOWNLOAD_VERIFIED',
@@ -195,6 +204,8 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
         verifiedAt: new Date(),
       },
     });
+    await completeLiveOperation(quotaReservation.id);
+    return persisted;
   } catch (error) {
     const safe =
       error instanceof StorageError

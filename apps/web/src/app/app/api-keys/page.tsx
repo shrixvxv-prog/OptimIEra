@@ -4,9 +4,10 @@ export default function ApiKeys() {
       <div className="eyebrow">Developer access</div>
       <h1>API keys</h1>
       <div className="card">
-        <h3>Not configured</h3>
+        <h3>Future workspace API access</h3>
         <p className="muted">
-          API key management is planned for Wave 3. No credentials are accepted here.
+          Workspace API-key issuance is future roadmap work and is not active. Provider credentials
+          are configured only by the server operator and are never accepted or displayed here.
         </p>
       </div>
     </main>

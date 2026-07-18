@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { db } from '@optimiera/database';
 import { decryptPrompt, parseEnvelope } from '@optimiera/encryption';
 import {
@@ -14,6 +16,7 @@ import { readOGChainConfig } from '@optimiera/config';
 import { parseVerifiedManifest } from '@optimiera/og-storage';
 import { requireSession, type Role } from './authorization';
 import { assertLiveWritesEnabled } from './runtime-config';
+import { completeLiveOperation, reserveLiveOperation } from './live-operation-quota';
 
 const testChainAdapter = new TestChainAdapter();
 function chainAdapter(config: ReturnType<typeof readOGChainConfig>) {
@@ -141,6 +144,15 @@ export async function registerOptimizationProof(optimizationJobId: string) {
     return local;
   if (process.env.OG_CHAIN_TEST_ADAPTER !== 'true') assertLiveWritesEnabled();
   if (local.status === 'VERIFIED') return local;
+  const quotaReservation =
+    process.env.OG_CHAIN_TEST_ADAPTER === 'true'
+      ? null
+      : await reserveLiveOperation({
+          userId: session.user.id,
+          workspaceId: local.workspaceId,
+          operation: 'CHAIN',
+          idempotencyKey: `chain:${local.id}`,
+        });
   const claim = await db.chainProof.updateMany({
     where: { id: local.id, status: { in: ['LOCAL_READY', 'FAILED'] } },
     data: {
@@ -182,7 +194,7 @@ export async function registerOptimizationProof(optimizationJobId: string) {
         : null;
     const verified = await adapter.verifyProof(submitted.proofId, commitment);
     if (!verified) throw new Error('PROOF_MISMATCH');
-    return db.chainProof.update({
+    const persisted = await db.chainProof.update({
       where: { id: local.id },
       data: {
         status: 'VERIFIED',
@@ -196,6 +208,8 @@ export async function registerOptimizationProof(optimizationJobId: string) {
             : config.confirmations,
       },
     });
+    if (quotaReservation) await completeLiveOperation(quotaReservation.id);
+    return persisted;
   } catch (error) {
     const code = error instanceof Error ? error.message.slice(0, 80) : 'CHAIN_FAILED';
     return db.chainProof.update({

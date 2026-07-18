@@ -14,7 +14,7 @@ test.describe('Phase 5 test-chain adapter', () => {
   }) => {
     const { optimizationId } = await createOptimization(page, 'chain-proof');
     await page.getByRole('button', { name: 'Create encrypted evidence' }).click();
-    await page.waitForURL(new RegExp(`/app/optimizations/${optimizationId}`));
+    await expect(page.getByText('LOCAL_CREATED', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Create proof commitment' }).click();
     await expect(page.getByText('Status:').locator('..').getByText('LOCAL_READY')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Register on 0G Chain' })).toBeEnabled();

@@ -6,7 +6,7 @@
   "packageManager": "pnpm@11.6.0",
   "scripts": {
     "build": "turbo run build",
-    "vercel-build": "pnpm db:generate && pnpm db:migrate:deploy && pnpm --filter @optimiera/web build",
+    "vercel-build": "node scripts/validate-production-env.mjs && pnpm prisma:generate && pnpm prisma:migrate:deploy && pnpm turbo run build --filter=@optimiera/web...",
     "dev": "turbo run dev --parallel",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -37,9 +37,13 @@
     "db:migrate:deploy": "pnpm --filter @optimiera/database db:migrate:deploy",
     "db:seed": "pnpm --filter @optimiera/database db:seed",
     "db:validate": "pnpm --filter @optimiera/database db:validate",
-    "db:test:reset": "pnpm --filter @optimiera/database db:test:reset"
+    "db:test:reset": "pnpm --filter @optimiera/database db:test:reset",
+    "prisma:generate": "pnpm --filter @optimiera/database db:generate",
+    "prisma:migrate:deploy": "pnpm --filter @optimiera/database db:migrate:deploy",
+    "prisma:migrate:status": "pnpm --filter @optimiera/database exec prisma migrate status --config prisma.config.ts"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.13.0",
     "@types/react": "^19.0.8",

@@ -489,6 +489,19 @@ exports.Prisma.UsagePaymentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.LiveOperationUsageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  workspaceId: 'workspaceId',
+  operation: 'operation',
+  dayStart: 'dayStart',
+  idempotencyKey: 'idempotencyKey',
+  requestId: 'requestId',
+  status: 'status',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+};
+
 exports.Prisma.AuditEventScalarFieldEnum = {
   id: 'id',
   workspaceId: 'workspaceId',
@@ -633,6 +646,7 @@ exports.Prisma.ModelName = {
   ApiKey: 'ApiKey',
   UsageRecord: 'UsageRecord',
   UsagePayment: 'UsagePayment',
+  LiveOperationUsage: 'LiveOperationUsage',
   AuditEvent: 'AuditEvent',
   WalletIdentity: 'WalletIdentity',
   WalletAddress: 'WalletAddress',

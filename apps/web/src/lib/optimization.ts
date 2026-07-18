@@ -1,3 +1,5 @@
+import 'server-only';
+
 import {
   createProviderContext,
   diffPrompts,
@@ -27,6 +29,8 @@ import {
   type OGComputeError,
 } from '@optimiera/og-compute';
 import { consumeUsagePayment } from './usage-payment';
+import { completeLiveOperation, reserveLiveOperation } from './live-operation-quota';
+import { assertLiveWritesEnabled } from './runtime-config';
 
 const provider = new OptimIEraRulesProvider();
 const ogProvider = new OGComputeRouterProvider();
@@ -111,6 +115,8 @@ export async function runOptimization(input: {
   paymentTxHash?: string;
 }) {
   const session = await requireSession();
+  if (input.providerType === 'OG_COMPUTE' || input.providerType === 'NOUS_AI')
+    assertLiveWritesEnabled();
   let request = validateOptimizationRequest(input.request);
   let promptId = request.promptId;
   let projectId = request.newPrompt?.projectId;
@@ -175,11 +181,21 @@ export async function runOptimization(input: {
   });
 
   try {
+    const quotaReservation =
+      input.providerType === 'OG_COMPUTE' || input.providerType === 'NOUS_AI'
+        ? await reserveLiveOperation({
+            userId: session.user.id,
+            workspaceId,
+            operation: 'COMPUTE',
+            idempotencyKey: input.idempotencyKey ?? job.id,
+            requestId: input.requestId,
+          })
+        : null;
     await markOptimizationRunning(job.id);
     const context = createProviderContext({ requestId: input.requestId });
     if (selectedProvider instanceof OGComputeRouterProvider) {
       const combined = await selectedProvider.optimizeCombined(request, context);
-      return persistOptimizationSuccess({
+      const persisted = await persistOptimizationSuccess({
         jobId: job.id,
         workspaceId,
         actorUserId: session.user.id,
@@ -189,12 +205,14 @@ export async function runOptimization(input: {
         requestId: combined.trace?.requestId ?? input.requestId,
         providerMetadata: combined.trace as Record<string, unknown> | undefined,
       });
+      if (quotaReservation) await completeLiveOperation(quotaReservation.id);
+      return persisted;
     }
-    const analysis = await provider.analyze(request, context);
-    const candidates = await provider.generateCandidates(request, analysis, context);
+    const analysis = await selectedProvider.analyze(request, context);
+    const candidates = await selectedProvider.generateCandidates(request, analysis, context);
     if (candidates.length !== 3) throw new Error('GENERATION_FAILED');
-    const evaluation = await provider.evaluateCandidates(request, candidates, context);
-    return persistOptimizationSuccess({
+    const evaluation = await selectedProvider.evaluateCandidates(request, candidates, context);
+    const persisted = await persistOptimizationSuccess({
       jobId: job.id,
       workspaceId,
       actorUserId: session.user.id,
@@ -203,6 +221,8 @@ export async function runOptimization(input: {
       evaluation,
       requestId: input.requestId,
     });
+    if (quotaReservation) await completeLiveOperation(quotaReservation.id);
+    return persisted;
   } catch (error) {
     const failure = classifyOptimizationFailure(error, input.providerType);
     await persistOptimizationFailure({

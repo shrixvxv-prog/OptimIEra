@@ -12,3 +12,6 @@ test-results/
 .turbo/
 .vercel/
 *.log
+
+.vercel
+.env*

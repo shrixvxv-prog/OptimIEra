@@ -6,6 +6,7 @@ import { OGStorageAdapter } from '@optimiera/og-storage';
 import { getProofForOptimization, getChainHealth } from '@/lib/chain-proof';
 import { db } from '@optimiera/database';
 import { issueCertificate } from '../../certificates/actions';
+import { RedirectingActionForm } from '@/components/redirecting-action-form';
 
 export default async function OptimizationDetail({
   params,
@@ -119,16 +120,24 @@ export default async function OptimizationDetail({
         )}
         {proof?.safeErrorMessage && <p className="error">{proof.safeErrorMessage}</p>}
         {!proof && (
-          <form action={createProof} className="mini-form">
+          <RedirectingActionForm
+            action={createProof}
+            redirectTo={`/app/optimizations/${optimizationId}`}
+            className="mini-form"
+          >
             <input type="hidden" name="optimizationJobId" value={optimizationId} />
             <input type="hidden" name="action" value="local" />
             <button className="button" type="submit">
               Create proof commitment
             </button>
-          </form>
+          </RedirectingActionForm>
         )}
         {proof && (
-          <form action={createProof} className="mini-form">
+          <RedirectingActionForm
+            action={createProof}
+            redirectTo={`/app/optimizations/${optimizationId}`}
+            className="mini-form"
+          >
             <input type="hidden" name="optimizationJobId" value={optimizationId} />
             <input type="hidden" name="action" value="register" />
             <button
@@ -138,10 +147,14 @@ export default async function OptimizationDetail({
             >
               Register on 0G Chain
             </button>
-          </form>
+          </RedirectingActionForm>
         )}
         {proof?.status === 'VERIFIED' && (
-          <form action={revokeProof} className="mini-form">
+          <RedirectingActionForm
+            action={revokeProof}
+            redirectTo={`/app/optimizations/${optimizationId}`}
+            className="mini-form"
+          >
             <input type="hidden" name="optimizationJobId" value={optimizationId} />
             <label>
               Revocation reason
@@ -154,7 +167,7 @@ export default async function OptimizationDetail({
             <button className="button" type="submit">
               Revoke proof
             </button>
-          </form>
+          </RedirectingActionForm>
         )}
         <p className="muted">
           0G Chain —{' '}
@@ -187,14 +200,22 @@ export default async function OptimizationDetail({
         )}
         {evidence?.safeErrorMessage && <p className="error">{evidence.safeErrorMessage}</p>}
         {!evidence && (
-          <form action={createEvidence} className="mini-form">
+          <RedirectingActionForm
+            action={createEvidence}
+            redirectTo={`/app/optimizations/${optimizationId}`}
+            className="mini-form"
+          >
             <input type="hidden" name="optimizationJobId" value={optimizationId} />
             <button className="button" type="submit">
               Create encrypted evidence
             </button>
-          </form>
+          </RedirectingActionForm>
         )}
-        <form action={createEvidence} className="mini-form">
+        <RedirectingActionForm
+          action={createEvidence}
+          redirectTo={`/app/optimizations/${optimizationId}`}
+          className="mini-form"
+        >
           <input type="hidden" name="optimizationJobId" value={optimizationId} />
           <button
             className="button"
@@ -203,7 +224,7 @@ export default async function OptimizationDetail({
           >
             {evidence?.status === 'FAILED' ? 'Retry upload' : 'Upload to 0G Storage'}
           </button>
-        </form>
+        </RedirectingActionForm>
         {evidence?.status !== 'FAILED' && (
           <p className="muted">Retry is available after a failed upload.</p>
         )}
@@ -273,7 +294,7 @@ export default async function OptimizationDetail({
               <p>{candidate.changeSummary}</p>
               <p className="muted">Token impact: {candidate.tokenEstimate}</p>
               <pre>{candidate.optimizedPrompt}</pre>
-              <form action={saveCandidate} className="mini-form">
+              <RedirectingActionForm action={saveCandidate} className="mini-form">
                 <input type="hidden" name="optimizationJobId" value={result.id} />
                 <input type="hidden" name="candidateId" value={candidate.id} />
                 <label>
@@ -289,7 +310,7 @@ export default async function OptimizationDetail({
                 <button className="button" type="submit">
                   Save as new version
                 </button>
-              </form>
+              </RedirectingActionForm>
             </article>
           ))}
         </div>

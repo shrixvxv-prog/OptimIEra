@@ -39,5 +39,5 @@ export async function decideReview(formData: FormData) {
     approve: String(formData.get('decision')) === 'approve',
     note: String(formData.get('note') ?? ''),
   });
-  redirect(`/app/reviews/${String(formData.get('reviewId'))}`);
+  return `/app/reviews/${String(formData.get('reviewId'))}`;
 }

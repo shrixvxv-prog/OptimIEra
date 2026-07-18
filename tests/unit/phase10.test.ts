@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { readNousConfig } from '@optimiera/config';
 import { NousPromptIntelligenceProvider } from '@optimiera/og-compute';
+import { optimizationRequestSchema } from '@optimiera/schemas';
 import {
   DEFAULT_USAGE_PAYMENT_WEI,
   readUsagePaymentConfig,
@@ -12,6 +13,28 @@ const recipient = '0x1111111111111111111111111111111111111111' as const;
 const payer = '0x2222222222222222222222222222222222222222' as const;
 
 describe('Nous prompt intelligence', () => {
+  const request = optimizationRequestSchema.parse({
+    promptId: 'prompt-1',
+    rawPrompt: 'Write a concise summary.',
+    intendedTask: 'Summarize',
+    targetAudience: 'Readers',
+    desiredOutputType: 'MARKDOWN',
+    desiredTone: 'Clear',
+    optimizationMode: 'BALANCED',
+    outputLanguage: 'English',
+    privacyLevel: 'PRIVATE',
+    expectedLength: {},
+  });
+  const structuredResponse = {
+    schemaVersion: '1',
+    candidates: ['BALANCED', 'ACCURACY_FOCUSED', 'TOKEN_EFFICIENT'].map((mode) => ({
+      mode,
+      prompt: `${mode} summary prompt`,
+      rationale: 'Clarified the requested output.',
+    })),
+    warnings: [],
+  };
+
   it('enables safely when the server key exists and defaults to Hermes 4 70B', () => {
     const config = readNousConfig({ NOUS_API_KEY: 'secret' });
     expect(config.enabled).toBe(true);
@@ -31,6 +54,32 @@ describe('Nous prompt intelligence', () => {
     expect(health.state).toBe('AVAILABLE');
     expect(health.providerType).toBe('EXTERNAL_MODEL');
     expect(JSON.stringify(health)).not.toContain('secret');
+  });
+
+  it('runs one structured mocked inference with the Nous provider', async () => {
+    const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith('/models'))
+        return Response.json({ data: [{ id: 'nousresearch/hermes-4-70b' }] });
+      expect(init?.headers).toMatchObject({ authorization: 'Bearer secret' });
+      return Response.json({
+        choices: [{ message: { content: JSON.stringify(structuredResponse) } }],
+        usage: { prompt_tokens: 12, completion_tokens: 24, total_tokens: 36 },
+      });
+    });
+    const provider = new NousPromptIntelligenceProvider(
+      readNousConfig({ NOUS_API_KEY: 'secret' }),
+      fetchMock as typeof fetch,
+    );
+
+    const result = await provider.optimizeCombined(request, { requestId: 'nous-mock-1' });
+
+    expect(result.candidates).toHaveLength(3);
+    expect(result.candidates.map((candidate) => candidate.candidateType)).toEqual([
+      'BALANCED',
+      'ACCURACY_FOCUSED',
+      'TOKEN_EFFICIENT',
+    ]);
+    expect(result.trace).toMatchObject({ usage: { totalTokens: 36 } });
   });
 });
 

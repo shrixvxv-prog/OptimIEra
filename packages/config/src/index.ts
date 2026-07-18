@@ -12,6 +12,13 @@ export const envSchema = z.object({
   NOUS_TIMEOUT_MS: z.coerce.number().int().positive().max(120000).default(60000),
   OPTIMIERA_DEMO_MODE: z.enum(['true', 'false', '']).default(''),
   OPTIMIERA_LIVE_WRITES_ENABLED: z.enum(['true', 'false', '']).default(''),
+  OPTIMIERA_PUBLIC_LIVE_0G_ENABLED: z.enum(['true', 'false', '']).default(''),
+  OPTIMIERA_USER_DAILY_COMPUTE_LIMIT: z.coerce.number().int().positive().max(10000).default(3),
+  OPTIMIERA_USER_DAILY_STORAGE_LIMIT: z.coerce.number().int().positive().max(10000).default(2),
+  OPTIMIERA_USER_DAILY_CHAIN_LIMIT: z.coerce.number().int().positive().max(10000).default(2),
+  OPTIMIERA_GLOBAL_DAILY_COMPUTE_LIMIT: z.coerce.number().int().positive().max(100000).default(50),
+  OPTIMIERA_GLOBAL_DAILY_STORAGE_LIMIT: z.coerce.number().int().positive().max(100000).default(20),
+  OPTIMIERA_GLOBAL_DAILY_CHAIN_LIMIT: z.coerce.number().int().positive().max(100000).default(20),
   OG_COMPUTE_ENABLED: z.enum(['true', 'false', '']).default(''),
   OG_COMPUTE_NETWORK: z.enum(['mainnet', 'testnet', '']).default(''),
   OG_COMPUTE_BASE_URL: z.string().url().optional().or(z.literal('')),
@@ -39,6 +46,40 @@ export const envSchema = z.object({
   OPTIMIERA_DEPLOYER_PRIVATE_KEY: z.string().trim().optional().or(z.literal('')),
 });
 export type Env = z.infer<typeof envSchema>;
+
+export type LiveOperation = 'COMPUTE' | 'STORAGE' | 'CHAIN';
+export type PublicLive0GConfig = {
+  enabled: boolean;
+  userDailyLimits: Record<LiveOperation, number>;
+  globalDailyLimits: Record<LiveOperation, number>;
+};
+
+function boundedLimit(value: string | undefined, fallback: number, maximum: number) {
+  const parsed = value ? Number(value) : fallback;
+  if (!Number.isInteger(parsed) || parsed < 1 || parsed > maximum)
+    throw new Error('LIVE_0G_QUOTA_CONFIGURATION_INVALID');
+  return parsed;
+}
+
+export function readPublicLive0GConfig(
+  env: Record<string, string | undefined> = process.env,
+): PublicLive0GConfig {
+  return {
+    enabled:
+      env.OPTIMIERA_PUBLIC_LIVE_0G_ENABLED === 'true' ||
+      env.OPTIMIERA_LIVE_WRITES_ENABLED === 'true',
+    userDailyLimits: {
+      COMPUTE: boundedLimit(env.OPTIMIERA_USER_DAILY_COMPUTE_LIMIT, 3, 10000),
+      STORAGE: boundedLimit(env.OPTIMIERA_USER_DAILY_STORAGE_LIMIT, 2, 10000),
+      CHAIN: boundedLimit(env.OPTIMIERA_USER_DAILY_CHAIN_LIMIT, 2, 10000),
+    },
+    globalDailyLimits: {
+      COMPUTE: boundedLimit(env.OPTIMIERA_GLOBAL_DAILY_COMPUTE_LIMIT, 50, 100000),
+      STORAGE: boundedLimit(env.OPTIMIERA_GLOBAL_DAILY_STORAGE_LIMIT, 20, 100000),
+      CHAIN: boundedLimit(env.OPTIMIERA_GLOBAL_DAILY_CHAIN_LIMIT, 20, 100000),
+    },
+  };
+}
 
 export const ogComputeConfigSchema = z.object({
   enabled: z.boolean(),
@@ -73,6 +114,8 @@ export const OG_COMPUTE_ENDPOINTS = {
 } as const;
 export function readOGComputeConfig(env: Record<string, string | undefined> = process.env) {
   const network = env.OG_COMPUTE_NETWORK === 'mainnet' ? 'mainnet' : 'testnet';
+  if (env.NODE_ENV === 'production' && network !== 'testnet')
+    throw new Error('PRODUCTION_REQUIRES_0G_TESTNET');
   return ogComputeConfigSchema.parse({
     enabled: env.OG_COMPUTE_ENABLED === 'true',
     network,
@@ -113,6 +156,8 @@ export const OG_STORAGE_DEFAULTS = {
 } as const;
 export function readOGStorageConfig(env: Record<string, string | undefined> = process.env) {
   const network = env.OG_STORAGE_NETWORK === 'mainnet' ? 'mainnet' : 'testnet';
+  if (env.NODE_ENV === 'production' && network !== 'testnet')
+    throw new Error('PRODUCTION_REQUIRES_0G_TESTNET');
   const mode = env.OG_STORAGE_MODE === 'standard' ? 'standard' : 'turbo';
   const defaults = OG_STORAGE_DEFAULTS[network];
   if (mode === 'standard' && !env.OG_STORAGE_INDEXER_URL)
@@ -165,6 +210,8 @@ export const OG_CHAIN_DEFAULTS = {
 } as const;
 export function readOGChainConfig(env: Record<string, string | undefined> = process.env) {
   const network = env.OG_CHAIN_NETWORK === 'mainnet' ? 'mainnet' : 'testnet';
+  if (env.NODE_ENV === 'production' && network !== 'testnet')
+    throw new Error('PRODUCTION_REQUIRES_0G_TESTNET');
   const defaults = OG_CHAIN_DEFAULTS[network];
   const chainId = env.OG_CHAIN_CHAIN_ID ? Number(env.OG_CHAIN_CHAIN_ID) : defaults.chainId;
   if (chainId !== defaults.chainId) throw new Error('OG_CHAIN_CHAIN_ID_NETWORK_MISMATCH');

@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { organization, siwe } from 'better-auth/plugins';
@@ -14,21 +16,29 @@ const localNotice = (kind: string, recipient: string, url: string) => {
 };
 
 const configuredAuthSecret = process.env.BETTER_AUTH_SECRET ?? process.env.AUTH_SECRET;
-if (
+const productionRuntime =
   process.env.NODE_ENV === 'production' &&
   process.env.NEXT_PHASE !== 'phase-production-build' &&
-  !configuredAuthSecret
-) {
+  process.env.BETTER_AUTH_E2E !== 'true';
+if (productionRuntime && !configuredAuthSecret) {
   throw new Error('BETTER_AUTH_SECRET_MISSING');
 }
 
-const trustedOrigins = [
-  process.env.BETTER_AUTH_URL ?? 'http://localhost:3000',
-  ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? '')
-    .split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean),
-];
+const trustedOrigins = Array.from(
+  new Set([
+    process.env.BETTER_AUTH_URL ?? 'http://localhost:3000',
+    ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? '')
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+  ]),
+);
+if (
+  productionRuntime &&
+  trustedOrigins.some((origin) => origin.includes('*') || !origin.startsWith('https://'))
+) {
+  throw new Error('BETTER_AUTH_TRUSTED_ORIGINS_INVALID');
+}
 
 export const auth = betterAuth({
   secret: configuredAuthSecret ?? 'local-only-change-me',

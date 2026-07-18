@@ -521,6 +521,22 @@ model UsagePayment {
   @@index([workspaceId, createdAt])
   @@index([userId, createdAt])
 }
+model LiveOperationUsage {
+  id String @id @default(cuid())
+  userId String
+  workspaceId String
+  operation String
+  dayStart DateTime
+  idempotencyKey String
+  requestId String
+  status String @default("RESERVED")
+  createdAt DateTime @default(now())
+  completedAt DateTime?
+  @@unique([userId, operation, idempotencyKey])
+  @@index([operation, dayStart, status])
+  @@index([userId, operation, dayStart, status])
+  @@index([requestId])
+}
 model AuditEvent {
   id String @id @default(cuid())
   workspaceId String

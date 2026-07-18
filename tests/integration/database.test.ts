@@ -46,6 +46,7 @@ describe('PostgreSQL Phase 1 persistence', () => {
   const slug = `integration-workspace-${suffix}`;
 
   afterAll(async () => {
+    await db.liveOperationUsage.deleteMany({ where: { userId: { in: [userId, userBId] } } });
     await db.organization.deleteMany({ where: { id: workspaceId } });
     await db.user.deleteMany({ where: { id: userId } });
     await db.user.deleteMany({ where: { id: userBId } });
@@ -534,5 +535,20 @@ describe('PostgreSQL Phase 2 optimization persistence', () => {
         actorUserId: userId,
       }),
     ).rejects.toThrow('NOT_FOUND');
+  });
+
+  it('enforces one live-operation reservation per user, operation, and idempotency key', async () => {
+    const data = {
+      userId,
+      workspaceId,
+      operation: 'COMPUTE',
+      dayStart: new Date(Date.UTC(2026, 6, 19)),
+      idempotencyKey: `quota-${suffix}`,
+      requestId: `request-${suffix}`,
+    };
+    await db.liveOperationUsage.create({ data });
+    await expect(
+      db.liveOperationUsage.create({ data: { ...data, requestId: `retry-${suffix}` } }),
+    ).rejects.toThrow();
   });
 });

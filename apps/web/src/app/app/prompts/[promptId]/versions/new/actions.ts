@@ -2,7 +2,6 @@
 
 import { createPromptVersionForWorkspace, db } from '@optimiera/database';
 import { requireSession } from '@/lib/authorization';
-import { redirect } from 'next/navigation';
 
 export async function createVersion(formData: FormData) {
   const session = await requireSession();
@@ -27,5 +26,5 @@ export async function createVersion(formData: FormData) {
     content: String(formData.get('content')),
     changeSummary: String(formData.get('changeSummary')),
   });
-  redirect(`/app/prompts/${prompt.id}/versions/${version.id}`);
+  return `/app/prompts/${prompt.id}/versions/${version.id}`;
 }

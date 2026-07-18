@@ -2,6 +2,7 @@ import { db } from '@optimiera/database';
 import { requireSession } from '@/lib/authorization';
 import { decideReview } from '../actions';
 import { ConfirmButton } from '@/components/confirm-form';
+import { RedirectingActionForm } from '@/components/redirecting-action-form';
 
 export default async function ReviewDetail({ params }: { params: Promise<{ reviewId: string }> }) {
   const session = await requireSession();
@@ -41,7 +42,7 @@ export default async function ReviewDetail({ params }: { params: Promise<{ revie
           State: <span className="status-pill">{review.status}</span>
         </p>
         {review.status === 'REQUESTED' && (
-          <form action={decideReview}>
+          <RedirectingActionForm action={decideReview}>
             <input type="hidden" name="workspaceId" value={review.workspaceId} />
             <input type="hidden" name="reviewId" value={review.id} />
             <label>
@@ -56,7 +57,7 @@ export default async function ReviewDetail({ params }: { params: Promise<{ revie
                 Reject
               </ConfirmButton>
             </div>
-          </form>
+          </RedirectingActionForm>
         )}
       </div>
     </main>

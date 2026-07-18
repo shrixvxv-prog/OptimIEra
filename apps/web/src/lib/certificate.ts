@@ -1,53 +1,22 @@
+import 'server-only';
+
 import { createHash } from 'node:crypto';
 import { db } from '@optimiera/database';
 import { decryptPrompt, parseEnvelope } from '@optimiera/encryption';
 import { parseVerifiedManifest } from '@optimiera/og-storage';
 import { requireSession } from './authorization';
+import {
+  canonicalCertificate,
+  type CertificateVerificationLevel,
+  type OptimizationCertificateV1,
+} from './certificate-canonical';
 
-export const certificateLevels = [
-  'LOCAL_VERIFIED',
-  'STORAGE_VERIFIED',
-  'CHAIN_VERIFIED',
-  'FULLY_VERIFIED',
-  'TEST_VERIFIED',
-  'REVOKED',
-  'FAILED',
-] as const;
-export type CertificateVerificationLevel = (typeof certificateLevels)[number];
-
-export type OptimizationCertificateV1 = {
-  schemaVersion: 'OptimizationCertificateV1';
-  certificateId: string;
-  publicSlug: string;
-  optimizationId: string;
-  issuerRefHash: string;
-  sourcePromptVersionId: string;
-  selectedPromptVersionId: string;
-  selectedCandidateId: string;
-  analyzerVersion: string | null;
-  scoringVersion: string | null;
-  providerType: string;
-  providerName: string;
-  model: string | null;
-  originalPromptHash: string;
-  optimizedPromptHash: string;
-  evaluationHash: string;
-  manifestHash: string;
-  storageRoot: string | null;
-  storageTransactionHash: string | null;
-  chainProofId: string | null;
-  chainTransactionHash: string | null;
-  contractAddress: string | null;
-  chainId: number | null;
-  network: string | null;
-  aggregateScore: number;
-  confidence: number;
-  issuedAt: string;
-  expiresAt: string | null;
-  revokedAt: string | null;
-  verificationLevel: CertificateVerificationLevel;
-  certificateContentHash: string;
-};
+export {
+  canonicalCertificate,
+  certificateLevels,
+  type CertificateVerificationLevel,
+  type OptimizationCertificateV1,
+} from './certificate-canonical';
 
 export type CertificateCheck = {
   name: string;
@@ -84,22 +53,6 @@ const publicFields = [
   'certificateContentHash',
 ] as const;
 
-function sortValue(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(sortValue);
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([a], [b]) => a.localeCompare(b))
-        .map(([k, v]) => [k, sortValue(v)]),
-    );
-  }
-  return value;
-}
-export function canonicalCertificate(
-  value: Omit<OptimizationCertificateV1, 'certificateContentHash'>,
-) {
-  return JSON.stringify(sortValue(value));
-}
 function sha(value: string) {
   return createHash('sha256').update(value, 'utf8').digest('hex');
 }
@@ -359,6 +312,7 @@ export async function verifyOptimizationCertificate(certificateIdOrSlug: string)
       chainProof: true,
       selectedPromptVersion: true,
       sourcePromptVersion: true,
+      optimizationJob: { select: { requestMetadata: true } },
     },
   });
   if (!certificate) throw new Error('CERTIFICATE_NOT_FOUND');
@@ -414,6 +368,25 @@ export async function verifyOptimizationCertificate(certificateIdOrSlug: string)
     : failed || expired
       ? 'FAILED'
       : (certificate.verificationLevel as CertificateVerificationLevel);
+  let providerRequestId: string | null = null;
+  let providerResponseId: string | null = null;
+  try {
+    const metadata = certificate.optimizationJob.requestMetadata
+      ? (JSON.parse(certificate.optimizationJob.requestMetadata) as {
+          providerTrace?: { requestId?: unknown; responseId?: unknown };
+        })
+      : null;
+    providerRequestId =
+      typeof metadata?.providerTrace?.requestId === 'string'
+        ? metadata.providerTrace.requestId
+        : null;
+    providerResponseId =
+      typeof metadata?.providerTrace?.responseId === 'string'
+        ? metadata.providerTrace.responseId
+        : null;
+  } catch {
+    providerRequestId = null;
+  }
   return {
     certificate: projectPublicCertificate({ ...record, verificationLevel: level }),
     overall: level !== 'FAILED' && level !== 'REVOKED',
@@ -425,6 +398,11 @@ export async function verifyOptimizationCertificate(certificateIdOrSlug: string)
     providerStatus: certificate.providerName,
     storageStatus: certificate.artifact?.storageProvider ?? 'LOCAL_ENCRYPTED',
     chainStatus: certificate.chainProof?.status ?? 'UNCONFIGURED',
+    providerRequestId,
+    providerResponseId,
+    proofBlock: certificate.chainProof?.blockNumber?.toString() ?? null,
+    contractReadbackStatus:
+      certificate.chainProof?.status === 'VERIFIED' ? 'VERIFIED' : 'UNVERIFIED',
   };
 }
 

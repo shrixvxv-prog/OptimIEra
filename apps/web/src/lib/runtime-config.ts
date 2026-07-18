@@ -13,7 +13,9 @@ export function readWave2RuntimeConfig(
 ): Wave2RuntimeConfig {
   return {
     demoMode: env.OPTIMIERA_DEMO_MODE !== 'false',
-    liveWritesEnabled: env.OPTIMIERA_LIVE_WRITES_ENABLED === 'true',
+    liveWritesEnabled:
+      env.OPTIMIERA_PUBLIC_LIVE_0G_ENABLED === 'true' ||
+      env.OPTIMIERA_LIVE_WRITES_ENABLED === 'true',
   };
 }
 

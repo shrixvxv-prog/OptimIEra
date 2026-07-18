@@ -5,10 +5,12 @@ export default function Developers() {
         <div className="eyebrow">Developers</div>
         <h1>Build against clear boundaries.</h1>
         <p className="lede">
-          The Atlas portal will document Windows setup, API, SDK, CLI, contracts, deployment,
-          environment variables, and troubleshooting. Runtime developer integrations are planned for
-          later waves.
+          OptimIEra Atlas documents local setup, API boundaries, SDK and CLI packages, contracts,
+          Vercel deployment, environment variables, security controls, and troubleshooting.
         </p>
+        <a className="button primary" href="https://docs.optimiera.dev">
+          Open OptimIEra Atlas
+        </a>
       </section>
     </main>
   );

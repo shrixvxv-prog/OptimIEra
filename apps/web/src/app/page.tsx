@@ -1,12 +1,14 @@
-const modules = [
-  'Prompt Analyzer',
-  'Intelligence Engine',
-  'Candidate Optimizer',
-  'Prompt Diff Viewer',
-  'Evaluation Lab',
-  'Prompt Registry',
-  'Optimization Certificates',
-  'Proof Center',
+const modes = [
+  ['Balanced', 'Improves clarity, structure, safety, and efficiency together.'],
+  ['Accuracy Focused', 'Prioritizes precise constraints, context, and reliable outputs.'],
+  ['Token Efficient', 'Removes waste while preserving intent and required details.'],
+];
+
+const infrastructure = [
+  ['0G Compute', 'Optional model-assisted optimization through the testnet Router.'],
+  ['0G Storage', 'Encrypted evidence manifests with independently verifiable roots.'],
+  ['0G Chain', 'Hash-only provenance commitments on the Galileo registry.'],
+  ['Public certificates', 'Shareable verification without revealing private prompt text.'],
 ];
 
 export default function Home() {
@@ -23,24 +25,26 @@ export default function Home() {
           <a href="/security">Trust</a>
           <a href="/app">Studio</a>
         </nav>
+        <span
+          className="status-pill testnet-badge"
+          title="OptimIEra currently operates on the 0G Galileo testnet. Testnet records have no mainnet financial value."
+        >
+          0G Galileo Testnet
+        </span>
       </header>
       <section className="hero pattern">
-        <div className="eyebrow">Optim-eye-era / Phase 2 local engine</div>
+        <div className="eyebrow">Privacy-first prompt intelligence</div>
         <h1>Prompt intelligence you can verify.</h1>
         <p className="lede">
-          OptimIEra transforms raw AI instructions into analyzed, scored, optimized, versioned, and
-          verifiable prompt assets. The local OptimIEra Rules Engine is active; 0G integrations are
-          planned.
+          Turn fragile AI instructions into analyzed, scored, optimized, encrypted, and verifiable
+          prompt assets—without publishing the prompt itself.
         </p>
         <div className="actions">
-          <a className="button primary" href="https://docs.optimiera.dev">
-            Explore OptimIEra Atlas
+          <a className="button primary" href="/app/optimize">
+            Start optimizing
           </a>
-          <a className="button" href="/app">
-            Launch OptimIEra Studio
-          </a>
-          <a className="button" href="/proofs">
-            View Proof Center
+          <a className="button" href="/verify/cert_1343d8825f8905d881361fa39d7e2a1e">
+            View live proof
           </a>
         </div>
       </section>
@@ -53,53 +57,69 @@ export default function Home() {
         </p>
       </section>
       <section className="section">
-        <div className="eyebrow">Optimize / Evaluate / Verify</div>
+        <div className="eyebrow">How it works</div>
+        <h2>From raw instruction to immutable evidence.</h2>
         <div className="grid">
           <div className="card">
             <h3>01 Analyze</h3>
             <p className="muted">Find ambiguity, missing constraints, contradictions, and risk.</p>
           </div>
           <div className="card">
-            <h3>02 Evaluate</h3>
+            <h3>02 Optimize</h3>
             <p className="muted">
-              Compare original and candidate prompts with deterministic scores.
+              Generate Balanced, Accuracy Focused, and Token Efficient candidates.
             </p>
           </div>
           <div className="card">
-            <h3>03 Version</h3>
+            <h3>03 Verify</h3>
             <p className="muted">
-              Save selected candidates as immutable encrypted prompt versions.
+              Save an immutable version and issue encrypted evidence and a public certificate.
             </p>
           </div>
         </div>
       </section>
       <section className="section">
-        <div className="eyebrow">Product system</div>
-        <h2>From raw instruction to prompt asset.</h2>
+        <div className="eyebrow">Three optimization modes</div>
+        <h2>Choose what better means.</h2>
         <div className="grid">
-          {modules.map((module) => (
-            <div className="card" key={module}>
-              <h3>{module}</h3>
-              <p className="muted">Local engine active / decentralized proof planned.</p>
+          {modes.map(([name, description]) => (
+            <div className="card" key={name}>
+              <h3>{name}</h3>
+              <p className="muted">{description}</p>
             </div>
           ))}
         </div>
       </section>
       <section className="section">
         <div className="eyebrow">Why 0G</div>
-        <h2>Decentralized infrastructure for evidence.</h2>
-        <p className="lede">
-          The planned architecture separates compute, encrypted storage, onchain provenance, agent
-          identity, and future data availability. No live 0G integration is claimed in this phase.
-        </p>
+        <h2>Evidence that does not ask for blind trust.</h2>
+        <div className="grid">
+          {infrastructure.map(([name, description]) => (
+            <div className="card" key={name}>
+              <h3>{name}</h3>
+              <p className="muted">{description}</p>
+            </div>
+          ))}
+        </div>
       </section>
       <section className="section">
         <div className="eyebrow">Trust by design</div>
         <h2>Private evidence stays private.</h2>
         <p className="lede">
           OptimIEra encrypts local prompt versions and optimization candidates. Plaintext private
-          prompts and private test data must never be written to a public blockchain.
+          prompts never appear in public certificates, Storage metadata, or onchain commitments.
         </p>
+        <div className="actions">
+          <a className="button primary" href="/app">
+            Open Studio
+          </a>
+          <a className="button" href="/proofs">
+            Open Proof Center
+          </a>
+          <a className="button" href="https://docs.optimiera.dev">
+            Read the Atlas
+          </a>
+        </div>
       </section>
       <footer className="footer">
         <span>OI// OptimIEra</span>

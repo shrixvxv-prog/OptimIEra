@@ -3,7 +3,9 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   resolve: {
+    conditions: ['react-server'],
     alias: {
+      'server-only': resolve(__dirname, 'apps/web/node_modules/server-only/empty.js'),
       '@optimiera/config': resolve(__dirname, 'packages/config/src/index.ts'),
       '@optimiera/og-compute': resolve(__dirname, 'packages/og-compute/src/index.ts'),
       '@optimiera/og-chain': resolve(__dirname, 'packages/og-chain/src/index.ts'),
