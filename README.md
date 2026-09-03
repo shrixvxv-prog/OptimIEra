@@ -25,23 +25,6 @@ OptimIEra is a verifiable prompt-intelligence workspace. It transforms a rough i
 
 ![OptimIEra architecture](docs/assets/screenshots/architecture.png)
 
-### A product journey built for steady progress
-
-![OptimIEra journey](docs/assets/screenshots/journey.png)
-
-### Privacy and security at the center
-
-![OptimIEra security](docs/assets/screenshots/security.png)
-
-### Proof you can understand and share
-
-![OptimIEra Proof Center](docs/assets/screenshots/proofs.png)
-
-### Friendly access for every kind of builder
-
-![OptimIEra sign in](docs/assets/screenshots/sign-in.png)
-
-![OptimIEra sign up](docs/assets/screenshots/sign-up.png)
 
 ## Live local product tour
 
