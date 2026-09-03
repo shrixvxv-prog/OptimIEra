@@ -892,6 +892,29 @@ export async function activatePromptVersion(input: {
   });
   if (!version || version.lifecycleStatus !== 'APPROVED')
     throw new Error('ILLEGAL_STATE_TRANSITION');
+  const promptPolicy = await db.prompt.findUnique({
+    where: { id: input.promptId },
+    select: {
+      regressionSuiteId: true,
+      regressionPolicy: true,
+      project: { select: { regressionPolicy: true } },
+    },
+  });
+  const regressionPolicyConfigured = Boolean(
+    promptPolicy?.regressionSuiteId &&
+    (promptPolicy.regressionPolicy ?? promptPolicy.project.regressionPolicy),
+  );
+  if (regressionPolicyConfigured) {
+    const report = await db.regressionReport.findFirst({
+      where: {
+        candidateVersionId: version.id,
+        suiteId: promptPolicy!.regressionSuiteId!,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (!report) throw new Error('REGRESSION_REQUIRED');
+    if (report.status === 'BLOCKED') throw new Error('REGRESSION_BLOCKED');
+  }
   return db.$transaction(async (tx) => {
     const prompt = await tx.prompt.update({
       where: { id: input.promptId },

@@ -11,14 +11,15 @@ import {
 import {
   finalizeManifest,
   OGStorageAdapter,
-  parseVerifiedManifest,
+  verifyEncryptedManifestBytes,
   StorageError,
   type OptimizationEvidenceManifestV1,
 } from '@optimiera/og-storage';
-import { readOGComputeConfig, readOGStorageConfig } from '@optimiera/config';
+import { readOGComputeConfig, readOGExecutionMode, readOGStorageConfig } from '@optimiera/config';
 import { requireSession, type Role } from './authorization';
 import { assertLiveWritesEnabled } from './runtime-config';
 import { completeLiveOperation, reserveLiveOperation } from './live-operation-quota';
+import { assertVerificationTransition, getVerificationRecord } from './verification-service';
 
 const artifactKind = 'OPTIMIZATION_EVIDENCE';
 function role(value: string): Role {
@@ -35,9 +36,6 @@ function json(value: string | null) {
 }
 function readOGStorageSafeComputeModel() {
   return readOGComputeConfig().model ?? null;
-}
-function readOGStorageSafeComputeNetwork() {
-  return readOGComputeConfig().network;
 }
 function readProviderTrace(value: string | null) {
   const trace = json(value).providerTrace;
@@ -63,6 +61,8 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
   if (!member || !['OWNER', 'ADMIN', 'EDITOR'].includes(role(member.role)))
     throw new Error('FORBIDDEN');
   if (job.status !== 'SUCCEEDED') throw new Error('ILLEGAL_STATE_TRANSITION');
+  const currentVerification = await getVerificationRecord(optimizationJobId);
+  assertVerificationTransition(currentVerification.state, 'EVIDENCE_CREATED');
   const existing = job.artifacts.find((artifact) => artifact.kind === artifactKind);
   if (existing?.status === 'DOWNLOAD_VERIFIED') return existing;
   const source = job.sourcePromptVersionId
@@ -75,6 +75,15 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
   for (const candidate of job.candidates) decryptPrompt(parseEnvelope(candidate.encryptedContent));
   const selected = job.candidates.find((candidate) => candidate.recommended) ?? null;
   const evaluation = job.evaluationRuns[0];
+  const regressionReport = job.savedPromptVersionId
+    ? await db.regressionReport.findFirst({
+        where: {
+          candidateVersionId: job.savedPromptVersionId,
+          status: { in: ['PASS', 'WARNING'] },
+        },
+        orderBy: { createdAt: 'desc' },
+      })
+    : null;
   const originalPromptHash = source.contentHash;
   const candidateHashes = Object.fromEntries(
     job.candidates.map((candidate) => [candidate.id, candidate.contentHash]),
@@ -96,10 +105,10 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
         : (readProviderTrace(job.requestMetadata)?.model ?? null),
     network:
       job.providerType === 'OG_COMPUTE'
-        ? readOGStorageSafeComputeNetwork()
+        ? readOGExecutionMode()
         : job.providerType === 'EXTERNAL_MODEL'
           ? 'nous-api'
-          : null,
+          : readOGExecutionMode(),
     analyzerVersion: job.analyzerVersion,
     scoringVersion: job.scoringVersion,
     encryptedOriginalPrompt: JSON.parse(source.encryptedContent),
@@ -123,6 +132,7 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
           })) ?? [],
       }),
     ),
+    regressionReportHash: regressionReport?.contentHash ?? null,
     dimensionScores: json(evaluation?.scoringDimensions ?? null),
     recommendation: evaluation?.winnerLabel ?? 'ORIGINAL',
     confidence: evaluation?.confidence ?? 0,
@@ -133,9 +143,9 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
     completedAt: job.completedAt?.toISOString() ?? new Date().toISOString(),
   };
   const manifest = finalizeManifest(base);
-  const bytes = new TextEncoder().encode(JSON.stringify(manifest));
-  const contentHash = createHash('sha256').update(bytes).digest('hex');
   const localEnvelope = serializeEnvelope(encryptPrompt(JSON.stringify(manifest)));
+  const bytes = new TextEncoder().encode(localEnvelope);
+  const contentHash = createHash('sha256').update(bytes).digest('hex');
   const config = readOGStorageConfig();
   const artifact = await db.artifact.upsert({
     where: {
@@ -152,7 +162,7 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
       status: 'LOCAL_CREATED',
       schemaVersion: manifest.schemaVersion,
       storageProvider: config.enabled && config.privateKey ? '0G_STORAGE' : 'LOCAL_ENCRYPTED',
-      network: config.network,
+      network: readOGExecutionMode(),
       storageMode: config.mode,
       indexerHost: new URL(config.indexerUrl).host,
       contentHash,
@@ -184,11 +194,12 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
     data: { status: 'UPLOADING', uploadStatus: 'UPLOADING', retryCount: { increment: 1 } },
   });
   if (claim.count === 0) return db.artifact.findUniqueOrThrow({ where: { id: artifact.id } });
+  assertVerificationTransition('EVIDENCE_CREATED', 'STORAGE_PENDING');
   const adapter = new OGStorageAdapter(config);
   try {
     const uploaded = await adapter.uploadArtifact({ encryptedBytes: bytes, contentHash });
     const verified = await adapter.verifyArtifact(uploaded.storageRoot as string, contentHash);
-    parseVerifiedManifest(
+    verifyEncryptedManifestBytes(
       (await adapter.downloadArtifact(uploaded.storageRoot as string)).bytes as Uint8Array,
       contentHash,
     );
@@ -204,6 +215,7 @@ export async function finalizeOptimizationEvidence(optimizationJobId: string) {
         verifiedAt: new Date(),
       },
     });
+    assertVerificationTransition('STORAGE_PENDING', 'STORAGE_VERIFIED');
     await completeLiveOperation(quotaReservation.id);
     return persisted;
   } catch (error) {

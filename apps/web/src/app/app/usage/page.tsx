@@ -1,16 +1,18 @@
 import { requireSession } from '@/lib/authorization';
 import { getLiveOperationQuotaSnapshot } from '@/lib/live-operation-quota';
+import { ogNetworkLabel, readOGChainConfig } from '@optimiera/config';
 
 export default async function Usage() {
   const session = await requireSession();
   const quota = await getLiveOperationQuotaSnapshot(session.user.id);
+  const network = readOGChainConfig().network;
   return (
     <main className="appmain">
       <div className="eyebrow">Public live-operation safety</div>
       <h1>Daily 0G quotas</h1>
       <p className="lede">
         {quota.enabled
-          ? 'Controlled live testnet mode is enabled.'
+          ? `Controlled live ${ogNetworkLabel(network)} mode is enabled.`
           : 'Safe public mode is active. Server-funded live writes are disabled.'}
       </p>
       <div className="grid">

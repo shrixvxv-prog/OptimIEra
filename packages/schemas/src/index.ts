@@ -108,3 +108,79 @@ export const optimizationRequestSchema = z
     }
   });
 export type OptimizationRequest = z.infer<typeof optimizationRequestSchema>;
+
+export const verifiedPromptAssetStates = [
+  'DRAFT',
+  'ANALYZED',
+  'OPTIMIZED',
+  'VERSIONED',
+  'EVIDENCE_CREATED',
+  'STORAGE_PENDING',
+  'STORAGE_VERIFIED',
+  'CHAIN_PENDING',
+  'CHAIN_CONFIRMED',
+  'VERIFIED',
+  'REVOKED',
+  'FAILED',
+] as const;
+export const verifiedPromptAssetStateSchema = z.enum(verifiedPromptAssetStates);
+export type VerifiedPromptAssetState = z.infer<typeof verifiedPromptAssetStateSchema>;
+
+export type VerifiedPromptAsset = {
+  assetId: string;
+  owner: { userId: string; ownerReferenceHash: string };
+  workspace: { workspaceId: string; workspaceReference: string };
+  promptVersion: { id: string; versionId: string; hash: string };
+  promptHash: string;
+  manifestHash: string;
+  evidenceRoot: string | null;
+  storageReference: { provider: string; network: string | null; root: string | null };
+  chainCommitment: {
+    proofId: string | null;
+    transactionHash: string | null;
+    contractAddress: string | null;
+    chainId: number | null;
+  };
+  registryTransaction: string | null;
+  evaluationVersion: string | null;
+  createdAt: string;
+  verificationState: VerifiedPromptAssetState;
+};
+
+const legalVerificationTransitions: Record<
+  VerifiedPromptAssetState,
+  readonly VerifiedPromptAssetState[]
+> = {
+  DRAFT: ['ANALYZED', 'FAILED'],
+  ANALYZED: ['OPTIMIZED', 'FAILED'],
+  OPTIMIZED: ['VERSIONED', 'FAILED'],
+  VERSIONED: ['EVIDENCE_CREATED', 'FAILED'],
+  EVIDENCE_CREATED: ['STORAGE_PENDING', 'STORAGE_VERIFIED', 'FAILED'],
+  STORAGE_PENDING: ['STORAGE_VERIFIED', 'FAILED'],
+  STORAGE_VERIFIED: ['CHAIN_PENDING', 'FAILED'],
+  CHAIN_PENDING: ['CHAIN_CONFIRMED', 'FAILED'],
+  CHAIN_CONFIRMED: ['VERIFIED', 'FAILED'],
+  VERIFIED: ['REVOKED'],
+  REVOKED: [],
+  FAILED: ['EVIDENCE_CREATED', 'STORAGE_PENDING', 'CHAIN_PENDING'],
+};
+
+export function canTransitionVerificationState(
+  from: VerifiedPromptAssetState,
+  to: VerifiedPromptAssetState,
+) {
+  return from === to || legalVerificationTransitions[from].includes(to);
+}
+
+export function transitionVerificationState(
+  from: VerifiedPromptAssetState,
+  to: VerifiedPromptAssetState,
+) {
+  if (!canTransitionVerificationState(from, to))
+    throw new Error(`ILLEGAL_VERIFICATION_TRANSITION:${from}:${to}`);
+  return to;
+}
+
+export function isVerifiedPromptAssetState(state: VerifiedPromptAssetState) {
+  return state === 'VERIFIED';
+}

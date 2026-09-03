@@ -5,13 +5,14 @@ const modes = [
 ];
 
 const infrastructure = [
-  ['0G Compute', 'Optional model-assisted optimization through the testnet Router.'],
+  ['0G Compute', 'Optional model-assisted optimization through the configured 0G Router.'],
   ['0G Storage', 'Encrypted evidence manifests with independently verifiable roots.'],
-  ['0G Chain', 'Hash-only provenance commitments on the Galileo registry.'],
+  ['0G Chain', 'Hash-only provenance commitments on the configured 0G registry.'],
   ['Public certificates', 'Shareable verification without revealing private prompt text.'],
 ];
 
 export default function Home() {
+  const networkName = ogNetworkLabel(readOGChainConfig().network);
   return (
     <main className="site">
       <header className="nav">
@@ -26,10 +27,10 @@ export default function Home() {
           <a href="/app">Studio</a>
         </nav>
         <span
-          className="status-pill testnet-badge"
-          title="OptimIEra currently operates on the 0G Galileo testnet. Testnet records have no mainnet financial value."
+          className="status-pill network-badge"
+          title={`OptimIEra is configured for ${networkName}. Network-specific balances and records are separate.`}
         >
-          0G Galileo Testnet
+          {networkName}
         </span>
       </header>
       <section className="hero pattern">
@@ -128,3 +129,4 @@ export default function Home() {
     </main>
   );
 }
+import { ogNetworkLabel, readOGChainConfig } from '@optimiera/config';

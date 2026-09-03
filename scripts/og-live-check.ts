@@ -25,15 +25,18 @@ export function buildPreflight(env: Record<string, string | undefined> = process
   const computeGate = networkGate({
     network: env.OG_COMPUTE_NETWORK,
     rpcUrl: env.OG_COMPUTE_BASE_URL,
+    mainnetEnabled: env.OPTIMIERA_0G_MAINNET_ENABLED === 'true',
   });
   const storageGate = networkGate({
     network: env.OG_STORAGE_NETWORK,
     rpcUrl: env.OG_STORAGE_RPC_URL,
+    mainnetEnabled: env.OPTIMIERA_0G_MAINNET_ENABLED === 'true',
   });
   const chainGate = networkGate({
     network: env.OG_CHAIN_NETWORK,
     chainId: chain.value?.chainId,
     rpcUrl: env.OG_CHAIN_RPC_URL,
+    mainnetEnabled: env.OPTIMIERA_0G_MAINNET_ENABLED === 'true',
   });
   const computeResult = compute.value
     ? componentStatus({
@@ -71,8 +74,8 @@ export function buildPreflight(env: Record<string, string | undefined> = process
     schemaVersion: 'OGLivePreflightV1',
     liveCallsMade: false,
     overall,
-    network: 'testnet',
-    chainId: 16602,
+    network: chain.value?.network ?? compute.value?.network ?? storage.value?.network ?? 'testnet',
+    chainId: chain.value?.chainId ?? (env.OPTIMIERA_0G_MAINNET_ENABLED === 'true' ? 16661 : 16602),
     components: {
       compute: {
         status: computeResult.status,

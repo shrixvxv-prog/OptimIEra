@@ -2,6 +2,6 @@
 
 Wave 2 prepares OptimIEra for Vercel with an external PostgreSQL database, Better Auth, encrypted prompt storage, and read-only public evidence verification.
 
-`OPTIMIERA_DEMO_MODE=true` and `OPTIMIERA_LIVE_WRITES_ENABLED=false` are the release defaults. Rules Engine optimization remains available. Storage uploads, chain registration, and revocation require an explicit live-write enablement and are otherwise rejected safely.
+Local development keeps `OPTIMIERA_DEMO_MODE=true` and live writes disabled. Public Preview/Production uses the explicitly opted-in Aristotle mainnet profile when configured; either live-write variable set to `false` disables live writes as an emergency kill switch. Rules Engine optimization remains available, and Storage uploads, Chain registration, and revocation remain bounded by the existing database-backed quotas.
 
-No 0G write, certificate issuance, or registry deployment is part of this release.
+No additional registry deployment is part of this release because the OptimIEra registry already exists on Aristotle mainnet. Mainnet writes and certificate issuance are enabled only in a correctly configured public environment and remain bounded by the existing quotas and emergency kill switches.

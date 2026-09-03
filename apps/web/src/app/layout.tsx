@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: { default: 'OptimIEra', template: '%s | OptimIEra' },
-  description: 'Privacy-first AI prompt optimization and verifiable 0G testnet evidence.',
+  description: 'Privacy-first AI prompt optimization and verifiable 0G evidence.',
 };
 
 export default function Layout({ children }: { children: ReactNode }) {

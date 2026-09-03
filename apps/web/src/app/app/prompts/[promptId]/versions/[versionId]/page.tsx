@@ -14,7 +14,12 @@ export default async function PromptVersion({
       promptId,
       prompt: { workspace: { members: { some: { userId: session.user.id } } } },
     },
-    include: { prompt: true, parentVersion: { select: { versionNumber: true } } },
+    include: {
+      prompt: true,
+      parentVersion: { select: { versionNumber: true } },
+      baselineRegressionReports: true,
+      candidateRegressionReports: true,
+    },
   });
   if (!version)
     return (
@@ -35,6 +40,24 @@ export default async function PromptVersion({
         <p className="muted">
           Content is encrypted at rest and is not rendered in this metadata view.
         </p>
+      </div>
+      <div className="card" id="regression">
+        <h3>Regression reports</h3>
+        {[...version.baselineRegressionReports, ...version.candidateRegressionReports].length ===
+        0 ? (
+          <p className="muted">No regression reports for this version.</p>
+        ) : (
+          [...version.baselineRegressionReports, ...version.candidateRegressionReports].map(
+            (report) => (
+              <p key={report.id}>
+                <span className="status-pill">{report.status}</span> · {report.contentHash}
+              </p>
+            ),
+          )
+        )}
+        <a className="button" href={`/app/prompts/${promptId}#regression`}>
+          Open regression controls
+        </a>
       </div>
     </main>
   );

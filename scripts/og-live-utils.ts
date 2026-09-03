@@ -1,6 +1,7 @@
 export type LiveStatus = 'READY' | 'UNCONFIGURED' | 'BLOCKED' | 'FAILED';
 
 export const TESTNET_CHAIN_ID = 16602;
+export const MAINNET_CHAIN_ID = 16661;
 
 const secretNames = /(?:key|secret|token|password|credential|private)/i;
 
@@ -34,6 +35,7 @@ export function safeConfig(env: Record<string, string | undefined>) {
     'OG_CHAIN_CHAIN_ID',
     'OG_CHAIN_EXPLORER_URL',
     'OPTIMIERA_REGISTRY_ADDRESS',
+    'OPTIMIERA_0G_MAINNET_ENABLED',
   ]);
   return Object.fromEntries(
     Object.entries(env)
@@ -44,14 +46,26 @@ export function safeConfig(env: Record<string, string | undefined>) {
   );
 }
 
-export function networkGate(input: { network?: string; chainId?: number; rpcUrl?: string }): {
+export function networkGate(input: {
+  network?: string;
+  chainId?: number;
+  rpcUrl?: string;
+  mainnetEnabled?: boolean;
+}): {
   status: LiveStatus;
   reason?: string;
 } {
-  if (input.network === 'mainnet') return { status: 'BLOCKED', reason: 'MAINNET_NOT_ALLOWED' };
+  if (input.network === 'mainnet') {
+    if (!input.mainnetEnabled) return { status: 'BLOCKED', reason: 'MAINNET_OPT_IN_REQUIRED' };
+    if (input.chainId !== undefined && input.chainId !== MAINNET_CHAIN_ID)
+      return { status: 'BLOCKED', reason: 'MAINNET_CHAIN_ID_REQUIRED' };
+    if (input.rpcUrl?.includes('testnet'))
+      return { status: 'BLOCKED', reason: 'MAINNET_RPC_REQUIRED' };
+    return { status: 'READY' };
+  }
   if (input.chainId !== undefined && input.chainId !== TESTNET_CHAIN_ID)
     return { status: 'BLOCKED', reason: 'TESTNET_CHAIN_ID_REQUIRED' };
-  if (input.rpcUrl?.includes('0g.ai') && input.rpcUrl.includes('evmrpc.0g.ai'))
+  if (input.rpcUrl?.includes('evmrpc.0g.ai') && !input.rpcUrl.includes('testnet'))
     return { status: 'BLOCKED', reason: 'MAINNET_RPC_NOT_ALLOWED' };
   return { status: 'READY' };
 }
@@ -73,8 +87,16 @@ export function componentStatus(input: {
   return { status: 'READY', missing: [] };
 }
 
-export function activationGate(confirmed: boolean, preflightReady: boolean) {
-  if (!confirmed) return { allowed: false, reason: 'CONFIRM_TESTNET_REQUIRED' };
+export function activationGate(
+  confirmed: boolean,
+  preflightReady: boolean,
+  network: 'mainnet' | 'testnet' = 'testnet',
+) {
+  if (!confirmed)
+    return {
+      allowed: false,
+      reason: network === 'mainnet' ? 'CONFIRM_MAINNET_REQUIRED' : 'CONFIRM_TESTNET_REQUIRED',
+    };
   if (!preflightReady) return { allowed: false, reason: 'PREFLIGHT_NOT_READY' };
   return { allowed: true };
 }

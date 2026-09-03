@@ -247,6 +247,9 @@ export default async function Optimize() {
               recipient={paymentConfig.recipient}
               amountWei={paymentConfig.amountWei.toString()}
               chainId={paymentConfig.chainId}
+              networkName={paymentConfig.networkName}
+              rpcUrl={paymentConfig.rpcUrl}
+              explorerUrl={paymentConfig.explorerUrl}
             />
           </section>
         </OptimizationForm>

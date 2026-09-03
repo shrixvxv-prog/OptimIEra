@@ -11,6 +11,7 @@
   "dependencies": {
     "@better-auth/prisma-adapter": "^1.6.23",
     "@optimiera/config": "workspace:*",
+    "@optimiera/benchmark-engine": "workspace:*",
     "@optimiera/database": "workspace:*",
     "@optimiera/encryption": "workspace:*",
     "@optimiera/og-chain": "workspace:*",

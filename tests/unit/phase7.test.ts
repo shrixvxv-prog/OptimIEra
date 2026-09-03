@@ -18,8 +18,12 @@ describe('Phase 7 live activation controls', () => {
     expect(result.components.storage.status).toBe('UNCONFIGURED');
     expect(result.components.chain.status).toBe('UNCONFIGURED');
   });
-  it('blocks mainnet and non-Galileo chain IDs', () => {
-    expect(networkGate({ network: 'mainnet' }).status).toBe('BLOCKED');
+  it('requires explicit mainnet opt-in and blocks non-Aristotle chain IDs', () => {
+    expect(networkGate({ network: 'mainnet' }).reason).toBe('MAINNET_OPT_IN_REQUIRED');
+    expect(networkGate({ network: 'mainnet', mainnetEnabled: true }).status).toBe('READY');
+    expect(networkGate({ network: 'mainnet', mainnetEnabled: true, chainId: 16602 }).reason).toBe(
+      'MAINNET_CHAIN_ID_REQUIRED',
+    );
     expect(networkGate({ network: 'testnet', chainId: 16661 }).reason).toBe(
       'TESTNET_CHAIN_ID_REQUIRED',
     );

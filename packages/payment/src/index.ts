@@ -13,7 +13,7 @@ export interface PaymentAdapter {
 }
 export const paymentIntegration = {
   status: 'READY' as const,
-  note: 'Native 0G testnet usage transfers are verified server-side before paid AI operations.',
+  note: 'Native 0G usage transfers are verified server-side before paid AI operations.',
 };
 
 import {
@@ -31,8 +31,11 @@ export const DEFAULT_USAGE_PAYMENT_WEI = 100_000_000_000_000n;
 
 export type UsagePaymentConfig = {
   enabled: boolean;
+  network: 'mainnet' | 'testnet';
+  networkName: string;
   chainId: number;
   rpcUrl: string;
+  explorerUrl: string;
   recipient?: Address;
   amountWei: bigint;
   confirmations: number;
@@ -68,17 +71,29 @@ export function readUsagePaymentConfig(
   const amount = env.OG_USAGE_PAYMENT_AMOUNT_WEI
     ? BigInt(env.OG_USAGE_PAYMENT_AMOUNT_WEI)
     : DEFAULT_USAGE_PAYMENT_WEI;
+  const network: UsagePaymentConfig['network'] =
+    env.OG_CHAIN_NETWORK === 'mainnet' ? 'mainnet' : 'testnet';
+  const expectedChainId = network === 'mainnet' ? 16661 : 16602;
   const config = {
     enabled: env.OPTIMIERA_USAGE_PAYMENTS_ENABLED === 'true',
-    chainId: env.OG_CHAIN_CHAIN_ID ? Number(env.OG_CHAIN_CHAIN_ID) : 16602,
-    rpcUrl: env.OG_CHAIN_RPC_URL || 'https://evmrpc-testnet.0g.ai',
+    network,
+    networkName: network === 'mainnet' ? '0G Aristotle Mainnet' : '0G Galileo Testnet',
+    chainId: env.OG_CHAIN_CHAIN_ID ? Number(env.OG_CHAIN_CHAIN_ID) : expectedChainId,
+    rpcUrl:
+      env.OG_CHAIN_RPC_URL ||
+      (network === 'mainnet' ? 'https://evmrpc.0g.ai' : 'https://evmrpc-testnet.0g.ai'),
+    explorerUrl:
+      env.OG_CHAIN_EXPLORER_URL ||
+      (network === 'mainnet' ? 'https://chainscan.0g.ai' : 'https://chainscan-galileo.0g.ai'),
     recipient: recipient && isAddress(recipient) ? (recipient as Address) : derivedRecipient,
     amountWei: amount,
     confirmations: env.OG_CHAIN_CONFIRMATIONS ? Number(env.OG_CHAIN_CONFIRMATIONS) : 1,
   };
   if (
     config.enabled &&
-    (!config.recipient || config.chainId !== 16602 || config.amountWei < DEFAULT_USAGE_PAYMENT_WEI)
+    (!config.recipient ||
+      config.chainId !== expectedChainId ||
+      config.amountWei < DEFAULT_USAGE_PAYMENT_WEI)
   )
     throw new UsagePaymentError('PAYMENT_CONFIGURATION_INVALID');
   return config;
@@ -113,7 +128,7 @@ export async function verifyUsagePaymentTransaction(
     transport: http(config.rpcUrl),
     chain: {
       id: config.chainId,
-      name: '0G Galileo Testnet',
+      name: config.networkName,
       nativeCurrency: { name: '0G', symbol: '0G', decimals: 18 },
       rpcUrls: { default: { http: [config.rpcUrl] } },
     },

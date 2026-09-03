@@ -6,7 +6,7 @@ export default function Security() {
         <h1>Evidence without exposure.</h1>
         <p className="lede">
           Provider credentials stay server-side, logs redact secrets, access is workspace-scoped,
-          live testnet requests are bounded by database-backed daily quotas, and plaintext private
+          live 0G requests are bounded by database-backed daily quotas, and plaintext private
           prompts never go onchain.
         </p>
         <div className="grid">
@@ -19,8 +19,12 @@ export default function Security() {
             <p>Certificates expose hashes and provenance metadata—not confidential prompt text.</p>
           </article>
           <article className="card">
-            <h2>Testnet safety</h2>
-            <p>Production rejects 0G mainnet configuration and keeps live writes off by default.</p>
+            <h2>Network safety</h2>
+            <p>
+              Production requires an explicit Aristotle mainnet opt-in and matching chain 16661
+              configuration. Local development remains testnet-safe by default, and every public
+              deployment retains an explicit live-operation kill switch.
+            </p>
           </article>
         </div>
       </section>

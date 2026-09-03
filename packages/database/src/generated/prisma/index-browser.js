@@ -205,7 +205,8 @@ exports.Prisma.ProjectScalarFieldEnum = {
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  archivedAt: 'archivedAt'
+  archivedAt: 'archivedAt',
+  regressionPolicy: 'regressionPolicy'
 };
 
 exports.Prisma.PromptScalarFieldEnum = {
@@ -221,7 +222,9 @@ exports.Prisma.PromptScalarFieldEnum = {
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  archivedAt: 'archivedAt'
+  archivedAt: 'archivedAt',
+  regressionSuiteId: 'regressionSuiteId',
+  regressionPolicy: 'regressionPolicy'
 };
 
 exports.Prisma.PromptVersionScalarFieldEnum = {
@@ -311,6 +314,20 @@ exports.Prisma.EvaluationSuiteScalarFieldEnum = {
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RegressionReportScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  promptId: 'promptId',
+  suiteId: 'suiteId',
+  baselineVersionId: 'baselineVersionId',
+  candidateVersionId: 'candidateVersionId',
+  status: 'status',
+  reportJson: 'reportJson',
+  contentHash: 'contentHash',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.TestCaseScalarFieldEnum = {
@@ -637,6 +654,7 @@ exports.Prisma.ModelName = {
   OptimizationJob: 'OptimizationJob',
   Candidate: 'Candidate',
   EvaluationSuite: 'EvaluationSuite',
+  RegressionReport: 'RegressionReport',
   TestCase: 'TestCase',
   EvaluationRun: 'EvaluationRun',
   EvaluationResult: 'EvaluationResult',

@@ -1,9 +1,13 @@
 import { readOGChainConfig, type OGChainConfig } from '@optimiera/config';
-import { OPTIMIERA_REGISTRY_ABI } from '@optimiera/contracts';
+import {
+  OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT,
+  OPTIMIERA_REGISTRY_ABI,
+} from '@optimiera/contracts';
 import {
   createPublicClient,
   createWalletClient,
   encodeAbiParameters,
+  encodeDeployData,
   http,
   keccak256,
   type Account,
@@ -233,7 +237,7 @@ export class OGChainAdapter {
         account,
         chain: this.chain,
       });
-      return { proofId: id, txHash: hash };
+      return { proofId: id, txHash: hash, contractAddress: address, registrar: account.address };
     } catch (error) {
       const message = String(error).toLowerCase();
       if (message.includes('duplicate'))
@@ -309,6 +313,166 @@ export class OGChainAdapter {
   }
 }
 
+export type MainnetRegistryEvidence = {
+  checkedAt: string;
+  chainId: number;
+  currentBlock: string;
+  transactionFound: boolean;
+  receiptStatus: 'success' | 'reverted';
+  receiptBlock: string;
+  deployedBytecode: boolean;
+  runtimeBytecodeBytes: number;
+  runtimeBytecodeHash: Hex;
+  expectedBytecodeMatch: boolean | null;
+  deployerBalanceWei: string;
+  adminRoleVerified: boolean;
+  registrarRoleVerified: boolean;
+  paused: boolean;
+};
+
+export async function readMainnetRegistryEvidence(
+  expectedRuntimeBytecode?: Hex,
+): Promise<MainnetRegistryEvidence> {
+  const deployment = OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT;
+  const chain: Chain = {
+    id: deployment.chainId,
+    name: deployment.networkName,
+    nativeCurrency: { name: '0G', symbol: '0G', decimals: 18 },
+    rpcUrls: { default: { http: [deployment.rpcUrl] } },
+  };
+  const client = createPublicClient({ chain, transport: http(deployment.rpcUrl) });
+  const chainId = await client.getChainId();
+  if (chainId !== deployment.chainId)
+    throw new ChainError('WRONG_CHAIN', '0G Mainnet RPC returned an unexpected chain ID.');
+  const [currentBlock, transaction, receipt, code, deployerBalance, adminRole, registrarRole, paused] =
+    await Promise.all([
+      client.getBlockNumber(),
+      client.getTransaction({ hash: deployment.transactionHash }),
+      client.getTransactionReceipt({ hash: deployment.transactionHash }),
+      client.getBytecode({ address: deployment.address }),
+      client.getBalance({ address: deployment.deployer }),
+      client.readContract({
+        address: deployment.address,
+        abi: OPTIMIERA_REGISTRY_ABI,
+        functionName: 'hasRole',
+        args: [`0x${'0'.repeat(64)}`, deployment.admin],
+      }),
+      client.readContract({
+        address: deployment.address,
+        abi: OPTIMIERA_REGISTRY_ABI,
+        functionName: 'hasRole',
+        args: [keccak256(new TextEncoder().encode('OPTIMIERA_REGISTRAR_ROLE')), deployment.registrar],
+      }),
+      client.readContract({
+        address: deployment.address,
+        abi: OPTIMIERA_REGISTRY_ABI,
+        functionName: 'paused',
+      }),
+    ]);
+  if (!code || code === '0x')
+    throw new ChainError('CONTRACT_NOT_DEPLOYED', '0G Mainnet registry bytecode is missing.');
+  return {
+    checkedAt: new Date().toISOString(),
+    chainId,
+    currentBlock: currentBlock.toString(),
+    transactionFound:
+      transaction.hash.toLowerCase() === deployment.transactionHash.toLowerCase() &&
+      transaction.to === null,
+    receiptStatus: receipt.status,
+    receiptBlock: receipt.blockNumber.toString(),
+    deployedBytecode: true,
+    runtimeBytecodeBytes: (code.length - 2) / 2,
+    runtimeBytecodeHash: keccak256(code),
+    expectedBytecodeMatch: expectedRuntimeBytecode
+      ? code.toLowerCase() === expectedRuntimeBytecode.toLowerCase()
+      : null,
+    deployerBalanceWei: deployerBalance.toString(),
+    adminRoleVerified: adminRole,
+    registrarRoleVerified: registrarRole,
+    paused,
+  };
+}
+
+export function serverSignerAddress(privateKey: string): Address {
+  const normalized = privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`;
+  if (!/^0x[a-fA-F0-9]{64}$/.test(normalized))
+    throw new ChainError('SIGNER_UNCONFIGURED', 'Server-side signer configuration is invalid.');
+  return privateKeyToAccount(normalized as Hex).address;
+}
+
+export function mainnetRegistryConstructorArguments() {
+  return encodeAbiParameters(
+    [{ type: 'address' }, { type: 'address' }],
+    [
+      OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT.admin,
+      OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT.registrar,
+    ],
+  );
+}
+
+export async function readMainnetBalance(address: Address) {
+  const deployment = OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT;
+  const client = createPublicClient({ transport: http(deployment.rpcUrl) });
+  const chainId = await client.getChainId();
+  if (chainId !== deployment.chainId)
+    throw new ChainError('WRONG_CHAIN', '0G Mainnet RPC returned an unexpected chain ID.');
+  return (await client.getBalance({ address })).toString();
+}
+
+export async function estimateMainnetRegistryDeployment(
+  creationBytecode: Hex,
+  deployer: Address = OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT.deployer,
+  registrar: Address = OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT.registrar,
+) {
+  const deployment = OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT;
+  const chain: Chain = {
+    id: deployment.chainId,
+    name: deployment.networkName,
+    nativeCurrency: { name: '0G', symbol: '0G', decimals: 18 },
+    rpcUrls: { default: { http: [deployment.rpcUrl] } },
+  };
+  const client = createPublicClient({ chain, transport: http(deployment.rpcUrl) });
+  const data = encodeDeployData({
+    abi: OPTIMIERA_REGISTRY_ABI,
+    bytecode: creationBytecode,
+    args: [deployer, registrar],
+  });
+  const [gas, gasPrice] = await Promise.all([
+    client.estimateGas({ account: deployer, data }),
+    client.getGasPrice(),
+  ]);
+  return {
+    estimatedGas: gas.toString(),
+    gasPriceWei: gasPrice.toString(),
+    estimatedRequirementWei: (gas * gasPrice).toString(),
+  };
+}
+
+export async function readMainnetSourceVerification(fetchImpl: typeof fetch = fetch) {
+  try {
+    const response = await fetchImpl(
+      `${OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT.explorerUrl}/open/api?module=contract&action=getsourcecode&address=${OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT.address}`,
+      { signal: AbortSignal.timeout(10_000) },
+    );
+    if (!response.ok) return { status: 'UNAVAILABLE' as const, contractName: null };
+    const body = (await response.json()) as {
+      result?: Array<{ SourceCode?: unknown; ABI?: unknown; ContractName?: unknown }>;
+    };
+    const result = body.result?.[0];
+    const verified =
+      typeof result?.SourceCode === 'string' &&
+      result.SourceCode.trim().length > 0 &&
+      result.ABI !== 'Contract source code not verified';
+    return {
+      status: verified ? ('VERIFIED' as const) : ('UNVERIFIED' as const),
+      contractName:
+        verified && typeof result?.ContractName === 'string' ? result.ContractName : null,
+    };
+  } catch {
+    return { status: 'UNAVAILABLE' as const, contractName: null };
+  }
+}
+
 export interface ChainAdapter {
   healthCheck(): Promise<ChainHealth>;
   getNetwork(): Promise<{ network: string; chainId: number }>;
@@ -323,6 +487,8 @@ export interface ChainAdapter {
 }
 
 export const solidityPrefix = 'OptimIEra';
+
+export { OPTIMIERA_MAINNET_REGISTRY_DEPLOYMENT };
 
 // The test adapter is imported only by NODE_ENV=test code paths.
 export { TestChainAdapter } from './test-adapter';

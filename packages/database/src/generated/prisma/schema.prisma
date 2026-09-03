@@ -146,22 +146,23 @@ model Verification {
 }
 
 model Organization {
-  id           String             @id
-  name         String
-  slug         String             @unique
-  logo         String?
-  metadata     String?
-  createdAt    DateTime           @default(now())
-  members      Member[]
-  invitations  Invitation[]
-  projects     Project[]
-  prompts      Prompt[]
-  versions     PromptVersion[]
-  reviews      PromptReview[]
-  auditEvents  AuditEvent[]
-  settings     WorkspaceSettings?
-  chainProofs  ChainProof[]
-  certificates Certificate[]
+  id                String             @id
+  name              String
+  slug              String             @unique
+  logo              String?
+  metadata          String?
+  createdAt         DateTime           @default(now())
+  members           Member[]
+  invitations       Invitation[]
+  projects          Project[]
+  prompts           Prompt[]
+  versions          PromptVersion[]
+  reviews           PromptReview[]
+  auditEvents       AuditEvent[]
+  settings          WorkspaceSettings?
+  chainProofs       ChainProof[]
+  certificates      Certificate[]
+  regressionReports RegressionReport[]
 }
 
 model Member {
@@ -193,69 +194,77 @@ model Invitation {
 }
 
 model Project {
-  id          String        @id @default(cuid())
-  workspaceId String
-  name        String
-  slug        String
-  description String?
-  status      ProjectStatus @default(ACTIVE)
-  createdById String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  archivedAt  DateTime?
-  workspace   Organization  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  createdBy   User          @relation(fields: [createdById], references: [id])
-  prompts     Prompt[]
+  id                String             @id @default(cuid())
+  workspaceId       String
+  name              String
+  slug              String
+  description       String?
+  status            ProjectStatus      @default(ACTIVE)
+  createdById       String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  archivedAt        DateTime?
+  regressionPolicy  String?
+  workspace         Organization       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy         User               @relation(fields: [createdById], references: [id])
+  prompts           Prompt[]
+  regressionReports RegressionReport[]
 
   @@unique([workspaceId, slug])
   @@index([workspaceId, status])
 }
 
 model Prompt {
-  id              String                @id @default(cuid())
-  workspaceId     String
-  projectId       String
-  title           String
-  description     String?
-  purpose         String?
-  visibility      PromptVisibility      @default(PRIVATE)
-  lifecycleStatus PromptLifecycleStatus @default(DRAFT)
-  activeVersionId String?               @unique
-  createdById     String
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
-  archivedAt      DateTime?
-  workspace       Organization          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  project         Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdBy       User                  @relation(fields: [createdById], references: [id])
-  versions        PromptVersion[]
-  activeVersion   PromptVersion?        @relation("activeVersion", fields: [activeVersionId], references: [id])
+  id                String                @id @default(cuid())
+  workspaceId       String
+  projectId         String
+  title             String
+  description       String?
+  purpose           String?
+  visibility        PromptVisibility      @default(PRIVATE)
+  lifecycleStatus   PromptLifecycleStatus @default(DRAFT)
+  activeVersionId   String?               @unique
+  createdById       String
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  archivedAt        DateTime?
+  regressionSuiteId String?
+  regressionPolicy  String?
+  workspace         Organization          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project           Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy         User                  @relation(fields: [createdById], references: [id])
+  versions          PromptVersion[]
+  activeVersion     PromptVersion?        @relation("activeVersion", fields: [activeVersionId], references: [id])
+  regressionSuite   EvaluationSuite?      @relation("promptRegressionSuite", fields: [regressionSuiteId], references: [id], onDelete: SetNull)
+  regressionReports RegressionReport[]
 
   @@index([workspaceId, projectId])
 }
 
 model PromptVersion {
-  id                   String              @id @default(cuid())
-  promptId             String
-  workspaceId          String
-  versionNumber        Int
-  encryptedContent     String
-  contentHash          String
-  encryptionStatus     String
-  parentVersionId      String?
-  changeSummary        String?
-  lifecycleStatus      PromptVersionStatus @default(DRAFT)
-  createdById          String
-  createdAt            DateTime            @default(now())
-  prompt               Prompt              @relation(fields: [promptId], references: [id], onDelete: Cascade)
-  workspace            Organization        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  createdBy            User                @relation(fields: [createdById], references: [id])
-  parentVersion        PromptVersion?      @relation("versionParent", fields: [parentVersionId], references: [id])
-  childVersions        PromptVersion[]     @relation("versionParent")
-  activeFor            Prompt?             @relation("activeVersion")
-  reviews              PromptReview[]
-  sourceCertificates   Certificate[]       @relation("sourceCertificateVersion")
-  selectedCertificates Certificate[]       @relation("selectedCertificateVersion")
+  id                         String              @id @default(cuid())
+  promptId                   String
+  workspaceId                String
+  versionNumber              Int
+  encryptedContent           String
+  contentHash                String
+  encryptionStatus           String
+  parentVersionId            String?
+  changeSummary              String?
+  lifecycleStatus            PromptVersionStatus @default(DRAFT)
+  createdById                String
+  createdAt                  DateTime            @default(now())
+  prompt                     Prompt              @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  workspace                  Organization        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy                  User                @relation(fields: [createdById], references: [id])
+  parentVersion              PromptVersion?      @relation("versionParent", fields: [parentVersionId], references: [id])
+  childVersions              PromptVersion[]     @relation("versionParent")
+  activeFor                  Prompt?             @relation("activeVersion")
+  reviews                    PromptReview[]
+  sourceCertificates         Certificate[]       @relation("sourceCertificateVersion")
+  selectedCertificates       Certificate[]       @relation("selectedCertificateVersion")
+  baselineRegressionReports  RegressionReport[]  @relation("baselineRegressionVersion")
+  candidateRegressionReports RegressionReport[]  @relation("candidateRegressionVersion")
 
   @@unique([promptId, versionNumber])
   @@index([workspaceId, promptId])
@@ -344,17 +353,42 @@ model Candidate {
 }
 
 model EvaluationSuite {
-  id          String     @id @default(cuid())
-  workspaceId String
-  projectId   String
-  name        String
-  description String?
-  createdById String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  testCases   TestCase[]
+  id                String             @id @default(cuid())
+  workspaceId       String
+  projectId         String
+  name              String
+  description       String?
+  createdById       String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  testCases         TestCase[]
+  attachedPrompts   Prompt[]           @relation("promptRegressionSuite")
+  regressionReports RegressionReport[]
 
   @@index([workspaceId])
+}
+
+model RegressionReport {
+  id                 String          @id @default(cuid())
+  workspaceId        String
+  projectId          String
+  promptId           String
+  suiteId            String
+  baselineVersionId  String
+  candidateVersionId String
+  status             String
+  reportJson         String
+  contentHash        String
+  createdAt          DateTime        @default(now())
+  workspace          Organization    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project            Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  prompt             Prompt          @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  suite              EvaluationSuite @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+  baselineVersion    PromptVersion   @relation("baselineRegressionVersion", fields: [baselineVersionId], references: [id], onDelete: Cascade)
+  candidateVersion   PromptVersion   @relation("candidateRegressionVersion", fields: [candidateVersionId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, promptId, createdAt])
+  @@index([candidateVersionId, status])
 }
 
 model TestCase {

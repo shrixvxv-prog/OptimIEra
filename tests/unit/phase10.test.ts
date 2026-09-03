@@ -99,6 +99,22 @@ describe('0G usage payments', () => {
     expect(value.amountWei).toBe(100_000_000_000_000n);
   });
 
+  it('derives Aristotle mainnet payment details from the selected chain', () => {
+    const value = readUsagePaymentConfig({
+      OG_CHAIN_NETWORK: 'mainnet',
+      OG_CHAIN_CHAIN_ID: '16661',
+      OG_CHAIN_RPC_URL: 'https://evmrpc.0g.ai',
+      OG_CHAIN_EXPLORER_URL: 'https://chainscan.0g.ai',
+    });
+    expect(value).toMatchObject({
+      network: 'mainnet',
+      networkName: '0G Aristotle Mainnet',
+      chainId: 16661,
+      rpcUrl: 'https://evmrpc.0g.ai',
+      explorerUrl: 'https://chainscan.0g.ai',
+    });
+  });
+
   it('accepts a successful Galileo payment with sufficient value', () => {
     expect(
       validateUsagePaymentEvidence(

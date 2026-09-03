@@ -7,6 +7,7 @@ import {
   registerOptimizationProof,
   revokeOptimizationProof,
 } from '@/lib/chain-proof';
+import { completeGalileoVerification } from '@/lib/live-verification';
 
 export async function saveCandidate(formData: FormData) {
   const optimizationJobId = String(formData.get('optimizationJobId') ?? '');
@@ -40,4 +41,10 @@ export async function revokeProof(formData: FormData) {
   if (!reason) throw new Error('VALIDATION_ERROR');
   await revokeOptimizationProof(optimizationJobId, reason);
   return optimizationJobId;
+}
+
+export async function completeGalileo(formData: FormData) {
+  const optimizationJobId = String(formData.get('optimizationJobId') ?? '');
+  const result = await completeGalileoVerification(optimizationJobId);
+  return result.publicUrl;
 }

@@ -5,6 +5,7 @@ import { db } from '@optimiera/database';
 import { decryptPrompt, parseEnvelope } from '@optimiera/encryption';
 import { parseVerifiedManifest } from '@optimiera/og-storage';
 import { requireSession } from './authorization';
+import { assertVerifiedAsset, getVerificationRecord } from './verification-service';
 import {
   canonicalCertificate,
   type CertificateVerificationLevel,
@@ -73,13 +74,15 @@ export function calculateTrustLevel(input: {
   storageVerified: boolean;
   chainVerified: boolean;
   testAdapter: boolean;
+  computeVerified?: boolean;
   revoked?: boolean;
   failed?: boolean;
 }): CertificateVerificationLevel {
   if (input.revoked) return 'REVOKED';
   if (input.failed) return 'FAILED';
   if (input.testAdapter) return 'TEST_VERIFIED';
-  if (input.storageVerified && input.chainVerified) return 'FULLY_VERIFIED';
+  if (input.storageVerified && input.chainVerified && input.computeVerified !== false)
+    return 'FULLY_VERIFIED';
   if (input.storageVerified) return 'STORAGE_VERIFIED';
   if (input.chainVerified) return 'CHAIN_VERIFIED';
   return 'LOCAL_VERIFIED';
@@ -128,6 +131,8 @@ function verifySource(job: Awaited<ReturnType<typeof authorizedJob>>['job']) {
 
 export async function issueOptimizationCertificate(optimizationId: string) {
   const { job, session } = await authorizedJob(optimizationId);
+  const verificationRecord = await getVerificationRecord(optimizationId);
+  assertVerifiedAsset({ ...verificationRecord.input, certificate: undefined });
   const selected = verifySource(job);
   const existing = await db.certificate.findFirst({
     where: { optimizationJobId: job.id, selectedPromptVersionId: selected.selectedVersionId },
@@ -144,7 +149,6 @@ export async function issueOptimizationCertificate(optimizationId: string) {
     throw new Error('CERTIFICATE_NOT_READY');
   const manifest = parseVerifiedManifest(
     new TextEncoder().encode(decryptPrompt(parseEnvelope(artifact.encryptedManifest))),
-    artifact.contentHash,
   );
   if (
     normalizeHash(manifest.originalPromptHash) !== normalizeHash(sourceVersion.contentHash) ||
@@ -167,6 +171,13 @@ export async function issueOptimizationCertificate(optimizationId: string) {
   const testAdapter = proof?.status === 'VERIFIED' && proof.network === 'test-adapter';
   const evaluation = job.evaluationRuns[0];
   const providerTrace = job.requestMetadata ? JSON.parse(job.requestMetadata).providerTrace : null;
+  const computeSelected = job.providerType === 'OG_COMPUTE';
+  const computeVerified =
+    !computeSelected ||
+    (manifest.network === 'GALILEO_LIVE' &&
+      typeof providerTrace?.requestId === 'string' &&
+      typeof providerTrace?.model === 'string');
+  if (computeSelected && !computeVerified) throw new Error('COMPUTE_VERIFICATION_REQUIRED');
   const aggregateScore = Math.max(
     0,
     Math.min(
@@ -207,7 +218,12 @@ export async function issueOptimizationCertificate(optimizationId: string) {
     issuedAt: new Date().toISOString(),
     expiresAt: null,
     revokedAt: null,
-    verificationLevel: calculateTrustLevel({ storageVerified, chainVerified, testAdapter }),
+    verificationLevel: calculateTrustLevel({
+      storageVerified,
+      chainVerified,
+      testAdapter,
+      computeVerified,
+    }),
   };
   const certificate: OptimizationCertificateV1 = {
     ...base,

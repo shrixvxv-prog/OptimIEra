@@ -93,20 +93,20 @@ The result is a more thoughtful relationship with AI: clearer questions, better 
 
 ## Technology and why it helps
 
-| Technology          | Role in OptimIEra                   | Benefit                                                                                                 |
-| ------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Next.js + React     | Studio web application              | Fast, modern user experiences with server-rendered routes                                               |
-| TypeScript          | Shared application language         | Safer refactoring and clearer contracts across the system                                               |
-| pnpm + Turborepo    | Monorepo and build orchestration    | Efficient development across apps and reusable packages                                                 |
-| PostgreSQL + Prisma | Durable product data                | Reliable persistence for workspaces, prompts, versions, reviews, and evidence                           |
-| AES-256-GCM         | Prompt and candidate encryption     | Strong confidentiality and tamper detection for private content                                         |
-| Better Auth + SIWE  | Account and wallet access           | Familiar email/password access plus compatible injected wallets such as MetaMask, Rabby, and OKX Wallet |
-| Vitest + Playwright | Automated quality assurance         | Confidence from unit, integration, and browser workflow testing                                         |
-| 0G Compute          | Optional model-assisted inference   | Verifiable decentralized compute when configured                                                        |
-| 0G Storage          | Optional encrypted evidence storage | Durable decentralized evidence with proof-aware retrieval                                               |
-| 0G Chain            | Optional provenance registry        | Hash-only onchain commitments that preserve privacy                                                     |
-| Foundry + Solidity  | Registry contract tooling           | Reproducible contract formatting, builds, tests, and verification workflows                             |
-| Docusaurus          | OptimIEra Atlas documentation       | A welcoming, searchable home for developers and contributors                                            |
+| Technology          | Role in OptimIEra                 | Benefit                                                                                                 |
+| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Next.js + React     | Studio web application            | Fast, modern user experiences with server-rendered routes                                               |
+| TypeScript          | Shared application language       | Safer refactoring and clearer contracts across the system                                               |
+| pnpm + Turborepo    | Monorepo and build orchestration  | Efficient development across apps and reusable packages                                                 |
+| PostgreSQL + Prisma | Durable product data              | Reliable persistence for workspaces, prompts, versions, reviews, and evidence                           |
+| AES-256-GCM         | Prompt and candidate encryption   | Strong confidentiality and tamper detection for private content                                         |
+| Better Auth + SIWE  | Account and wallet access         | Familiar email/password access plus compatible injected wallets such as MetaMask, Rabby, and OKX Wallet |
+| Vitest + Playwright | Automated quality assurance       | Confidence from unit, integration, and browser workflow testing                                         |
+| 0G Compute          | Optional model-assisted inference | Verifiable decentralized compute when configured                                                        |
+| 0G Storage          | Required for Verified Assets      | Durable encrypted evidence with proof-aware retrieval                                                   |
+| 0G Chain            | Required for Verified Assets      | Hash-only onchain commitments that preserve privacy                                                     |
+| Foundry + Solidity  | Registry contract tooling         | Reproducible contract formatting, builds, tests, and verification workflows                             |
+| Docusaurus          | OptimIEra Atlas documentation     | A welcoming, searchable home for developers and contributors                                            |
 
 ## System flow
 
@@ -123,12 +123,12 @@ Evaluation + recommendation + diff
       ↓
 Encrypted immutable version
       ↓
-Evidence manifest + certificate + optional 0G proof
+Canonical evidence → encrypted 0G Storage → 0G Chain readback → certificate
 ```
 
 ## Current implementation
 
-OptimIEra’s testnet product implementation is complete and is undergoing final managed-database deployment verification. The current workspace includes:
+OptimIEra’s core product implementation is complete and is being prepared for a public 0G Aristotle mainnet deployment. The current workspace includes:
 
 - complete local Studio optimization workflow;
 - deterministic analyzer, scoring, candidates, comparison, recommendation, and diff;
@@ -140,7 +140,8 @@ OptimIEra’s testnet product implementation is complete and is undergoing final
 - hash-only 0G Chain registry commitments;
 - public certificate verification and Proof Center;
 - authenticated Galileo testnet proof flow with a `FULLY_VERIFIED` certificate;
-- wallet-approved Galileo usage payment flow at exactly `0.0001 0G` per enabled optimization, with receipt and replay validation;
+- network-aware Aristotle mainnet configuration with the existing OptimIEra registry at chain `16661`;
+- wallet-approved native 0G usage payment flow at exactly `0.0001 0G` per enabled optimization, with receipt and replay validation;
 - APIs, SDK, CLI, monitoring boundaries, and developer documentation.
 
 The local safe profile keeps funded 0G writes and usage payments disabled. Nous and 0G Compute are configured and verified locally, while external execution is explicit and never silently replaces the Rules Engine.
@@ -173,11 +174,11 @@ For local encrypted storage, configure `OPTIMIERA_ENCRYPTION_MASTER_KEY` and kee
 1. Create separate managed PostgreSQL databases for **Preview** and **Production** in Vercel. If Vercel asks you to accept Neon Marketplace terms, the account owner must approve them once.
 2. Import this repository into Vercel and set **Root Directory** to `apps/web`.
 3. Use Node.js 24.x, install command `cd ../.. && pnpm install --frozen-lockfile`, and build command `cd ../.. && pnpm vercel-build`.
-4. Add the required environment variables from [the Vercel environment matrix](docs/deployment/VERCEL_ENVIRONMENT_MATRIX.md). Keep secrets server-only, use HTTPS auth URLs, and keep all 0G networks on Galileo testnet (`16602`).
+4. Add the required environment variables from [the Vercel environment matrix](docs/deployment/VERCEL_ENVIRONMENT_MATRIX.md). For Aristotle, set the explicit mainnet flag and chain `16661`; keep secrets server-only.
 5. Apply migrations through the build command, deploy Preview, and test sign-up, wallet access, Studio optimization, Proof Center, and mobile navigation.
 6. Repeat with Production variables only after Preview passes. Check `/api/health` and `/api/readiness` before sharing the URL.
 
-Never put `.env`, private keys, API keys, or database URLs in Git or browser-exposed variables. Do not run live 0G writes until funded testnet credentials and an explicit activation decision are available.
+Never put `.env`, private keys, API keys, or database URLs in Git or browser-exposed variables. Do not run mainnet writes until the managed database, funded server-side credentials, and authenticated Preview smoke checks are complete.
 
 ## Quality gates
 
@@ -193,7 +194,7 @@ pnpm build
 pnpm safety:scan
 ```
 
-The project is prepared for Vercel deployment as a pnpm monorepo. Configure `apps/web` as the Vercel project root, install with `pnpm install --frozen-lockfile`, and use `cd ../.. && pnpm vercel-build`. Preview and Production require separate managed PostgreSQL databases. See [Vercel deployment](docs/deployment/VERCEL_DEPLOYMENT.md).
+The project is prepared for Vercel deployment as a pnpm monorepo. Configure `apps/web` as the Vercel project root, install with `pnpm install --frozen-lockfile`, and use `cd ../.. && pnpm vercel-build`. Preview and Production require separate managed PostgreSQL databases. See [Vercel deployment](docs/deployment/VERCEL_DEPLOYMENT.md) for the Aristotle mainnet steps.
 
 ## Privacy promise
 

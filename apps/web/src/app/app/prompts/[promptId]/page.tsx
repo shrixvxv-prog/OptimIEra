@@ -1,12 +1,14 @@
 import { db, listPromptVersionsForWorkspace } from '@optimiera/database';
 import { requireSession } from '@/lib/authorization';
 import { requestReview } from '../../reviews/actions';
+import { attachRegressionAction, runRegressionAction } from './regression-actions';
 
 export default async function Prompt({ params }: { params: Promise<{ promptId: string }> }) {
   const session = await requireSession();
   const { promptId } = await params;
   const prompt = await db.prompt.findFirst({
     where: { id: promptId, workspace: { members: { some: { userId: session.user.id } } } },
+    include: { project: true, regressionSuite: true },
   });
   if (!prompt)
     return (
@@ -15,7 +17,7 @@ export default async function Prompt({ params }: { params: Promise<{ promptId: s
         <p className="muted">This prompt is not available in your workspace.</p>
       </main>
     );
-  const [versions, reviewers, optimizations] = await Promise.all([
+  const [versions, reviewers, optimizations, suites, reports] = await Promise.all([
     listPromptVersionsForWorkspace(prompt.workspaceId, prompt.id),
     db.member.findMany({
       where: { organizationId: prompt.workspaceId, role: { in: ['owner', 'admin', 'reviewer'] } },
@@ -23,6 +25,15 @@ export default async function Prompt({ params }: { params: Promise<{ promptId: s
     }),
     db.optimizationJob.findMany({
       where: { workspaceId: prompt.workspaceId, promptId: prompt.id },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+    }),
+    db.evaluationSuite.findMany({
+      where: { workspaceId: prompt.workspaceId, projectId: prompt.projectId },
+      orderBy: { updatedAt: 'desc' },
+    }),
+    db.regressionReport.findMany({
+      where: { promptId: prompt.id },
       orderBy: { createdAt: 'desc' },
       take: 10,
     }),
@@ -66,6 +77,108 @@ export default async function Prompt({ params }: { params: Promise<{ promptId: s
             )}
           </div>
         ))}
+      </div>
+      <div className="card" id="regression">
+        <h3>Regression testing</h3>
+        <p className="muted">
+          Compare a proposed PromptVersion with the current approved version using the same
+          BenchmarkSuite.
+        </p>
+        <form action={attachRegressionAction} className="mini-form">
+          <input type="hidden" name="promptId" value={prompt.id} />
+          <label>
+            Benchmark suite
+            <select name="suiteId" required defaultValue={prompt.regressionSuiteId ?? ''}>
+              <option value="" disabled>
+                Select a suite
+              </option>
+              {suites.map((suite) => (
+                <option key={suite.id} value={suite.id}>
+                  {suite.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Regression policy (JSON)
+            <textarea
+              name="policy"
+              required
+              defaultValue={
+                prompt.regressionPolicy ??
+                '{"minimumSuccessScore":0.8,"maximumRegressionPercentage":0.05,"maximumSafetyFailures":0,"maximumPrivacyFailures":0,"severities":{"minimumSuccessScore":"BLOCKING","maximumRegressionPercentage":"BLOCKING","maximumSafetyFailures":"BLOCKING","maximumPrivacyFailures":"BLOCKING"}}'
+              }
+            />
+          </label>
+          <button className="button" type="submit">
+            Attach suite and policy
+          </button>
+        </form>
+        {prompt.regressionSuiteId && versions.length > 1 && (
+          <form action={runRegressionAction} className="mini-form">
+            <input type="hidden" name="promptId" value={prompt.id} />
+            <label>
+              Baseline version
+              <select name="baselineVersionId" required>
+                {versions.map((version) => (
+                  <option key={version.id} value={version.id}>
+                    v{version.versionNumber} ({version.lifecycleStatus})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Candidate version
+              <select name="candidateVersionId" required>
+                {versions.map((version) => (
+                  <option key={version.id} value={version.id}>
+                    v{version.versionNumber} ({version.lifecycleStatus})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Provider
+              <select name="provider" defaultValue="local">
+                <option value="local">Local deterministic provider</option>
+                <option value="og-compute">0G Compute</option>
+              </select>
+            </label>
+            <button className="button" type="submit">
+              Run regression
+            </button>
+          </form>
+        )}
+        {reports.map((report) => {
+          const data = JSON.parse(report.reportJson) as {
+            policyResult?: { violations?: Array<{ message: string }> };
+            newFailures?: string[];
+            fixedFailures?: string[];
+          };
+          return (
+            <article key={report.id}>
+              <p>
+                <span className="status-pill">{report.status}</span> ·{' '}
+                {report.createdAt.toISOString()}
+              </p>
+              <p className="muted">
+                v
+                {versions.find((version) => version.id === report.baselineVersionId)
+                  ?.versionNumber ?? '?'}{' '}
+                → v
+                {versions.find((version) => version.id === report.candidateVersionId)
+                  ?.versionNumber ?? '?'}
+              </p>
+              {data.policyResult?.violations?.map((violation) => (
+                <p key={violation.message}>{violation.message}</p>
+              ))}
+              <p className="muted">
+                New failures: {data.newFailures?.join(', ') || 'none'} · Fixed failures:{' '}
+                {data.fixedFailures?.join(', ') || 'none'} · Hash: {report.contentHash}
+              </p>
+            </article>
+          );
+        })}
       </div>
       <div className="card">
         <h3>Optimization history</h3>

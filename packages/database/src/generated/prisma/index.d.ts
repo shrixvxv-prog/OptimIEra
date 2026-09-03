@@ -84,6 +84,11 @@ export type Candidate = $Result.DefaultSelection<Prisma.$CandidatePayload>
  */
 export type EvaluationSuite = $Result.DefaultSelection<Prisma.$EvaluationSuitePayload>
 /**
+ * Model RegressionReport
+ * 
+ */
+export type RegressionReport = $Result.DefaultSelection<Prisma.$RegressionReportPayload>
+/**
  * Model TestCase
  * 
  */
@@ -561,6 +566,16 @@ export class PrismaClient<
     * ```
     */
   get evaluationSuite(): Prisma.EvaluationSuiteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.regressionReport`: Exposes CRUD operations for the **RegressionReport** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RegressionReports
+    * const regressionReports = await prisma.regressionReport.findMany()
+    * ```
+    */
+  get regressionReport(): Prisma.RegressionReportDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.testCase`: Exposes CRUD operations for the **TestCase** model.
@@ -1149,6 +1164,7 @@ export namespace Prisma {
     OptimizationJob: 'OptimizationJob',
     Candidate: 'Candidate',
     EvaluationSuite: 'EvaluationSuite',
+    RegressionReport: 'RegressionReport',
     TestCase: 'TestCase',
     EvaluationRun: 'EvaluationRun',
     EvaluationResult: 'EvaluationResult',
@@ -1178,7 +1194,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "organization" | "member" | "invitation" | "project" | "prompt" | "promptVersion" | "promptReview" | "optimizationJob" | "candidate" | "evaluationSuite" | "testCase" | "evaluationRun" | "evaluationResult" | "artifact" | "chainProof" | "certificate" | "apiKey" | "usageRecord" | "usagePayment" | "liveOperationUsage" | "auditEvent" | "walletIdentity" | "walletAddress" | "workspaceSettings"
+      modelProps: "user" | "session" | "account" | "verification" | "organization" | "member" | "invitation" | "project" | "prompt" | "promptVersion" | "promptReview" | "optimizationJob" | "candidate" | "evaluationSuite" | "regressionReport" | "testCase" | "evaluationRun" | "evaluationResult" | "artifact" | "chainProof" | "certificate" | "apiKey" | "usageRecord" | "usagePayment" | "liveOperationUsage" | "auditEvent" | "walletIdentity" | "walletAddress" | "workspaceSettings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2215,6 +2231,80 @@ export namespace Prisma {
           count: {
             args: Prisma.EvaluationSuiteCountArgs<ExtArgs>
             result: $Utils.Optional<EvaluationSuiteCountAggregateOutputType> | number
+          }
+        }
+      }
+      RegressionReport: {
+        payload: Prisma.$RegressionReportPayload<ExtArgs>
+        fields: Prisma.RegressionReportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RegressionReportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RegressionReportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>
+          }
+          findFirst: {
+            args: Prisma.RegressionReportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RegressionReportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>
+          }
+          findMany: {
+            args: Prisma.RegressionReportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>[]
+          }
+          create: {
+            args: Prisma.RegressionReportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>
+          }
+          createMany: {
+            args: Prisma.RegressionReportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RegressionReportCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>[]
+          }
+          delete: {
+            args: Prisma.RegressionReportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>
+          }
+          update: {
+            args: Prisma.RegressionReportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>
+          }
+          deleteMany: {
+            args: Prisma.RegressionReportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RegressionReportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RegressionReportUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>[]
+          }
+          upsert: {
+            args: Prisma.RegressionReportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RegressionReportPayload>
+          }
+          aggregate: {
+            args: Prisma.RegressionReportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRegressionReport>
+          }
+          groupBy: {
+            args: Prisma.RegressionReportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RegressionReportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RegressionReportCountArgs<ExtArgs>
+            result: $Utils.Optional<RegressionReportCountAggregateOutputType> | number
           }
         }
       }
@@ -3376,6 +3466,7 @@ export namespace Prisma {
     optimizationJob?: OptimizationJobOmit
     candidate?: CandidateOmit
     evaluationSuite?: EvaluationSuiteOmit
+    regressionReport?: RegressionReportOmit
     testCase?: TestCaseOmit
     evaluationRun?: EvaluationRunOmit
     evaluationResult?: EvaluationResultOmit
@@ -3600,6 +3691,7 @@ export namespace Prisma {
     auditEvents: number
     chainProofs: number
     certificates: number
+    regressionReports: number
   }
 
   export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3612,6 +3704,7 @@ export namespace Prisma {
     auditEvents?: boolean | OrganizationCountOutputTypeCountAuditEventsArgs
     chainProofs?: boolean | OrganizationCountOutputTypeCountChainProofsArgs
     certificates?: boolean | OrganizationCountOutputTypeCountCertificatesArgs
+    regressionReports?: boolean | OrganizationCountOutputTypeCountRegressionReportsArgs
   }
 
   // Custom InputTypes
@@ -3688,6 +3781,13 @@ export namespace Prisma {
     where?: CertificateWhereInput
   }
 
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
+  }
+
 
   /**
    * Count Type ProjectCountOutputType
@@ -3695,10 +3795,12 @@ export namespace Prisma {
 
   export type ProjectCountOutputType = {
     prompts: number
+    regressionReports: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prompts?: boolean | ProjectCountOutputTypeCountPromptsArgs
+    regressionReports?: boolean | ProjectCountOutputTypeCountRegressionReportsArgs
   }
 
   // Custom InputTypes
@@ -3719,6 +3821,13 @@ export namespace Prisma {
     where?: PromptWhereInput
   }
 
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
+  }
+
 
   /**
    * Count Type PromptCountOutputType
@@ -3726,10 +3835,12 @@ export namespace Prisma {
 
   export type PromptCountOutputType = {
     versions: number
+    regressionReports: number
   }
 
   export type PromptCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     versions?: boolean | PromptCountOutputTypeCountVersionsArgs
+    regressionReports?: boolean | PromptCountOutputTypeCountRegressionReportsArgs
   }
 
   // Custom InputTypes
@@ -3750,6 +3861,13 @@ export namespace Prisma {
     where?: PromptVersionWhereInput
   }
 
+  /**
+   * PromptCountOutputType without action
+   */
+  export type PromptCountOutputTypeCountRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
+  }
+
 
   /**
    * Count Type PromptVersionCountOutputType
@@ -3760,6 +3878,8 @@ export namespace Prisma {
     reviews: number
     sourceCertificates: number
     selectedCertificates: number
+    baselineRegressionReports: number
+    candidateRegressionReports: number
   }
 
   export type PromptVersionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3767,6 +3887,8 @@ export namespace Prisma {
     reviews?: boolean | PromptVersionCountOutputTypeCountReviewsArgs
     sourceCertificates?: boolean | PromptVersionCountOutputTypeCountSourceCertificatesArgs
     selectedCertificates?: boolean | PromptVersionCountOutputTypeCountSelectedCertificatesArgs
+    baselineRegressionReports?: boolean | PromptVersionCountOutputTypeCountBaselineRegressionReportsArgs
+    candidateRegressionReports?: boolean | PromptVersionCountOutputTypeCountCandidateRegressionReportsArgs
   }
 
   // Custom InputTypes
@@ -3806,6 +3928,20 @@ export namespace Prisma {
    */
   export type PromptVersionCountOutputTypeCountSelectedCertificatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CertificateWhereInput
+  }
+
+  /**
+   * PromptVersionCountOutputType without action
+   */
+  export type PromptVersionCountOutputTypeCountBaselineRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
+  }
+
+  /**
+   * PromptVersionCountOutputType without action
+   */
+  export type PromptVersionCountOutputTypeCountCandidateRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
   }
 
 
@@ -3913,10 +4049,14 @@ export namespace Prisma {
 
   export type EvaluationSuiteCountOutputType = {
     testCases: number
+    attachedPrompts: number
+    regressionReports: number
   }
 
   export type EvaluationSuiteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testCases?: boolean | EvaluationSuiteCountOutputTypeCountTestCasesArgs
+    attachedPrompts?: boolean | EvaluationSuiteCountOutputTypeCountAttachedPromptsArgs
+    regressionReports?: boolean | EvaluationSuiteCountOutputTypeCountRegressionReportsArgs
   }
 
   // Custom InputTypes
@@ -3935,6 +4075,20 @@ export namespace Prisma {
    */
   export type EvaluationSuiteCountOutputTypeCountTestCasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TestCaseWhereInput
+  }
+
+  /**
+   * EvaluationSuiteCountOutputType without action
+   */
+  export type EvaluationSuiteCountOutputTypeCountAttachedPromptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PromptWhereInput
+  }
+
+  /**
+   * EvaluationSuiteCountOutputType without action
+   */
+  export type EvaluationSuiteCountOutputTypeCountRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
   }
 
 
@@ -8902,6 +9056,7 @@ export namespace Prisma {
     settings?: boolean | Organization$settingsArgs<ExtArgs>
     chainProofs?: boolean | Organization$chainProofsArgs<ExtArgs>
     certificates?: boolean | Organization$certificatesArgs<ExtArgs>
+    regressionReports?: boolean | Organization$regressionReportsArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
 
@@ -8944,6 +9099,7 @@ export namespace Prisma {
     settings?: boolean | Organization$settingsArgs<ExtArgs>
     chainProofs?: boolean | Organization$chainProofsArgs<ExtArgs>
     certificates?: boolean | Organization$certificatesArgs<ExtArgs>
+    regressionReports?: boolean | Organization$regressionReportsArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -8962,6 +9118,7 @@ export namespace Prisma {
       settings: Prisma.$WorkspaceSettingsPayload<ExtArgs> | null
       chainProofs: Prisma.$ChainProofPayload<ExtArgs>[]
       certificates: Prisma.$CertificatePayload<ExtArgs>[]
+      regressionReports: Prisma.$RegressionReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9374,6 +9531,7 @@ export namespace Prisma {
     settings<T extends Organization$settingsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$settingsArgs<ExtArgs>>): Prisma__WorkspaceSettingsClient<$Result.GetResult<Prisma.$WorkspaceSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     chainProofs<T extends Organization$chainProofsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$chainProofsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChainProofPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     certificates<T extends Organization$certificatesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    regressionReports<T extends Organization$regressionReportsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$regressionReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10034,6 +10192,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CertificateScalarFieldEnum | CertificateScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.regressionReports
+   */
+  export type Organization$regressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    cursor?: RegressionReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
   }
 
   /**
@@ -12257,6 +12439,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     archivedAt: Date | null
+    regressionPolicy: string | null
   }
 
   export type ProjectMaxAggregateOutputType = {
@@ -12270,6 +12453,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     archivedAt: Date | null
+    regressionPolicy: string | null
   }
 
   export type ProjectCountAggregateOutputType = {
@@ -12283,6 +12467,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     archivedAt: number
+    regressionPolicy: number
     _all: number
   }
 
@@ -12298,6 +12483,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     archivedAt?: true
+    regressionPolicy?: true
   }
 
   export type ProjectMaxAggregateInputType = {
@@ -12311,6 +12497,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     archivedAt?: true
+    regressionPolicy?: true
   }
 
   export type ProjectCountAggregateInputType = {
@@ -12324,6 +12511,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     archivedAt?: true
+    regressionPolicy?: true
     _all?: true
   }
 
@@ -12410,6 +12598,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     archivedAt: Date | null
+    regressionPolicy: string | null
     _count: ProjectCountAggregateOutputType | null
     _min: ProjectMinAggregateOutputType | null
     _max: ProjectMaxAggregateOutputType | null
@@ -12440,9 +12629,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionPolicy?: boolean
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     prompts?: boolean | Project$promptsArgs<ExtArgs>
+    regressionReports?: boolean | Project$regressionReportsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -12457,6 +12648,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionPolicy?: boolean
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
@@ -12472,6 +12664,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionPolicy?: boolean
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
@@ -12487,13 +12680,15 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionPolicy?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "slug" | "description" | "status" | "createdById" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "slug" | "description" | "status" | "createdById" | "createdAt" | "updatedAt" | "archivedAt" | "regressionPolicy", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     prompts?: boolean | Project$promptsArgs<ExtArgs>
+    regressionReports?: boolean | Project$regressionReportsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12511,6 +12706,7 @@ export namespace Prisma {
       workspace: Prisma.$OrganizationPayload<ExtArgs>
       createdBy: Prisma.$UserPayload<ExtArgs>
       prompts: Prisma.$PromptPayload<ExtArgs>[]
+      regressionReports: Prisma.$RegressionReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12523,6 +12719,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       archivedAt: Date | null
+      regressionPolicy: string | null
     }, ExtArgs["result"]["project"]>
     composites: {}
   }
@@ -12920,6 +13117,7 @@ export namespace Prisma {
     workspace<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     prompts<T extends Project$promptsArgs<ExtArgs> = {}>(args?: Subset<T, Project$promptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    regressionReports<T extends Project$regressionReportsArgs<ExtArgs> = {}>(args?: Subset<T, Project$regressionReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12959,6 +13157,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
     readonly archivedAt: FieldRef<"Project", 'DateTime'>
+    readonly regressionPolicy: FieldRef<"Project", 'String'>
   }
     
 
@@ -13384,6 +13583,30 @@ export namespace Prisma {
   }
 
   /**
+   * Project.regressionReports
+   */
+  export type Project$regressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    cursor?: RegressionReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
    * Project without action
    */
   export type ProjectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13426,6 +13649,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     archivedAt: Date | null
+    regressionSuiteId: string | null
+    regressionPolicy: string | null
   }
 
   export type PromptMaxAggregateOutputType = {
@@ -13442,6 +13667,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     archivedAt: Date | null
+    regressionSuiteId: string | null
+    regressionPolicy: string | null
   }
 
   export type PromptCountAggregateOutputType = {
@@ -13458,6 +13685,8 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     archivedAt: number
+    regressionSuiteId: number
+    regressionPolicy: number
     _all: number
   }
 
@@ -13476,6 +13705,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     archivedAt?: true
+    regressionSuiteId?: true
+    regressionPolicy?: true
   }
 
   export type PromptMaxAggregateInputType = {
@@ -13492,6 +13723,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     archivedAt?: true
+    regressionSuiteId?: true
+    regressionPolicy?: true
   }
 
   export type PromptCountAggregateInputType = {
@@ -13508,6 +13741,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     archivedAt?: true
+    regressionSuiteId?: true
+    regressionPolicy?: true
     _all?: true
   }
 
@@ -13597,6 +13832,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     archivedAt: Date | null
+    regressionSuiteId: string | null
+    regressionPolicy: string | null
     _count: PromptCountAggregateOutputType | null
     _min: PromptMinAggregateOutputType | null
     _max: PromptMaxAggregateOutputType | null
@@ -13630,11 +13867,15 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionSuiteId?: boolean
+    regressionPolicy?: boolean
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     versions?: boolean | Prompt$versionsArgs<ExtArgs>
     activeVersion?: boolean | Prompt$activeVersionArgs<ExtArgs>
+    regressionSuite?: boolean | Prompt$regressionSuiteArgs<ExtArgs>
+    regressionReports?: boolean | Prompt$regressionReportsArgs<ExtArgs>
     _count?: boolean | PromptCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prompt"]>
 
@@ -13652,10 +13893,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionSuiteId?: boolean
+    regressionPolicy?: boolean
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     activeVersion?: boolean | Prompt$activeVersionArgs<ExtArgs>
+    regressionSuite?: boolean | Prompt$regressionSuiteArgs<ExtArgs>
   }, ExtArgs["result"]["prompt"]>
 
   export type PromptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13672,10 +13916,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionSuiteId?: boolean
+    regressionPolicy?: boolean
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     activeVersion?: boolean | Prompt$activeVersionArgs<ExtArgs>
+    regressionSuite?: boolean | Prompt$regressionSuiteArgs<ExtArgs>
   }, ExtArgs["result"]["prompt"]>
 
   export type PromptSelectScalar = {
@@ -13692,15 +13939,19 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     archivedAt?: boolean
+    regressionSuiteId?: boolean
+    regressionPolicy?: boolean
   }
 
-  export type PromptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "projectId" | "title" | "description" | "purpose" | "visibility" | "lifecycleStatus" | "activeVersionId" | "createdById" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["prompt"]>
+  export type PromptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "projectId" | "title" | "description" | "purpose" | "visibility" | "lifecycleStatus" | "activeVersionId" | "createdById" | "createdAt" | "updatedAt" | "archivedAt" | "regressionSuiteId" | "regressionPolicy", ExtArgs["result"]["prompt"]>
   export type PromptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     versions?: boolean | Prompt$versionsArgs<ExtArgs>
     activeVersion?: boolean | Prompt$activeVersionArgs<ExtArgs>
+    regressionSuite?: boolean | Prompt$regressionSuiteArgs<ExtArgs>
+    regressionReports?: boolean | Prompt$regressionReportsArgs<ExtArgs>
     _count?: boolean | PromptCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PromptIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13708,12 +13959,14 @@ export namespace Prisma {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     activeVersion?: boolean | Prompt$activeVersionArgs<ExtArgs>
+    regressionSuite?: boolean | Prompt$regressionSuiteArgs<ExtArgs>
   }
   export type PromptIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     activeVersion?: boolean | Prompt$activeVersionArgs<ExtArgs>
+    regressionSuite?: boolean | Prompt$regressionSuiteArgs<ExtArgs>
   }
 
   export type $PromptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13724,6 +13977,8 @@ export namespace Prisma {
       createdBy: Prisma.$UserPayload<ExtArgs>
       versions: Prisma.$PromptVersionPayload<ExtArgs>[]
       activeVersion: Prisma.$PromptVersionPayload<ExtArgs> | null
+      regressionSuite: Prisma.$EvaluationSuitePayload<ExtArgs> | null
+      regressionReports: Prisma.$RegressionReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13739,6 +13994,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       archivedAt: Date | null
+      regressionSuiteId: string | null
+      regressionPolicy: string | null
     }, ExtArgs["result"]["prompt"]>
     composites: {}
   }
@@ -14138,6 +14395,8 @@ export namespace Prisma {
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     versions<T extends Prompt$versionsArgs<ExtArgs> = {}>(args?: Subset<T, Prompt$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activeVersion<T extends Prompt$activeVersionArgs<ExtArgs> = {}>(args?: Subset<T, Prompt$activeVersionArgs<ExtArgs>>): Prisma__PromptVersionClient<$Result.GetResult<Prisma.$PromptVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    regressionSuite<T extends Prompt$regressionSuiteArgs<ExtArgs> = {}>(args?: Subset<T, Prompt$regressionSuiteArgs<ExtArgs>>): Prisma__EvaluationSuiteClient<$Result.GetResult<Prisma.$EvaluationSuitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    regressionReports<T extends Prompt$regressionReportsArgs<ExtArgs> = {}>(args?: Subset<T, Prompt$regressionReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14180,6 +14439,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Prompt", 'DateTime'>
     readonly updatedAt: FieldRef<"Prompt", 'DateTime'>
     readonly archivedAt: FieldRef<"Prompt", 'DateTime'>
+    readonly regressionSuiteId: FieldRef<"Prompt", 'String'>
+    readonly regressionPolicy: FieldRef<"Prompt", 'String'>
   }
     
 
@@ -14624,6 +14885,49 @@ export namespace Prisma {
   }
 
   /**
+   * Prompt.regressionSuite
+   */
+  export type Prompt$regressionSuiteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationSuite
+     */
+    select?: EvaluationSuiteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationSuite
+     */
+    omit?: EvaluationSuiteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationSuiteInclude<ExtArgs> | null
+    where?: EvaluationSuiteWhereInput
+  }
+
+  /**
+   * Prompt.regressionReports
+   */
+  export type Prompt$regressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    cursor?: RegressionReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
    * Prompt without action
    */
   export type PromptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14905,6 +15209,8 @@ export namespace Prisma {
     reviews?: boolean | PromptVersion$reviewsArgs<ExtArgs>
     sourceCertificates?: boolean | PromptVersion$sourceCertificatesArgs<ExtArgs>
     selectedCertificates?: boolean | PromptVersion$selectedCertificatesArgs<ExtArgs>
+    baselineRegressionReports?: boolean | PromptVersion$baselineRegressionReportsArgs<ExtArgs>
+    candidateRegressionReports?: boolean | PromptVersion$candidateRegressionReportsArgs<ExtArgs>
     _count?: boolean | PromptVersionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["promptVersion"]>
 
@@ -14972,6 +15278,8 @@ export namespace Prisma {
     reviews?: boolean | PromptVersion$reviewsArgs<ExtArgs>
     sourceCertificates?: boolean | PromptVersion$sourceCertificatesArgs<ExtArgs>
     selectedCertificates?: boolean | PromptVersion$selectedCertificatesArgs<ExtArgs>
+    baselineRegressionReports?: boolean | PromptVersion$baselineRegressionReportsArgs<ExtArgs>
+    candidateRegressionReports?: boolean | PromptVersion$candidateRegressionReportsArgs<ExtArgs>
     _count?: boolean | PromptVersionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PromptVersionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14999,6 +15307,8 @@ export namespace Prisma {
       reviews: Prisma.$PromptReviewPayload<ExtArgs>[]
       sourceCertificates: Prisma.$CertificatePayload<ExtArgs>[]
       selectedCertificates: Prisma.$CertificatePayload<ExtArgs>[]
+      baselineRegressionReports: Prisma.$RegressionReportPayload<ExtArgs>[]
+      candidateRegressionReports: Prisma.$RegressionReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15416,6 +15726,8 @@ export namespace Prisma {
     reviews<T extends PromptVersion$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersion$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sourceCertificates<T extends PromptVersion$sourceCertificatesArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersion$sourceCertificatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     selectedCertificates<T extends PromptVersion$selectedCertificatesArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersion$selectedCertificatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    baselineRegressionReports<T extends PromptVersion$baselineRegressionReportsArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersion$baselineRegressionReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    candidateRegressionReports<T extends PromptVersion$candidateRegressionReportsArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersion$candidateRegressionReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15989,6 +16301,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CertificateScalarFieldEnum | CertificateScalarFieldEnum[]
+  }
+
+  /**
+   * PromptVersion.baselineRegressionReports
+   */
+  export type PromptVersion$baselineRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    cursor?: RegressionReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
+   * PromptVersion.candidateRegressionReports
+   */
+  export type PromptVersion$candidateRegressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    cursor?: RegressionReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
   }
 
   /**
@@ -20141,6 +20501,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     testCases?: boolean | EvaluationSuite$testCasesArgs<ExtArgs>
+    attachedPrompts?: boolean | EvaluationSuite$attachedPromptsArgs<ExtArgs>
+    regressionReports?: boolean | EvaluationSuite$regressionReportsArgs<ExtArgs>
     _count?: boolean | EvaluationSuiteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluationSuite"]>
 
@@ -20180,6 +20542,8 @@ export namespace Prisma {
   export type EvaluationSuiteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "projectId" | "name" | "description" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["evaluationSuite"]>
   export type EvaluationSuiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     testCases?: boolean | EvaluationSuite$testCasesArgs<ExtArgs>
+    attachedPrompts?: boolean | EvaluationSuite$attachedPromptsArgs<ExtArgs>
+    regressionReports?: boolean | EvaluationSuite$regressionReportsArgs<ExtArgs>
     _count?: boolean | EvaluationSuiteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EvaluationSuiteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -20189,6 +20553,8 @@ export namespace Prisma {
     name: "EvaluationSuite"
     objects: {
       testCases: Prisma.$TestCasePayload<ExtArgs>[]
+      attachedPrompts: Prisma.$PromptPayload<ExtArgs>[]
+      regressionReports: Prisma.$RegressionReportPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20594,6 +20960,8 @@ export namespace Prisma {
   export interface Prisma__EvaluationSuiteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     testCases<T extends EvaluationSuite$testCasesArgs<ExtArgs> = {}>(args?: Subset<T, EvaluationSuite$testCasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestCasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    attachedPrompts<T extends EvaluationSuite$attachedPromptsArgs<ExtArgs> = {}>(args?: Subset<T, EvaluationSuite$attachedPromptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    regressionReports<T extends EvaluationSuite$regressionReportsArgs<ExtArgs> = {}>(args?: Subset<T, EvaluationSuite$regressionReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21048,6 +21416,54 @@ export namespace Prisma {
   }
 
   /**
+   * EvaluationSuite.attachedPrompts
+   */
+  export type EvaluationSuite$attachedPromptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PromptInclude<ExtArgs> | null
+    where?: PromptWhereInput
+    orderBy?: PromptOrderByWithRelationInput | PromptOrderByWithRelationInput[]
+    cursor?: PromptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PromptScalarFieldEnum | PromptScalarFieldEnum[]
+  }
+
+  /**
+   * EvaluationSuite.regressionReports
+   */
+  export type EvaluationSuite$regressionReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    cursor?: RegressionReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
    * EvaluationSuite without action
    */
   export type EvaluationSuiteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21063,6 +21479,1187 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EvaluationSuiteInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RegressionReport
+   */
+
+  export type AggregateRegressionReport = {
+    _count: RegressionReportCountAggregateOutputType | null
+    _min: RegressionReportMinAggregateOutputType | null
+    _max: RegressionReportMaxAggregateOutputType | null
+  }
+
+  export type RegressionReportMinAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    projectId: string | null
+    promptId: string | null
+    suiteId: string | null
+    baselineVersionId: string | null
+    candidateVersionId: string | null
+    status: string | null
+    reportJson: string | null
+    contentHash: string | null
+    createdAt: Date | null
+  }
+
+  export type RegressionReportMaxAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    projectId: string | null
+    promptId: string | null
+    suiteId: string | null
+    baselineVersionId: string | null
+    candidateVersionId: string | null
+    status: string | null
+    reportJson: string | null
+    contentHash: string | null
+    createdAt: Date | null
+  }
+
+  export type RegressionReportCountAggregateOutputType = {
+    id: number
+    workspaceId: number
+    projectId: number
+    promptId: number
+    suiteId: number
+    baselineVersionId: number
+    candidateVersionId: number
+    status: number
+    reportJson: number
+    contentHash: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RegressionReportMinAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    projectId?: true
+    promptId?: true
+    suiteId?: true
+    baselineVersionId?: true
+    candidateVersionId?: true
+    status?: true
+    reportJson?: true
+    contentHash?: true
+    createdAt?: true
+  }
+
+  export type RegressionReportMaxAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    projectId?: true
+    promptId?: true
+    suiteId?: true
+    baselineVersionId?: true
+    candidateVersionId?: true
+    status?: true
+    reportJson?: true
+    contentHash?: true
+    createdAt?: true
+  }
+
+  export type RegressionReportCountAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    projectId?: true
+    promptId?: true
+    suiteId?: true
+    baselineVersionId?: true
+    candidateVersionId?: true
+    status?: true
+    reportJson?: true
+    contentHash?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RegressionReportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegressionReport to aggregate.
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegressionReports to fetch.
+     */
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RegressionReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegressionReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegressionReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RegressionReports
+    **/
+    _count?: true | RegressionReportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RegressionReportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RegressionReportMaxAggregateInputType
+  }
+
+  export type GetRegressionReportAggregateType<T extends RegressionReportAggregateArgs> = {
+        [P in keyof T & keyof AggregateRegressionReport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRegressionReport[P]>
+      : GetScalarType<T[P], AggregateRegressionReport[P]>
+  }
+
+
+
+
+  export type RegressionReportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RegressionReportWhereInput
+    orderBy?: RegressionReportOrderByWithAggregationInput | RegressionReportOrderByWithAggregationInput[]
+    by: RegressionReportScalarFieldEnum[] | RegressionReportScalarFieldEnum
+    having?: RegressionReportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RegressionReportCountAggregateInputType | true
+    _min?: RegressionReportMinAggregateInputType
+    _max?: RegressionReportMaxAggregateInputType
+  }
+
+  export type RegressionReportGroupByOutputType = {
+    id: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt: Date
+    _count: RegressionReportCountAggregateOutputType | null
+    _min: RegressionReportMinAggregateOutputType | null
+    _max: RegressionReportMaxAggregateOutputType | null
+  }
+
+  type GetRegressionReportGroupByPayload<T extends RegressionReportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RegressionReportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RegressionReportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RegressionReportGroupByOutputType[P]>
+            : GetScalarType<T[P], RegressionReportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RegressionReportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    projectId?: boolean
+    promptId?: boolean
+    suiteId?: boolean
+    baselineVersionId?: boolean
+    candidateVersionId?: boolean
+    status?: boolean
+    reportJson?: boolean
+    contentHash?: boolean
+    createdAt?: boolean
+    workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    prompt?: boolean | PromptDefaultArgs<ExtArgs>
+    suite?: boolean | EvaluationSuiteDefaultArgs<ExtArgs>
+    baselineVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+    candidateVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regressionReport"]>
+
+  export type RegressionReportSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    projectId?: boolean
+    promptId?: boolean
+    suiteId?: boolean
+    baselineVersionId?: boolean
+    candidateVersionId?: boolean
+    status?: boolean
+    reportJson?: boolean
+    contentHash?: boolean
+    createdAt?: boolean
+    workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    prompt?: boolean | PromptDefaultArgs<ExtArgs>
+    suite?: boolean | EvaluationSuiteDefaultArgs<ExtArgs>
+    baselineVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+    candidateVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regressionReport"]>
+
+  export type RegressionReportSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    projectId?: boolean
+    promptId?: boolean
+    suiteId?: boolean
+    baselineVersionId?: boolean
+    candidateVersionId?: boolean
+    status?: boolean
+    reportJson?: boolean
+    contentHash?: boolean
+    createdAt?: boolean
+    workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    prompt?: boolean | PromptDefaultArgs<ExtArgs>
+    suite?: boolean | EvaluationSuiteDefaultArgs<ExtArgs>
+    baselineVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+    candidateVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["regressionReport"]>
+
+  export type RegressionReportSelectScalar = {
+    id?: boolean
+    workspaceId?: boolean
+    projectId?: boolean
+    promptId?: boolean
+    suiteId?: boolean
+    baselineVersionId?: boolean
+    candidateVersionId?: boolean
+    status?: boolean
+    reportJson?: boolean
+    contentHash?: boolean
+    createdAt?: boolean
+  }
+
+  export type RegressionReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "projectId" | "promptId" | "suiteId" | "baselineVersionId" | "candidateVersionId" | "status" | "reportJson" | "contentHash" | "createdAt", ExtArgs["result"]["regressionReport"]>
+  export type RegressionReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    prompt?: boolean | PromptDefaultArgs<ExtArgs>
+    suite?: boolean | EvaluationSuiteDefaultArgs<ExtArgs>
+    baselineVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+    candidateVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+  }
+  export type RegressionReportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    prompt?: boolean | PromptDefaultArgs<ExtArgs>
+    suite?: boolean | EvaluationSuiteDefaultArgs<ExtArgs>
+    baselineVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+    candidateVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+  }
+  export type RegressionReportIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | OrganizationDefaultArgs<ExtArgs>
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    prompt?: boolean | PromptDefaultArgs<ExtArgs>
+    suite?: boolean | EvaluationSuiteDefaultArgs<ExtArgs>
+    baselineVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+    candidateVersion?: boolean | PromptVersionDefaultArgs<ExtArgs>
+  }
+
+  export type $RegressionReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RegressionReport"
+    objects: {
+      workspace: Prisma.$OrganizationPayload<ExtArgs>
+      project: Prisma.$ProjectPayload<ExtArgs>
+      prompt: Prisma.$PromptPayload<ExtArgs>
+      suite: Prisma.$EvaluationSuitePayload<ExtArgs>
+      baselineVersion: Prisma.$PromptVersionPayload<ExtArgs>
+      candidateVersion: Prisma.$PromptVersionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workspaceId: string
+      projectId: string
+      promptId: string
+      suiteId: string
+      baselineVersionId: string
+      candidateVersionId: string
+      status: string
+      reportJson: string
+      contentHash: string
+      createdAt: Date
+    }, ExtArgs["result"]["regressionReport"]>
+    composites: {}
+  }
+
+  type RegressionReportGetPayload<S extends boolean | null | undefined | RegressionReportDefaultArgs> = $Result.GetResult<Prisma.$RegressionReportPayload, S>
+
+  type RegressionReportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RegressionReportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RegressionReportCountAggregateInputType | true
+    }
+
+  export interface RegressionReportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RegressionReport'], meta: { name: 'RegressionReport' } }
+    /**
+     * Find zero or one RegressionReport that matches the filter.
+     * @param {RegressionReportFindUniqueArgs} args - Arguments to find a RegressionReport
+     * @example
+     * // Get one RegressionReport
+     * const regressionReport = await prisma.regressionReport.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RegressionReportFindUniqueArgs>(args: SelectSubset<T, RegressionReportFindUniqueArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RegressionReport that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RegressionReportFindUniqueOrThrowArgs} args - Arguments to find a RegressionReport
+     * @example
+     * // Get one RegressionReport
+     * const regressionReport = await prisma.regressionReport.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RegressionReportFindUniqueOrThrowArgs>(args: SelectSubset<T, RegressionReportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegressionReport that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportFindFirstArgs} args - Arguments to find a RegressionReport
+     * @example
+     * // Get one RegressionReport
+     * const regressionReport = await prisma.regressionReport.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RegressionReportFindFirstArgs>(args?: SelectSubset<T, RegressionReportFindFirstArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RegressionReport that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportFindFirstOrThrowArgs} args - Arguments to find a RegressionReport
+     * @example
+     * // Get one RegressionReport
+     * const regressionReport = await prisma.regressionReport.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RegressionReportFindFirstOrThrowArgs>(args?: SelectSubset<T, RegressionReportFindFirstOrThrowArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RegressionReports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RegressionReports
+     * const regressionReports = await prisma.regressionReport.findMany()
+     * 
+     * // Get first 10 RegressionReports
+     * const regressionReports = await prisma.regressionReport.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const regressionReportWithIdOnly = await prisma.regressionReport.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RegressionReportFindManyArgs>(args?: SelectSubset<T, RegressionReportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RegressionReport.
+     * @param {RegressionReportCreateArgs} args - Arguments to create a RegressionReport.
+     * @example
+     * // Create one RegressionReport
+     * const RegressionReport = await prisma.regressionReport.create({
+     *   data: {
+     *     // ... data to create a RegressionReport
+     *   }
+     * })
+     * 
+     */
+    create<T extends RegressionReportCreateArgs>(args: SelectSubset<T, RegressionReportCreateArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RegressionReports.
+     * @param {RegressionReportCreateManyArgs} args - Arguments to create many RegressionReports.
+     * @example
+     * // Create many RegressionReports
+     * const regressionReport = await prisma.regressionReport.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RegressionReportCreateManyArgs>(args?: SelectSubset<T, RegressionReportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RegressionReports and returns the data saved in the database.
+     * @param {RegressionReportCreateManyAndReturnArgs} args - Arguments to create many RegressionReports.
+     * @example
+     * // Create many RegressionReports
+     * const regressionReport = await prisma.regressionReport.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RegressionReports and only return the `id`
+     * const regressionReportWithIdOnly = await prisma.regressionReport.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RegressionReportCreateManyAndReturnArgs>(args?: SelectSubset<T, RegressionReportCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RegressionReport.
+     * @param {RegressionReportDeleteArgs} args - Arguments to delete one RegressionReport.
+     * @example
+     * // Delete one RegressionReport
+     * const RegressionReport = await prisma.regressionReport.delete({
+     *   where: {
+     *     // ... filter to delete one RegressionReport
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RegressionReportDeleteArgs>(args: SelectSubset<T, RegressionReportDeleteArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RegressionReport.
+     * @param {RegressionReportUpdateArgs} args - Arguments to update one RegressionReport.
+     * @example
+     * // Update one RegressionReport
+     * const regressionReport = await prisma.regressionReport.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RegressionReportUpdateArgs>(args: SelectSubset<T, RegressionReportUpdateArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RegressionReports.
+     * @param {RegressionReportDeleteManyArgs} args - Arguments to filter RegressionReports to delete.
+     * @example
+     * // Delete a few RegressionReports
+     * const { count } = await prisma.regressionReport.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RegressionReportDeleteManyArgs>(args?: SelectSubset<T, RegressionReportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegressionReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RegressionReports
+     * const regressionReport = await prisma.regressionReport.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RegressionReportUpdateManyArgs>(args: SelectSubset<T, RegressionReportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RegressionReports and returns the data updated in the database.
+     * @param {RegressionReportUpdateManyAndReturnArgs} args - Arguments to update many RegressionReports.
+     * @example
+     * // Update many RegressionReports
+     * const regressionReport = await prisma.regressionReport.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RegressionReports and only return the `id`
+     * const regressionReportWithIdOnly = await prisma.regressionReport.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RegressionReportUpdateManyAndReturnArgs>(args: SelectSubset<T, RegressionReportUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RegressionReport.
+     * @param {RegressionReportUpsertArgs} args - Arguments to update or create a RegressionReport.
+     * @example
+     * // Update or create a RegressionReport
+     * const regressionReport = await prisma.regressionReport.upsert({
+     *   create: {
+     *     // ... data to create a RegressionReport
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RegressionReport we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RegressionReportUpsertArgs>(args: SelectSubset<T, RegressionReportUpsertArgs<ExtArgs>>): Prisma__RegressionReportClient<$Result.GetResult<Prisma.$RegressionReportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RegressionReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportCountArgs} args - Arguments to filter RegressionReports to count.
+     * @example
+     * // Count the number of RegressionReports
+     * const count = await prisma.regressionReport.count({
+     *   where: {
+     *     // ... the filter for the RegressionReports we want to count
+     *   }
+     * })
+    **/
+    count<T extends RegressionReportCountArgs>(
+      args?: Subset<T, RegressionReportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RegressionReportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RegressionReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RegressionReportAggregateArgs>(args: Subset<T, RegressionReportAggregateArgs>): Prisma.PrismaPromise<GetRegressionReportAggregateType<T>>
+
+    /**
+     * Group by RegressionReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RegressionReportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RegressionReportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RegressionReportGroupByArgs['orderBy'] }
+        : { orderBy?: RegressionReportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RegressionReportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRegressionReportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RegressionReport model
+   */
+  readonly fields: RegressionReportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RegressionReport.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RegressionReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    prompt<T extends PromptDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PromptDefaultArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    suite<T extends EvaluationSuiteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EvaluationSuiteDefaultArgs<ExtArgs>>): Prisma__EvaluationSuiteClient<$Result.GetResult<Prisma.$EvaluationSuitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    baselineVersion<T extends PromptVersionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersionDefaultArgs<ExtArgs>>): Prisma__PromptVersionClient<$Result.GetResult<Prisma.$PromptVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    candidateVersion<T extends PromptVersionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PromptVersionDefaultArgs<ExtArgs>>): Prisma__PromptVersionClient<$Result.GetResult<Prisma.$PromptVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RegressionReport model
+   */
+  interface RegressionReportFieldRefs {
+    readonly id: FieldRef<"RegressionReport", 'String'>
+    readonly workspaceId: FieldRef<"RegressionReport", 'String'>
+    readonly projectId: FieldRef<"RegressionReport", 'String'>
+    readonly promptId: FieldRef<"RegressionReport", 'String'>
+    readonly suiteId: FieldRef<"RegressionReport", 'String'>
+    readonly baselineVersionId: FieldRef<"RegressionReport", 'String'>
+    readonly candidateVersionId: FieldRef<"RegressionReport", 'String'>
+    readonly status: FieldRef<"RegressionReport", 'String'>
+    readonly reportJson: FieldRef<"RegressionReport", 'String'>
+    readonly contentHash: FieldRef<"RegressionReport", 'String'>
+    readonly createdAt: FieldRef<"RegressionReport", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RegressionReport findUnique
+   */
+  export type RegressionReportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * Filter, which RegressionReport to fetch.
+     */
+    where: RegressionReportWhereUniqueInput
+  }
+
+  /**
+   * RegressionReport findUniqueOrThrow
+   */
+  export type RegressionReportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * Filter, which RegressionReport to fetch.
+     */
+    where: RegressionReportWhereUniqueInput
+  }
+
+  /**
+   * RegressionReport findFirst
+   */
+  export type RegressionReportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * Filter, which RegressionReport to fetch.
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegressionReports to fetch.
+     */
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegressionReports.
+     */
+    cursor?: RegressionReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegressionReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegressionReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegressionReports.
+     */
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
+   * RegressionReport findFirstOrThrow
+   */
+  export type RegressionReportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * Filter, which RegressionReport to fetch.
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegressionReports to fetch.
+     */
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RegressionReports.
+     */
+    cursor?: RegressionReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegressionReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegressionReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegressionReports.
+     */
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
+   * RegressionReport findMany
+   */
+  export type RegressionReportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * Filter, which RegressionReports to fetch.
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RegressionReports to fetch.
+     */
+    orderBy?: RegressionReportOrderByWithRelationInput | RegressionReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RegressionReports.
+     */
+    cursor?: RegressionReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RegressionReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RegressionReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RegressionReports.
+     */
+    distinct?: RegressionReportScalarFieldEnum | RegressionReportScalarFieldEnum[]
+  }
+
+  /**
+   * RegressionReport create
+   */
+  export type RegressionReportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RegressionReport.
+     */
+    data: XOR<RegressionReportCreateInput, RegressionReportUncheckedCreateInput>
+  }
+
+  /**
+   * RegressionReport createMany
+   */
+  export type RegressionReportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RegressionReports.
+     */
+    data: RegressionReportCreateManyInput | RegressionReportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RegressionReport createManyAndReturn
+   */
+  export type RegressionReportCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * The data used to create many RegressionReports.
+     */
+    data: RegressionReportCreateManyInput | RegressionReportCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RegressionReport update
+   */
+  export type RegressionReportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RegressionReport.
+     */
+    data: XOR<RegressionReportUpdateInput, RegressionReportUncheckedUpdateInput>
+    /**
+     * Choose, which RegressionReport to update.
+     */
+    where: RegressionReportWhereUniqueInput
+  }
+
+  /**
+   * RegressionReport updateMany
+   */
+  export type RegressionReportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RegressionReports.
+     */
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyInput>
+    /**
+     * Filter which RegressionReports to update
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * Limit how many RegressionReports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegressionReport updateManyAndReturn
+   */
+  export type RegressionReportUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * The data used to update RegressionReports.
+     */
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyInput>
+    /**
+     * Filter which RegressionReports to update
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * Limit how many RegressionReports to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RegressionReport upsert
+   */
+  export type RegressionReportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RegressionReport to update in case it exists.
+     */
+    where: RegressionReportWhereUniqueInput
+    /**
+     * In case the RegressionReport found by the `where` argument doesn't exist, create a new RegressionReport with this data.
+     */
+    create: XOR<RegressionReportCreateInput, RegressionReportUncheckedCreateInput>
+    /**
+     * In case the RegressionReport was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RegressionReportUpdateInput, RegressionReportUncheckedUpdateInput>
+  }
+
+  /**
+   * RegressionReport delete
+   */
+  export type RegressionReportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
+    /**
+     * Filter which RegressionReport to delete.
+     */
+    where: RegressionReportWhereUniqueInput
+  }
+
+  /**
+   * RegressionReport deleteMany
+   */
+  export type RegressionReportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RegressionReports to delete
+     */
+    where?: RegressionReportWhereInput
+    /**
+     * Limit how many RegressionReports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RegressionReport without action
+   */
+  export type RegressionReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RegressionReport
+     */
+    select?: RegressionReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RegressionReport
+     */
+    omit?: RegressionReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RegressionReportInclude<ExtArgs> | null
   }
 
 
@@ -37996,7 +39593,8 @@ export namespace Prisma {
     createdById: 'createdById',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    archivedAt: 'archivedAt'
+    archivedAt: 'archivedAt',
+    regressionPolicy: 'regressionPolicy'
   };
 
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
@@ -38015,7 +39613,9 @@ export namespace Prisma {
     createdById: 'createdById',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    archivedAt: 'archivedAt'
+    archivedAt: 'archivedAt',
+    regressionSuiteId: 'regressionSuiteId',
+    regressionPolicy: 'regressionPolicy'
   };
 
   export type PromptScalarFieldEnum = (typeof PromptScalarFieldEnum)[keyof typeof PromptScalarFieldEnum]
@@ -38123,6 +39723,23 @@ export namespace Prisma {
   };
 
   export type EvaluationSuiteScalarFieldEnum = (typeof EvaluationSuiteScalarFieldEnum)[keyof typeof EvaluationSuiteScalarFieldEnum]
+
+
+  export const RegressionReportScalarFieldEnum: {
+    id: 'id',
+    workspaceId: 'workspaceId',
+    projectId: 'projectId',
+    promptId: 'promptId',
+    suiteId: 'suiteId',
+    baselineVersionId: 'baselineVersionId',
+    candidateVersionId: 'candidateVersionId',
+    status: 'status',
+    reportJson: 'reportJson',
+    contentHash: 'contentHash',
+    createdAt: 'createdAt'
+  };
+
+  export type RegressionReportScalarFieldEnum = (typeof RegressionReportScalarFieldEnum)[keyof typeof RegressionReportScalarFieldEnum]
 
 
   export const TestCaseScalarFieldEnum: {
@@ -38975,6 +40592,7 @@ export namespace Prisma {
     settings?: XOR<WorkspaceSettingsNullableScalarRelationFilter, WorkspaceSettingsWhereInput> | null
     chainProofs?: ChainProofListRelationFilter
     certificates?: CertificateListRelationFilter
+    regressionReports?: RegressionReportListRelationFilter
   }
 
   export type OrganizationOrderByWithRelationInput = {
@@ -38994,6 +40612,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsOrderByWithRelationInput
     chainProofs?: ChainProofOrderByRelationAggregateInput
     certificates?: CertificateOrderByRelationAggregateInput
+    regressionReports?: RegressionReportOrderByRelationAggregateInput
   }
 
   export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -39016,6 +40635,7 @@ export namespace Prisma {
     settings?: XOR<WorkspaceSettingsNullableScalarRelationFilter, WorkspaceSettingsWhereInput> | null
     chainProofs?: ChainProofListRelationFilter
     certificates?: CertificateListRelationFilter
+    regressionReports?: RegressionReportListRelationFilter
   }, "id" | "slug">
 
   export type OrganizationOrderByWithAggregationInput = {
@@ -39188,9 +40808,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     archivedAt?: DateTimeNullableFilter<"Project"> | Date | string | null
+    regressionPolicy?: StringNullableFilter<"Project"> | string | null
     workspace?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     prompts?: PromptListRelationFilter
+    regressionReports?: RegressionReportListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -39204,9 +40826,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrderInput | SortOrder
+    regressionPolicy?: SortOrderInput | SortOrder
     workspace?: OrganizationOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
     prompts?: PromptOrderByRelationAggregateInput
+    regressionReports?: RegressionReportOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -39224,9 +40848,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     archivedAt?: DateTimeNullableFilter<"Project"> | Date | string | null
+    regressionPolicy?: StringNullableFilter<"Project"> | string | null
     workspace?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     prompts?: PromptListRelationFilter
+    regressionReports?: RegressionReportListRelationFilter
   }, "id" | "workspaceId_slug">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -39240,6 +40866,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrderInput | SortOrder
+    regressionPolicy?: SortOrderInput | SortOrder
     _count?: ProjectCountOrderByAggregateInput
     _max?: ProjectMaxOrderByAggregateInput
     _min?: ProjectMinOrderByAggregateInput
@@ -39259,6 +40886,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     archivedAt?: DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
+    regressionPolicy?: StringNullableWithAggregatesFilter<"Project"> | string | null
   }
 
   export type PromptWhereInput = {
@@ -39278,11 +40906,15 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     archivedAt?: DateTimeNullableFilter<"Prompt"> | Date | string | null
+    regressionSuiteId?: StringNullableFilter<"Prompt"> | string | null
+    regressionPolicy?: StringNullableFilter<"Prompt"> | string | null
     workspace?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     versions?: PromptVersionListRelationFilter
     activeVersion?: XOR<PromptVersionNullableScalarRelationFilter, PromptVersionWhereInput> | null
+    regressionSuite?: XOR<EvaluationSuiteNullableScalarRelationFilter, EvaluationSuiteWhereInput> | null
+    regressionReports?: RegressionReportListRelationFilter
   }
 
   export type PromptOrderByWithRelationInput = {
@@ -39299,11 +40931,15 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrderInput | SortOrder
+    regressionSuiteId?: SortOrderInput | SortOrder
+    regressionPolicy?: SortOrderInput | SortOrder
     workspace?: OrganizationOrderByWithRelationInput
     project?: ProjectOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
     versions?: PromptVersionOrderByRelationAggregateInput
     activeVersion?: PromptVersionOrderByWithRelationInput
+    regressionSuite?: EvaluationSuiteOrderByWithRelationInput
+    regressionReports?: RegressionReportOrderByRelationAggregateInput
   }
 
   export type PromptWhereUniqueInput = Prisma.AtLeast<{
@@ -39323,11 +40959,15 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     archivedAt?: DateTimeNullableFilter<"Prompt"> | Date | string | null
+    regressionSuiteId?: StringNullableFilter<"Prompt"> | string | null
+    regressionPolicy?: StringNullableFilter<"Prompt"> | string | null
     workspace?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     versions?: PromptVersionListRelationFilter
     activeVersion?: XOR<PromptVersionNullableScalarRelationFilter, PromptVersionWhereInput> | null
+    regressionSuite?: XOR<EvaluationSuiteNullableScalarRelationFilter, EvaluationSuiteWhereInput> | null
+    regressionReports?: RegressionReportListRelationFilter
   }, "id" | "activeVersionId">
 
   export type PromptOrderByWithAggregationInput = {
@@ -39344,6 +40984,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrderInput | SortOrder
+    regressionSuiteId?: SortOrderInput | SortOrder
+    regressionPolicy?: SortOrderInput | SortOrder
     _count?: PromptCountOrderByAggregateInput
     _max?: PromptMaxOrderByAggregateInput
     _min?: PromptMinOrderByAggregateInput
@@ -39366,6 +41008,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
     archivedAt?: DateTimeNullableWithAggregatesFilter<"Prompt"> | Date | string | null
+    regressionSuiteId?: StringNullableWithAggregatesFilter<"Prompt"> | string | null
+    regressionPolicy?: StringNullableWithAggregatesFilter<"Prompt"> | string | null
   }
 
   export type PromptVersionWhereInput = {
@@ -39393,6 +41037,8 @@ export namespace Prisma {
     reviews?: PromptReviewListRelationFilter
     sourceCertificates?: CertificateListRelationFilter
     selectedCertificates?: CertificateListRelationFilter
+    baselineRegressionReports?: RegressionReportListRelationFilter
+    candidateRegressionReports?: RegressionReportListRelationFilter
   }
 
   export type PromptVersionOrderByWithRelationInput = {
@@ -39417,6 +41063,8 @@ export namespace Prisma {
     reviews?: PromptReviewOrderByRelationAggregateInput
     sourceCertificates?: CertificateOrderByRelationAggregateInput
     selectedCertificates?: CertificateOrderByRelationAggregateInput
+    baselineRegressionReports?: RegressionReportOrderByRelationAggregateInput
+    candidateRegressionReports?: RegressionReportOrderByRelationAggregateInput
   }
 
   export type PromptVersionWhereUniqueInput = Prisma.AtLeast<{
@@ -39445,6 +41093,8 @@ export namespace Prisma {
     reviews?: PromptReviewListRelationFilter
     sourceCertificates?: CertificateListRelationFilter
     selectedCertificates?: CertificateListRelationFilter
+    baselineRegressionReports?: RegressionReportListRelationFilter
+    candidateRegressionReports?: RegressionReportListRelationFilter
   }, "id" | "promptId_versionNumber">
 
   export type PromptVersionOrderByWithAggregationInput = {
@@ -39884,6 +41534,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"EvaluationSuite"> | Date | string
     updatedAt?: DateTimeFilter<"EvaluationSuite"> | Date | string
     testCases?: TestCaseListRelationFilter
+    attachedPrompts?: PromptListRelationFilter
+    regressionReports?: RegressionReportListRelationFilter
   }
 
   export type EvaluationSuiteOrderByWithRelationInput = {
@@ -39896,6 +41548,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     testCases?: TestCaseOrderByRelationAggregateInput
+    attachedPrompts?: PromptOrderByRelationAggregateInput
+    regressionReports?: RegressionReportOrderByRelationAggregateInput
   }
 
   export type EvaluationSuiteWhereUniqueInput = Prisma.AtLeast<{
@@ -39911,6 +41565,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"EvaluationSuite"> | Date | string
     updatedAt?: DateTimeFilter<"EvaluationSuite"> | Date | string
     testCases?: TestCaseListRelationFilter
+    attachedPrompts?: PromptListRelationFilter
+    regressionReports?: RegressionReportListRelationFilter
   }, "id">
 
   export type EvaluationSuiteOrderByWithAggregationInput = {
@@ -39939,6 +41595,106 @@ export namespace Prisma {
     createdById?: StringWithAggregatesFilter<"EvaluationSuite"> | string
     createdAt?: DateTimeWithAggregatesFilter<"EvaluationSuite"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EvaluationSuite"> | Date | string
+  }
+
+  export type RegressionReportWhereInput = {
+    AND?: RegressionReportWhereInput | RegressionReportWhereInput[]
+    OR?: RegressionReportWhereInput[]
+    NOT?: RegressionReportWhereInput | RegressionReportWhereInput[]
+    id?: StringFilter<"RegressionReport"> | string
+    workspaceId?: StringFilter<"RegressionReport"> | string
+    projectId?: StringFilter<"RegressionReport"> | string
+    promptId?: StringFilter<"RegressionReport"> | string
+    suiteId?: StringFilter<"RegressionReport"> | string
+    baselineVersionId?: StringFilter<"RegressionReport"> | string
+    candidateVersionId?: StringFilter<"RegressionReport"> | string
+    status?: StringFilter<"RegressionReport"> | string
+    reportJson?: StringFilter<"RegressionReport"> | string
+    contentHash?: StringFilter<"RegressionReport"> | string
+    createdAt?: DateTimeFilter<"RegressionReport"> | Date | string
+    workspace?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    prompt?: XOR<PromptScalarRelationFilter, PromptWhereInput>
+    suite?: XOR<EvaluationSuiteScalarRelationFilter, EvaluationSuiteWhereInput>
+    baselineVersion?: XOR<PromptVersionScalarRelationFilter, PromptVersionWhereInput>
+    candidateVersion?: XOR<PromptVersionScalarRelationFilter, PromptVersionWhereInput>
+  }
+
+  export type RegressionReportOrderByWithRelationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrder
+    promptId?: SortOrder
+    suiteId?: SortOrder
+    baselineVersionId?: SortOrder
+    candidateVersionId?: SortOrder
+    status?: SortOrder
+    reportJson?: SortOrder
+    contentHash?: SortOrder
+    createdAt?: SortOrder
+    workspace?: OrganizationOrderByWithRelationInput
+    project?: ProjectOrderByWithRelationInput
+    prompt?: PromptOrderByWithRelationInput
+    suite?: EvaluationSuiteOrderByWithRelationInput
+    baselineVersion?: PromptVersionOrderByWithRelationInput
+    candidateVersion?: PromptVersionOrderByWithRelationInput
+  }
+
+  export type RegressionReportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RegressionReportWhereInput | RegressionReportWhereInput[]
+    OR?: RegressionReportWhereInput[]
+    NOT?: RegressionReportWhereInput | RegressionReportWhereInput[]
+    workspaceId?: StringFilter<"RegressionReport"> | string
+    projectId?: StringFilter<"RegressionReport"> | string
+    promptId?: StringFilter<"RegressionReport"> | string
+    suiteId?: StringFilter<"RegressionReport"> | string
+    baselineVersionId?: StringFilter<"RegressionReport"> | string
+    candidateVersionId?: StringFilter<"RegressionReport"> | string
+    status?: StringFilter<"RegressionReport"> | string
+    reportJson?: StringFilter<"RegressionReport"> | string
+    contentHash?: StringFilter<"RegressionReport"> | string
+    createdAt?: DateTimeFilter<"RegressionReport"> | Date | string
+    workspace?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    prompt?: XOR<PromptScalarRelationFilter, PromptWhereInput>
+    suite?: XOR<EvaluationSuiteScalarRelationFilter, EvaluationSuiteWhereInput>
+    baselineVersion?: XOR<PromptVersionScalarRelationFilter, PromptVersionWhereInput>
+    candidateVersion?: XOR<PromptVersionScalarRelationFilter, PromptVersionWhereInput>
+  }, "id">
+
+  export type RegressionReportOrderByWithAggregationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrder
+    promptId?: SortOrder
+    suiteId?: SortOrder
+    baselineVersionId?: SortOrder
+    candidateVersionId?: SortOrder
+    status?: SortOrder
+    reportJson?: SortOrder
+    contentHash?: SortOrder
+    createdAt?: SortOrder
+    _count?: RegressionReportCountOrderByAggregateInput
+    _max?: RegressionReportMaxOrderByAggregateInput
+    _min?: RegressionReportMinOrderByAggregateInput
+  }
+
+  export type RegressionReportScalarWhereWithAggregatesInput = {
+    AND?: RegressionReportScalarWhereWithAggregatesInput | RegressionReportScalarWhereWithAggregatesInput[]
+    OR?: RegressionReportScalarWhereWithAggregatesInput[]
+    NOT?: RegressionReportScalarWhereWithAggregatesInput | RegressionReportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RegressionReport"> | string
+    workspaceId?: StringWithAggregatesFilter<"RegressionReport"> | string
+    projectId?: StringWithAggregatesFilter<"RegressionReport"> | string
+    promptId?: StringWithAggregatesFilter<"RegressionReport"> | string
+    suiteId?: StringWithAggregatesFilter<"RegressionReport"> | string
+    baselineVersionId?: StringWithAggregatesFilter<"RegressionReport"> | string
+    candidateVersionId?: StringWithAggregatesFilter<"RegressionReport"> | string
+    status?: StringWithAggregatesFilter<"RegressionReport"> | string
+    reportJson?: StringWithAggregatesFilter<"RegressionReport"> | string
+    contentHash?: StringWithAggregatesFilter<"RegressionReport"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RegressionReport"> | Date | string
   }
 
   export type TestCaseWhereInput = {
@@ -41739,6 +43495,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateInput = {
@@ -41758,6 +43515,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUpdateInput = {
@@ -41777,6 +43535,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateInput = {
@@ -41796,6 +43555,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationCreateManyInput = {
@@ -41963,9 +43723,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutProjectsInput
     createdBy: UserCreateNestedOneWithoutProjectsInput
     prompts?: PromptCreateNestedManyWithoutProjectInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -41979,7 +43741,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     prompts?: PromptUncheckedCreateNestedManyWithoutProjectInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -41991,9 +43755,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutProjectsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutProjectsNestedInput
     prompts?: PromptUpdateManyWithoutProjectNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -42007,7 +43773,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     prompts?: PromptUncheckedUpdateManyWithoutProjectNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -42021,6 +43789,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
   }
 
   export type ProjectUpdateManyMutationInput = {
@@ -42032,6 +43801,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProjectUncheckedUpdateManyInput = {
@@ -42045,6 +43815,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptCreateInput = {
@@ -42057,11 +43828,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutPromptsInput
     project: ProjectCreateNestedOneWithoutPromptsInput
     createdBy: UserCreateNestedOneWithoutPromptsInput
     versions?: PromptVersionCreateNestedManyWithoutPromptInput
     activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUncheckedCreateInput = {
@@ -42078,7 +43852,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
     versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUpdateInput = {
@@ -42091,11 +43868,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
     project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
     versions?: PromptVersionUpdateManyWithoutPromptNestedInput
     activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateInput = {
@@ -42112,7 +43892,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptCreateManyInput = {
@@ -42129,6 +43912,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
   }
 
   export type PromptUpdateManyMutationInput = {
@@ -42141,6 +43926,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptUncheckedUpdateManyInput = {
@@ -42157,6 +43943,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptVersionCreateInput = {
@@ -42177,6 +43965,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateInput = {
@@ -42197,6 +43987,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUpdateInput = {
@@ -42217,6 +44009,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateInput = {
@@ -42237,6 +44031,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionCreateManyInput = {
@@ -42751,6 +44547,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseCreateNestedManyWithoutSuiteInput
+    attachedPrompts?: PromptCreateNestedManyWithoutRegressionSuiteInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutSuiteInput
   }
 
   export type EvaluationSuiteUncheckedCreateInput = {
@@ -42763,6 +44561,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     testCases?: TestCaseUncheckedCreateNestedManyWithoutSuiteInput
+    attachedPrompts?: PromptUncheckedCreateNestedManyWithoutRegressionSuiteInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutSuiteInput
   }
 
   export type EvaluationSuiteUpdateInput = {
@@ -42775,6 +44575,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseUpdateManyWithoutSuiteNestedInput
+    attachedPrompts?: PromptUpdateManyWithoutRegressionSuiteNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutSuiteNestedInput
   }
 
   export type EvaluationSuiteUncheckedUpdateInput = {
@@ -42787,6 +44589,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testCases?: TestCaseUncheckedUpdateManyWithoutSuiteNestedInput
+    attachedPrompts?: PromptUncheckedUpdateManyWithoutRegressionSuiteNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutSuiteNestedInput
   }
 
   export type EvaluationSuiteCreateManyInput = {
@@ -42820,6 +44624,98 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportCreateInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    workspace: OrganizationCreateNestedOneWithoutRegressionReportsInput
+    project: ProjectCreateNestedOneWithoutRegressionReportsInput
+    prompt: PromptCreateNestedOneWithoutRegressionReportsInput
+    suite: EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput
+    baselineVersion: PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput
+    candidateVersion: PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput
+    prompt?: PromptUpdateOneRequiredWithoutRegressionReportsNestedInput
+    suite?: EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput
+    baselineVersion?: PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput
+    candidateVersion?: PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportCreateManyInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TestCaseCreateInput = {
@@ -44841,11 +46737,21 @@ export namespace Prisma {
     none?: CertificateWhereInput
   }
 
+  export type RegressionReportListRelationFilter = {
+    every?: RegressionReportWhereInput
+    some?: RegressionReportWhereInput
+    none?: RegressionReportWhereInput
+  }
+
   export type ChainProofOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type CertificateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RegressionReportOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44966,6 +46872,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrder
+    regressionPolicy?: SortOrder
   }
 
   export type ProjectMaxOrderByAggregateInput = {
@@ -44979,6 +46886,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrder
+    regressionPolicy?: SortOrder
   }
 
   export type ProjectMinOrderByAggregateInput = {
@@ -44992,6 +46900,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrder
+    regressionPolicy?: SortOrder
   }
 
   export type EnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -45028,6 +46937,11 @@ export namespace Prisma {
     isNot?: PromptVersionWhereInput | null
   }
 
+  export type EvaluationSuiteNullableScalarRelationFilter = {
+    is?: EvaluationSuiteWhereInput | null
+    isNot?: EvaluationSuiteWhereInput | null
+  }
+
   export type PromptCountOrderByAggregateInput = {
     id?: SortOrder
     workspaceId?: SortOrder
@@ -45042,6 +46956,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrder
+    regressionSuiteId?: SortOrder
+    regressionPolicy?: SortOrder
   }
 
   export type PromptMaxOrderByAggregateInput = {
@@ -45058,6 +46974,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrder
+    regressionSuiteId?: SortOrder
+    regressionPolicy?: SortOrder
   }
 
   export type PromptMinOrderByAggregateInput = {
@@ -45074,6 +46992,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     archivedAt?: SortOrder
+    regressionSuiteId?: SortOrder
+    regressionPolicy?: SortOrder
   }
 
   export type EnumPromptVisibilityWithAggregatesFilter<$PrismaModel = never> = {
@@ -45569,6 +47489,48 @@ export namespace Prisma {
   export type EvaluationSuiteScalarRelationFilter = {
     is?: EvaluationSuiteWhereInput
     isNot?: EvaluationSuiteWhereInput
+  }
+
+  export type RegressionReportCountOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrder
+    promptId?: SortOrder
+    suiteId?: SortOrder
+    baselineVersionId?: SortOrder
+    candidateVersionId?: SortOrder
+    status?: SortOrder
+    reportJson?: SortOrder
+    contentHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RegressionReportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrder
+    promptId?: SortOrder
+    suiteId?: SortOrder
+    baselineVersionId?: SortOrder
+    candidateVersionId?: SortOrder
+    status?: SortOrder
+    reportJson?: SortOrder
+    contentHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RegressionReportMinOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    projectId?: SortOrder
+    promptId?: SortOrder
+    suiteId?: SortOrder
+    baselineVersionId?: SortOrder
+    candidateVersionId?: SortOrder
+    status?: SortOrder
+    reportJson?: SortOrder
+    contentHash?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type TestCaseCountOrderByAggregateInput = {
@@ -47075,6 +49037,13 @@ export namespace Prisma {
     connect?: CertificateWhereUniqueInput | CertificateWhereUniqueInput[]
   }
 
+  export type RegressionReportCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<RegressionReportCreateWithoutWorkspaceInput, RegressionReportUncheckedCreateWithoutWorkspaceInput> | RegressionReportCreateWithoutWorkspaceInput[] | RegressionReportUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutWorkspaceInput | RegressionReportCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: RegressionReportCreateManyWorkspaceInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
   export type MemberUncheckedCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
@@ -47142,6 +49111,13 @@ export namespace Prisma {
     connectOrCreate?: CertificateCreateOrConnectWithoutWorkspaceInput | CertificateCreateOrConnectWithoutWorkspaceInput[]
     createMany?: CertificateCreateManyWorkspaceInputEnvelope
     connect?: CertificateWhereUniqueInput | CertificateWhereUniqueInput[]
+  }
+
+  export type RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<RegressionReportCreateWithoutWorkspaceInput, RegressionReportUncheckedCreateWithoutWorkspaceInput> | RegressionReportCreateWithoutWorkspaceInput[] | RegressionReportUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutWorkspaceInput | RegressionReportCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: RegressionReportCreateManyWorkspaceInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
   }
 
   export type MemberUpdateManyWithoutOrganizationNestedInput = {
@@ -47280,6 +49256,20 @@ export namespace Prisma {
     deleteMany?: CertificateScalarWhereInput | CertificateScalarWhereInput[]
   }
 
+  export type RegressionReportUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutWorkspaceInput, RegressionReportUncheckedCreateWithoutWorkspaceInput> | RegressionReportCreateWithoutWorkspaceInput[] | RegressionReportUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutWorkspaceInput | RegressionReportCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutWorkspaceInput | RegressionReportUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: RegressionReportCreateManyWorkspaceInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutWorkspaceInput | RegressionReportUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutWorkspaceInput | RegressionReportUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
   export type MemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
     create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
@@ -47416,6 +49406,20 @@ export namespace Prisma {
     deleteMany?: CertificateScalarWhereInput | CertificateScalarWhereInput[]
   }
 
+  export type RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutWorkspaceInput, RegressionReportUncheckedCreateWithoutWorkspaceInput> | RegressionReportCreateWithoutWorkspaceInput[] | RegressionReportUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutWorkspaceInput | RegressionReportCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutWorkspaceInput | RegressionReportUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: RegressionReportCreateManyWorkspaceInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutWorkspaceInput | RegressionReportUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutWorkspaceInput | RegressionReportUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
   export type OrganizationCreateNestedOneWithoutMembersInput = {
     create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
@@ -47491,11 +49495,25 @@ export namespace Prisma {
     connect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
   }
 
+  export type RegressionReportCreateNestedManyWithoutProjectInput = {
+    create?: XOR<RegressionReportCreateWithoutProjectInput, RegressionReportUncheckedCreateWithoutProjectInput> | RegressionReportCreateWithoutProjectInput[] | RegressionReportUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutProjectInput | RegressionReportCreateOrConnectWithoutProjectInput[]
+    createMany?: RegressionReportCreateManyProjectInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
   export type PromptUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptCreateWithoutProjectInput, PromptUncheckedCreateWithoutProjectInput> | PromptCreateWithoutProjectInput[] | PromptUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptCreateOrConnectWithoutProjectInput | PromptCreateOrConnectWithoutProjectInput[]
     createMany?: PromptCreateManyProjectInputEnvelope
     connect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+  }
+
+  export type RegressionReportUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<RegressionReportCreateWithoutProjectInput, RegressionReportUncheckedCreateWithoutProjectInput> | RegressionReportCreateWithoutProjectInput[] | RegressionReportUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutProjectInput | RegressionReportCreateOrConnectWithoutProjectInput[]
+    createMany?: RegressionReportCreateManyProjectInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
   }
 
   export type EnumProjectStatusFieldUpdateOperationsInput = {
@@ -47532,6 +49550,20 @@ export namespace Prisma {
     deleteMany?: PromptScalarWhereInput | PromptScalarWhereInput[]
   }
 
+  export type RegressionReportUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutProjectInput, RegressionReportUncheckedCreateWithoutProjectInput> | RegressionReportCreateWithoutProjectInput[] | RegressionReportUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutProjectInput | RegressionReportCreateOrConnectWithoutProjectInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutProjectInput | RegressionReportUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: RegressionReportCreateManyProjectInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutProjectInput | RegressionReportUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutProjectInput | RegressionReportUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
   export type PromptUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PromptCreateWithoutProjectInput, PromptUncheckedCreateWithoutProjectInput> | PromptCreateWithoutProjectInput[] | PromptUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptCreateOrConnectWithoutProjectInput | PromptCreateOrConnectWithoutProjectInput[]
@@ -47544,6 +49576,20 @@ export namespace Prisma {
     update?: PromptUpdateWithWhereUniqueWithoutProjectInput | PromptUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: PromptUpdateManyWithWhereWithoutProjectInput | PromptUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: PromptScalarWhereInput | PromptScalarWhereInput[]
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutProjectInput, RegressionReportUncheckedCreateWithoutProjectInput> | RegressionReportCreateWithoutProjectInput[] | RegressionReportUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutProjectInput | RegressionReportCreateOrConnectWithoutProjectInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutProjectInput | RegressionReportUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: RegressionReportCreateManyProjectInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutProjectInput | RegressionReportUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutProjectInput | RegressionReportUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
   }
 
   export type OrganizationCreateNestedOneWithoutPromptsInput = {
@@ -47577,11 +49623,31 @@ export namespace Prisma {
     connect?: PromptVersionWhereUniqueInput
   }
 
+  export type EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput = {
+    create?: XOR<EvaluationSuiteCreateWithoutAttachedPromptsInput, EvaluationSuiteUncheckedCreateWithoutAttachedPromptsInput>
+    connectOrCreate?: EvaluationSuiteCreateOrConnectWithoutAttachedPromptsInput
+    connect?: EvaluationSuiteWhereUniqueInput
+  }
+
+  export type RegressionReportCreateNestedManyWithoutPromptInput = {
+    create?: XOR<RegressionReportCreateWithoutPromptInput, RegressionReportUncheckedCreateWithoutPromptInput> | RegressionReportCreateWithoutPromptInput[] | RegressionReportUncheckedCreateWithoutPromptInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutPromptInput | RegressionReportCreateOrConnectWithoutPromptInput[]
+    createMany?: RegressionReportCreateManyPromptInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
   export type PromptVersionUncheckedCreateNestedManyWithoutPromptInput = {
     create?: XOR<PromptVersionCreateWithoutPromptInput, PromptVersionUncheckedCreateWithoutPromptInput> | PromptVersionCreateWithoutPromptInput[] | PromptVersionUncheckedCreateWithoutPromptInput[]
     connectOrCreate?: PromptVersionCreateOrConnectWithoutPromptInput | PromptVersionCreateOrConnectWithoutPromptInput[]
     createMany?: PromptVersionCreateManyPromptInputEnvelope
     connect?: PromptVersionWhereUniqueInput | PromptVersionWhereUniqueInput[]
+  }
+
+  export type RegressionReportUncheckedCreateNestedManyWithoutPromptInput = {
+    create?: XOR<RegressionReportCreateWithoutPromptInput, RegressionReportUncheckedCreateWithoutPromptInput> | RegressionReportCreateWithoutPromptInput[] | RegressionReportUncheckedCreateWithoutPromptInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutPromptInput | RegressionReportCreateOrConnectWithoutPromptInput[]
+    createMany?: RegressionReportCreateManyPromptInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
   }
 
   export type EnumPromptVisibilityFieldUpdateOperationsInput = {
@@ -47640,6 +49706,30 @@ export namespace Prisma {
     update?: XOR<XOR<PromptVersionUpdateToOneWithWhereWithoutActiveForInput, PromptVersionUpdateWithoutActiveForInput>, PromptVersionUncheckedUpdateWithoutActiveForInput>
   }
 
+  export type EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput = {
+    create?: XOR<EvaluationSuiteCreateWithoutAttachedPromptsInput, EvaluationSuiteUncheckedCreateWithoutAttachedPromptsInput>
+    connectOrCreate?: EvaluationSuiteCreateOrConnectWithoutAttachedPromptsInput
+    upsert?: EvaluationSuiteUpsertWithoutAttachedPromptsInput
+    disconnect?: EvaluationSuiteWhereInput | boolean
+    delete?: EvaluationSuiteWhereInput | boolean
+    connect?: EvaluationSuiteWhereUniqueInput
+    update?: XOR<XOR<EvaluationSuiteUpdateToOneWithWhereWithoutAttachedPromptsInput, EvaluationSuiteUpdateWithoutAttachedPromptsInput>, EvaluationSuiteUncheckedUpdateWithoutAttachedPromptsInput>
+  }
+
+  export type RegressionReportUpdateManyWithoutPromptNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutPromptInput, RegressionReportUncheckedCreateWithoutPromptInput> | RegressionReportCreateWithoutPromptInput[] | RegressionReportUncheckedCreateWithoutPromptInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutPromptInput | RegressionReportCreateOrConnectWithoutPromptInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutPromptInput | RegressionReportUpsertWithWhereUniqueWithoutPromptInput[]
+    createMany?: RegressionReportCreateManyPromptInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutPromptInput | RegressionReportUpdateWithWhereUniqueWithoutPromptInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutPromptInput | RegressionReportUpdateManyWithWhereWithoutPromptInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
   export type PromptVersionUncheckedUpdateManyWithoutPromptNestedInput = {
     create?: XOR<PromptVersionCreateWithoutPromptInput, PromptVersionUncheckedCreateWithoutPromptInput> | PromptVersionCreateWithoutPromptInput[] | PromptVersionUncheckedCreateWithoutPromptInput[]
     connectOrCreate?: PromptVersionCreateOrConnectWithoutPromptInput | PromptVersionCreateOrConnectWithoutPromptInput[]
@@ -47652,6 +49742,20 @@ export namespace Prisma {
     update?: PromptVersionUpdateWithWhereUniqueWithoutPromptInput | PromptVersionUpdateWithWhereUniqueWithoutPromptInput[]
     updateMany?: PromptVersionUpdateManyWithWhereWithoutPromptInput | PromptVersionUpdateManyWithWhereWithoutPromptInput[]
     deleteMany?: PromptVersionScalarWhereInput | PromptVersionScalarWhereInput[]
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutPromptNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutPromptInput, RegressionReportUncheckedCreateWithoutPromptInput> | RegressionReportCreateWithoutPromptInput[] | RegressionReportUncheckedCreateWithoutPromptInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutPromptInput | RegressionReportCreateOrConnectWithoutPromptInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutPromptInput | RegressionReportUpsertWithWhereUniqueWithoutPromptInput[]
+    createMany?: RegressionReportCreateManyPromptInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutPromptInput | RegressionReportUpdateWithWhereUniqueWithoutPromptInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutPromptInput | RegressionReportUpdateManyWithWhereWithoutPromptInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
   }
 
   export type PromptCreateNestedOneWithoutVersionsInput = {
@@ -47712,6 +49816,20 @@ export namespace Prisma {
     connect?: CertificateWhereUniqueInput | CertificateWhereUniqueInput[]
   }
 
+  export type RegressionReportCreateNestedManyWithoutBaselineVersionInput = {
+    create?: XOR<RegressionReportCreateWithoutBaselineVersionInput, RegressionReportUncheckedCreateWithoutBaselineVersionInput> | RegressionReportCreateWithoutBaselineVersionInput[] | RegressionReportUncheckedCreateWithoutBaselineVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutBaselineVersionInput | RegressionReportCreateOrConnectWithoutBaselineVersionInput[]
+    createMany?: RegressionReportCreateManyBaselineVersionInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
+  export type RegressionReportCreateNestedManyWithoutCandidateVersionInput = {
+    create?: XOR<RegressionReportCreateWithoutCandidateVersionInput, RegressionReportUncheckedCreateWithoutCandidateVersionInput> | RegressionReportCreateWithoutCandidateVersionInput[] | RegressionReportUncheckedCreateWithoutCandidateVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutCandidateVersionInput | RegressionReportCreateOrConnectWithoutCandidateVersionInput[]
+    createMany?: RegressionReportCreateManyCandidateVersionInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
   export type PromptVersionUncheckedCreateNestedManyWithoutParentVersionInput = {
     create?: XOR<PromptVersionCreateWithoutParentVersionInput, PromptVersionUncheckedCreateWithoutParentVersionInput> | PromptVersionCreateWithoutParentVersionInput[] | PromptVersionUncheckedCreateWithoutParentVersionInput[]
     connectOrCreate?: PromptVersionCreateOrConnectWithoutParentVersionInput | PromptVersionCreateOrConnectWithoutParentVersionInput[]
@@ -47744,6 +49862,20 @@ export namespace Prisma {
     connectOrCreate?: CertificateCreateOrConnectWithoutSelectedPromptVersionInput | CertificateCreateOrConnectWithoutSelectedPromptVersionInput[]
     createMany?: CertificateCreateManySelectedPromptVersionInputEnvelope
     connect?: CertificateWhereUniqueInput | CertificateWhereUniqueInput[]
+  }
+
+  export type RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput = {
+    create?: XOR<RegressionReportCreateWithoutBaselineVersionInput, RegressionReportUncheckedCreateWithoutBaselineVersionInput> | RegressionReportCreateWithoutBaselineVersionInput[] | RegressionReportUncheckedCreateWithoutBaselineVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutBaselineVersionInput | RegressionReportCreateOrConnectWithoutBaselineVersionInput[]
+    createMany?: RegressionReportCreateManyBaselineVersionInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
+  export type RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput = {
+    create?: XOR<RegressionReportCreateWithoutCandidateVersionInput, RegressionReportUncheckedCreateWithoutCandidateVersionInput> | RegressionReportCreateWithoutCandidateVersionInput[] | RegressionReportUncheckedCreateWithoutCandidateVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutCandidateVersionInput | RegressionReportCreateOrConnectWithoutCandidateVersionInput[]
+    createMany?: RegressionReportCreateManyCandidateVersionInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -47858,6 +49990,34 @@ export namespace Prisma {
     deleteMany?: CertificateScalarWhereInput | CertificateScalarWhereInput[]
   }
 
+  export type RegressionReportUpdateManyWithoutBaselineVersionNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutBaselineVersionInput, RegressionReportUncheckedCreateWithoutBaselineVersionInput> | RegressionReportCreateWithoutBaselineVersionInput[] | RegressionReportUncheckedCreateWithoutBaselineVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutBaselineVersionInput | RegressionReportCreateOrConnectWithoutBaselineVersionInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutBaselineVersionInput | RegressionReportUpsertWithWhereUniqueWithoutBaselineVersionInput[]
+    createMany?: RegressionReportCreateManyBaselineVersionInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutBaselineVersionInput | RegressionReportUpdateWithWhereUniqueWithoutBaselineVersionInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutBaselineVersionInput | RegressionReportUpdateManyWithWhereWithoutBaselineVersionInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
+  export type RegressionReportUpdateManyWithoutCandidateVersionNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutCandidateVersionInput, RegressionReportUncheckedCreateWithoutCandidateVersionInput> | RegressionReportCreateWithoutCandidateVersionInput[] | RegressionReportUncheckedCreateWithoutCandidateVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutCandidateVersionInput | RegressionReportCreateOrConnectWithoutCandidateVersionInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutCandidateVersionInput | RegressionReportUpsertWithWhereUniqueWithoutCandidateVersionInput[]
+    createMany?: RegressionReportCreateManyCandidateVersionInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutCandidateVersionInput | RegressionReportUpdateWithWhereUniqueWithoutCandidateVersionInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutCandidateVersionInput | RegressionReportUpdateManyWithWhereWithoutCandidateVersionInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
   export type PromptVersionUncheckedUpdateManyWithoutParentVersionNestedInput = {
     create?: XOR<PromptVersionCreateWithoutParentVersionInput, PromptVersionUncheckedCreateWithoutParentVersionInput> | PromptVersionCreateWithoutParentVersionInput[] | PromptVersionUncheckedCreateWithoutParentVersionInput[]
     connectOrCreate?: PromptVersionCreateOrConnectWithoutParentVersionInput | PromptVersionCreateOrConnectWithoutParentVersionInput[]
@@ -47922,6 +50082,34 @@ export namespace Prisma {
     update?: CertificateUpdateWithWhereUniqueWithoutSelectedPromptVersionInput | CertificateUpdateWithWhereUniqueWithoutSelectedPromptVersionInput[]
     updateMany?: CertificateUpdateManyWithWhereWithoutSelectedPromptVersionInput | CertificateUpdateManyWithWhereWithoutSelectedPromptVersionInput[]
     deleteMany?: CertificateScalarWhereInput | CertificateScalarWhereInput[]
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutBaselineVersionInput, RegressionReportUncheckedCreateWithoutBaselineVersionInput> | RegressionReportCreateWithoutBaselineVersionInput[] | RegressionReportUncheckedCreateWithoutBaselineVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutBaselineVersionInput | RegressionReportCreateOrConnectWithoutBaselineVersionInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutBaselineVersionInput | RegressionReportUpsertWithWhereUniqueWithoutBaselineVersionInput[]
+    createMany?: RegressionReportCreateManyBaselineVersionInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutBaselineVersionInput | RegressionReportUpdateWithWhereUniqueWithoutBaselineVersionInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutBaselineVersionInput | RegressionReportUpdateManyWithWhereWithoutBaselineVersionInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutCandidateVersionInput, RegressionReportUncheckedCreateWithoutCandidateVersionInput> | RegressionReportCreateWithoutCandidateVersionInput[] | RegressionReportUncheckedCreateWithoutCandidateVersionInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutCandidateVersionInput | RegressionReportCreateOrConnectWithoutCandidateVersionInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutCandidateVersionInput | RegressionReportUpsertWithWhereUniqueWithoutCandidateVersionInput[]
+    createMany?: RegressionReportCreateManyCandidateVersionInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutCandidateVersionInput | RegressionReportUpdateWithWhereUniqueWithoutCandidateVersionInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutCandidateVersionInput | RegressionReportUpdateManyWithWhereWithoutCandidateVersionInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
   }
 
   export type OrganizationCreateNestedOneWithoutReviewsInput = {
@@ -48255,11 +50443,39 @@ export namespace Prisma {
     connect?: TestCaseWhereUniqueInput | TestCaseWhereUniqueInput[]
   }
 
+  export type PromptCreateNestedManyWithoutRegressionSuiteInput = {
+    create?: XOR<PromptCreateWithoutRegressionSuiteInput, PromptUncheckedCreateWithoutRegressionSuiteInput> | PromptCreateWithoutRegressionSuiteInput[] | PromptUncheckedCreateWithoutRegressionSuiteInput[]
+    connectOrCreate?: PromptCreateOrConnectWithoutRegressionSuiteInput | PromptCreateOrConnectWithoutRegressionSuiteInput[]
+    createMany?: PromptCreateManyRegressionSuiteInputEnvelope
+    connect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+  }
+
+  export type RegressionReportCreateNestedManyWithoutSuiteInput = {
+    create?: XOR<RegressionReportCreateWithoutSuiteInput, RegressionReportUncheckedCreateWithoutSuiteInput> | RegressionReportCreateWithoutSuiteInput[] | RegressionReportUncheckedCreateWithoutSuiteInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutSuiteInput | RegressionReportCreateOrConnectWithoutSuiteInput[]
+    createMany?: RegressionReportCreateManySuiteInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+  }
+
   export type TestCaseUncheckedCreateNestedManyWithoutSuiteInput = {
     create?: XOR<TestCaseCreateWithoutSuiteInput, TestCaseUncheckedCreateWithoutSuiteInput> | TestCaseCreateWithoutSuiteInput[] | TestCaseUncheckedCreateWithoutSuiteInput[]
     connectOrCreate?: TestCaseCreateOrConnectWithoutSuiteInput | TestCaseCreateOrConnectWithoutSuiteInput[]
     createMany?: TestCaseCreateManySuiteInputEnvelope
     connect?: TestCaseWhereUniqueInput | TestCaseWhereUniqueInput[]
+  }
+
+  export type PromptUncheckedCreateNestedManyWithoutRegressionSuiteInput = {
+    create?: XOR<PromptCreateWithoutRegressionSuiteInput, PromptUncheckedCreateWithoutRegressionSuiteInput> | PromptCreateWithoutRegressionSuiteInput[] | PromptUncheckedCreateWithoutRegressionSuiteInput[]
+    connectOrCreate?: PromptCreateOrConnectWithoutRegressionSuiteInput | PromptCreateOrConnectWithoutRegressionSuiteInput[]
+    createMany?: PromptCreateManyRegressionSuiteInputEnvelope
+    connect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+  }
+
+  export type RegressionReportUncheckedCreateNestedManyWithoutSuiteInput = {
+    create?: XOR<RegressionReportCreateWithoutSuiteInput, RegressionReportUncheckedCreateWithoutSuiteInput> | RegressionReportCreateWithoutSuiteInput[] | RegressionReportUncheckedCreateWithoutSuiteInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutSuiteInput | RegressionReportCreateOrConnectWithoutSuiteInput[]
+    createMany?: RegressionReportCreateManySuiteInputEnvelope
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
   }
 
   export type TestCaseUpdateManyWithoutSuiteNestedInput = {
@@ -48276,6 +50492,34 @@ export namespace Prisma {
     deleteMany?: TestCaseScalarWhereInput | TestCaseScalarWhereInput[]
   }
 
+  export type PromptUpdateManyWithoutRegressionSuiteNestedInput = {
+    create?: XOR<PromptCreateWithoutRegressionSuiteInput, PromptUncheckedCreateWithoutRegressionSuiteInput> | PromptCreateWithoutRegressionSuiteInput[] | PromptUncheckedCreateWithoutRegressionSuiteInput[]
+    connectOrCreate?: PromptCreateOrConnectWithoutRegressionSuiteInput | PromptCreateOrConnectWithoutRegressionSuiteInput[]
+    upsert?: PromptUpsertWithWhereUniqueWithoutRegressionSuiteInput | PromptUpsertWithWhereUniqueWithoutRegressionSuiteInput[]
+    createMany?: PromptCreateManyRegressionSuiteInputEnvelope
+    set?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    disconnect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    delete?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    connect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    update?: PromptUpdateWithWhereUniqueWithoutRegressionSuiteInput | PromptUpdateWithWhereUniqueWithoutRegressionSuiteInput[]
+    updateMany?: PromptUpdateManyWithWhereWithoutRegressionSuiteInput | PromptUpdateManyWithWhereWithoutRegressionSuiteInput[]
+    deleteMany?: PromptScalarWhereInput | PromptScalarWhereInput[]
+  }
+
+  export type RegressionReportUpdateManyWithoutSuiteNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutSuiteInput, RegressionReportUncheckedCreateWithoutSuiteInput> | RegressionReportCreateWithoutSuiteInput[] | RegressionReportUncheckedCreateWithoutSuiteInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutSuiteInput | RegressionReportCreateOrConnectWithoutSuiteInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutSuiteInput | RegressionReportUpsertWithWhereUniqueWithoutSuiteInput[]
+    createMany?: RegressionReportCreateManySuiteInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutSuiteInput | RegressionReportUpdateWithWhereUniqueWithoutSuiteInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutSuiteInput | RegressionReportUpdateManyWithWhereWithoutSuiteInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
   export type TestCaseUncheckedUpdateManyWithoutSuiteNestedInput = {
     create?: XOR<TestCaseCreateWithoutSuiteInput, TestCaseUncheckedCreateWithoutSuiteInput> | TestCaseCreateWithoutSuiteInput[] | TestCaseUncheckedCreateWithoutSuiteInput[]
     connectOrCreate?: TestCaseCreateOrConnectWithoutSuiteInput | TestCaseCreateOrConnectWithoutSuiteInput[]
@@ -48288,6 +50532,118 @@ export namespace Prisma {
     update?: TestCaseUpdateWithWhereUniqueWithoutSuiteInput | TestCaseUpdateWithWhereUniqueWithoutSuiteInput[]
     updateMany?: TestCaseUpdateManyWithWhereWithoutSuiteInput | TestCaseUpdateManyWithWhereWithoutSuiteInput[]
     deleteMany?: TestCaseScalarWhereInput | TestCaseScalarWhereInput[]
+  }
+
+  export type PromptUncheckedUpdateManyWithoutRegressionSuiteNestedInput = {
+    create?: XOR<PromptCreateWithoutRegressionSuiteInput, PromptUncheckedCreateWithoutRegressionSuiteInput> | PromptCreateWithoutRegressionSuiteInput[] | PromptUncheckedCreateWithoutRegressionSuiteInput[]
+    connectOrCreate?: PromptCreateOrConnectWithoutRegressionSuiteInput | PromptCreateOrConnectWithoutRegressionSuiteInput[]
+    upsert?: PromptUpsertWithWhereUniqueWithoutRegressionSuiteInput | PromptUpsertWithWhereUniqueWithoutRegressionSuiteInput[]
+    createMany?: PromptCreateManyRegressionSuiteInputEnvelope
+    set?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    disconnect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    delete?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    connect?: PromptWhereUniqueInput | PromptWhereUniqueInput[]
+    update?: PromptUpdateWithWhereUniqueWithoutRegressionSuiteInput | PromptUpdateWithWhereUniqueWithoutRegressionSuiteInput[]
+    updateMany?: PromptUpdateManyWithWhereWithoutRegressionSuiteInput | PromptUpdateManyWithWhereWithoutRegressionSuiteInput[]
+    deleteMany?: PromptScalarWhereInput | PromptScalarWhereInput[]
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutSuiteNestedInput = {
+    create?: XOR<RegressionReportCreateWithoutSuiteInput, RegressionReportUncheckedCreateWithoutSuiteInput> | RegressionReportCreateWithoutSuiteInput[] | RegressionReportUncheckedCreateWithoutSuiteInput[]
+    connectOrCreate?: RegressionReportCreateOrConnectWithoutSuiteInput | RegressionReportCreateOrConnectWithoutSuiteInput[]
+    upsert?: RegressionReportUpsertWithWhereUniqueWithoutSuiteInput | RegressionReportUpsertWithWhereUniqueWithoutSuiteInput[]
+    createMany?: RegressionReportCreateManySuiteInputEnvelope
+    set?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    disconnect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    delete?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    connect?: RegressionReportWhereUniqueInput | RegressionReportWhereUniqueInput[]
+    update?: RegressionReportUpdateWithWhereUniqueWithoutSuiteInput | RegressionReportUpdateWithWhereUniqueWithoutSuiteInput[]
+    updateMany?: RegressionReportUpdateManyWithWhereWithoutSuiteInput | RegressionReportUpdateManyWithWhereWithoutSuiteInput[]
+    deleteMany?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+  }
+
+  export type OrganizationCreateNestedOneWithoutRegressionReportsInput = {
+    create?: XOR<OrganizationCreateWithoutRegressionReportsInput, OrganizationUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutRegressionReportsInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type ProjectCreateNestedOneWithoutRegressionReportsInput = {
+    create?: XOR<ProjectCreateWithoutRegressionReportsInput, ProjectUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutRegressionReportsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type PromptCreateNestedOneWithoutRegressionReportsInput = {
+    create?: XOR<PromptCreateWithoutRegressionReportsInput, PromptUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: PromptCreateOrConnectWithoutRegressionReportsInput
+    connect?: PromptWhereUniqueInput
+  }
+
+  export type EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput = {
+    create?: XOR<EvaluationSuiteCreateWithoutRegressionReportsInput, EvaluationSuiteUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: EvaluationSuiteCreateOrConnectWithoutRegressionReportsInput
+    connect?: EvaluationSuiteWhereUniqueInput
+  }
+
+  export type PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput = {
+    create?: XOR<PromptVersionCreateWithoutBaselineRegressionReportsInput, PromptVersionUncheckedCreateWithoutBaselineRegressionReportsInput>
+    connectOrCreate?: PromptVersionCreateOrConnectWithoutBaselineRegressionReportsInput
+    connect?: PromptVersionWhereUniqueInput
+  }
+
+  export type PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput = {
+    create?: XOR<PromptVersionCreateWithoutCandidateRegressionReportsInput, PromptVersionUncheckedCreateWithoutCandidateRegressionReportsInput>
+    connectOrCreate?: PromptVersionCreateOrConnectWithoutCandidateRegressionReportsInput
+    connect?: PromptVersionWhereUniqueInput
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutRegressionReportsInput, OrganizationUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutRegressionReportsInput
+    upsert?: OrganizationUpsertWithoutRegressionReportsInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutRegressionReportsInput, OrganizationUpdateWithoutRegressionReportsInput>, OrganizationUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput = {
+    create?: XOR<ProjectCreateWithoutRegressionReportsInput, ProjectUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutRegressionReportsInput
+    upsert?: ProjectUpsertWithoutRegressionReportsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutRegressionReportsInput, ProjectUpdateWithoutRegressionReportsInput>, ProjectUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type PromptUpdateOneRequiredWithoutRegressionReportsNestedInput = {
+    create?: XOR<PromptCreateWithoutRegressionReportsInput, PromptUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: PromptCreateOrConnectWithoutRegressionReportsInput
+    upsert?: PromptUpsertWithoutRegressionReportsInput
+    connect?: PromptWhereUniqueInput
+    update?: XOR<XOR<PromptUpdateToOneWithWhereWithoutRegressionReportsInput, PromptUpdateWithoutRegressionReportsInput>, PromptUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput = {
+    create?: XOR<EvaluationSuiteCreateWithoutRegressionReportsInput, EvaluationSuiteUncheckedCreateWithoutRegressionReportsInput>
+    connectOrCreate?: EvaluationSuiteCreateOrConnectWithoutRegressionReportsInput
+    upsert?: EvaluationSuiteUpsertWithoutRegressionReportsInput
+    connect?: EvaluationSuiteWhereUniqueInput
+    update?: XOR<XOR<EvaluationSuiteUpdateToOneWithWhereWithoutRegressionReportsInput, EvaluationSuiteUpdateWithoutRegressionReportsInput>, EvaluationSuiteUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput = {
+    create?: XOR<PromptVersionCreateWithoutBaselineRegressionReportsInput, PromptVersionUncheckedCreateWithoutBaselineRegressionReportsInput>
+    connectOrCreate?: PromptVersionCreateOrConnectWithoutBaselineRegressionReportsInput
+    upsert?: PromptVersionUpsertWithoutBaselineRegressionReportsInput
+    connect?: PromptVersionWhereUniqueInput
+    update?: XOR<XOR<PromptVersionUpdateToOneWithWhereWithoutBaselineRegressionReportsInput, PromptVersionUpdateWithoutBaselineRegressionReportsInput>, PromptVersionUncheckedUpdateWithoutBaselineRegressionReportsInput>
+  }
+
+  export type PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput = {
+    create?: XOR<PromptVersionCreateWithoutCandidateRegressionReportsInput, PromptVersionUncheckedCreateWithoutCandidateRegressionReportsInput>
+    connectOrCreate?: PromptVersionCreateOrConnectWithoutCandidateRegressionReportsInput
+    upsert?: PromptVersionUpsertWithoutCandidateRegressionReportsInput
+    connect?: PromptVersionWhereUniqueInput
+    update?: XOR<XOR<PromptVersionUpdateToOneWithWhereWithoutCandidateRegressionReportsInput, PromptVersionUpdateWithoutCandidateRegressionReportsInput>, PromptVersionUncheckedUpdateWithoutCandidateRegressionReportsInput>
   }
 
   export type EvaluationSuiteCreateNestedOneWithoutTestCasesInput = {
@@ -49272,8 +51628,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutProjectsInput
     prompts?: PromptCreateNestedManyWithoutProjectInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutCreatedByInput = {
@@ -49286,7 +51644,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     prompts?: PromptUncheckedCreateNestedManyWithoutProjectInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutCreatedByInput = {
@@ -49309,10 +51669,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutPromptsInput
     project: ProjectCreateNestedOneWithoutPromptsInput
     versions?: PromptVersionCreateNestedManyWithoutPromptInput
     activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUncheckedCreateWithoutCreatedByInput = {
@@ -49328,7 +51691,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
     versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
   }
 
   export type PromptCreateOrConnectWithoutCreatedByInput = {
@@ -49358,6 +51724,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutCreatedByInput = {
@@ -49377,6 +51745,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutCreatedByInput = {
@@ -49666,6 +52036,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     archivedAt?: DateTimeNullableFilter<"Project"> | Date | string | null
+    regressionPolicy?: StringNullableFilter<"Project"> | string | null
   }
 
   export type PromptUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -49701,6 +52072,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     updatedAt?: DateTimeFilter<"Prompt"> | Date | string
     archivedAt?: DateTimeNullableFilter<"Prompt"> | Date | string | null
+    regressionSuiteId?: StringNullableFilter<"Prompt"> | string | null
+    regressionPolicy?: StringNullableFilter<"Prompt"> | string | null
   }
 
   export type PromptVersionUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -50114,8 +52487,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     createdBy: UserCreateNestedOneWithoutProjectsInput
     prompts?: PromptCreateNestedManyWithoutProjectInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkspaceInput = {
@@ -50128,7 +52503,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     prompts?: PromptUncheckedCreateNestedManyWithoutProjectInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkspaceInput = {
@@ -50151,10 +52528,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     project: ProjectCreateNestedOneWithoutPromptsInput
     createdBy: UserCreateNestedOneWithoutPromptsInput
     versions?: PromptVersionCreateNestedManyWithoutPromptInput
     activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUncheckedCreateWithoutWorkspaceInput = {
@@ -50170,7 +52550,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
     versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
   }
 
   export type PromptCreateOrConnectWithoutWorkspaceInput = {
@@ -50200,6 +52583,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutWorkspaceInput = {
@@ -50219,6 +52604,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutWorkspaceInput = {
@@ -50474,6 +52861,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RegressionReportCreateWithoutWorkspaceInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    project: ProjectCreateNestedOneWithoutRegressionReportsInput
+    prompt: PromptCreateNestedOneWithoutRegressionReportsInput
+    suite: EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput
+    baselineVersion: PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput
+    candidateVersion: PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateOrConnectWithoutWorkspaceInput = {
+    where: RegressionReportWhereUniqueInput
+    create: XOR<RegressionReportCreateWithoutWorkspaceInput, RegressionReportUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type RegressionReportCreateManyWorkspaceInputEnvelope = {
+    data: RegressionReportCreateManyWorkspaceInput | RegressionReportCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MemberUpsertWithWhereUniqueWithoutOrganizationInput = {
     where: MemberWhereUniqueInput
     update: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
@@ -50717,6 +53140,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Certificate"> | Date | string
   }
 
+  export type RegressionReportUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: RegressionReportWhereUniqueInput
+    update: XOR<RegressionReportUpdateWithoutWorkspaceInput, RegressionReportUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<RegressionReportCreateWithoutWorkspaceInput, RegressionReportUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type RegressionReportUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: RegressionReportWhereUniqueInput
+    data: XOR<RegressionReportUpdateWithoutWorkspaceInput, RegressionReportUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type RegressionReportUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: RegressionReportScalarWhereInput
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type RegressionReportScalarWhereInput = {
+    AND?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+    OR?: RegressionReportScalarWhereInput[]
+    NOT?: RegressionReportScalarWhereInput | RegressionReportScalarWhereInput[]
+    id?: StringFilter<"RegressionReport"> | string
+    workspaceId?: StringFilter<"RegressionReport"> | string
+    projectId?: StringFilter<"RegressionReport"> | string
+    promptId?: StringFilter<"RegressionReport"> | string
+    suiteId?: StringFilter<"RegressionReport"> | string
+    baselineVersionId?: StringFilter<"RegressionReport"> | string
+    candidateVersionId?: StringFilter<"RegressionReport"> | string
+    status?: StringFilter<"RegressionReport"> | string
+    reportJson?: StringFilter<"RegressionReport"> | string
+    contentHash?: StringFilter<"RegressionReport"> | string
+    createdAt?: DateTimeFilter<"RegressionReport"> | Date | string
+  }
+
   export type OrganizationCreateWithoutMembersInput = {
     id: string
     name: string
@@ -50733,6 +53189,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutMembersInput = {
@@ -50751,6 +53208,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutMembersInput = {
@@ -50830,6 +53288,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutMembersInput = {
@@ -50848,6 +53307,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutMembersInput = {
@@ -50917,6 +53377,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutInvitationsInput = {
@@ -50935,6 +53396,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutInvitationsInput = {
@@ -51014,6 +53476,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
@@ -51032,6 +53495,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutInvitationsSentInput = {
@@ -51101,6 +53565,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutProjectsInput = {
@@ -51119,6 +53584,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutProjectsInput = {
@@ -51181,10 +53647,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutPromptsInput
     createdBy: UserCreateNestedOneWithoutPromptsInput
     versions?: PromptVersionCreateNestedManyWithoutPromptInput
     activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUncheckedCreateWithoutProjectInput = {
@@ -51200,7 +53669,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
     versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
   }
 
   export type PromptCreateOrConnectWithoutProjectInput = {
@@ -51210,6 +53682,42 @@ export namespace Prisma {
 
   export type PromptCreateManyProjectInputEnvelope = {
     data: PromptCreateManyProjectInput | PromptCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RegressionReportCreateWithoutProjectInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    workspace: OrganizationCreateNestedOneWithoutRegressionReportsInput
+    prompt: PromptCreateNestedOneWithoutRegressionReportsInput
+    suite: EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput
+    baselineVersion: PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput
+    candidateVersion: PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateWithoutProjectInput = {
+    id?: string
+    workspaceId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateOrConnectWithoutProjectInput = {
+    where: RegressionReportWhereUniqueInput
+    create: XOR<RegressionReportCreateWithoutProjectInput, RegressionReportUncheckedCreateWithoutProjectInput>
+  }
+
+  export type RegressionReportCreateManyProjectInputEnvelope = {
+    data: RegressionReportCreateManyProjectInput | RegressionReportCreateManyProjectInput[]
     skipDuplicates?: boolean
   }
 
@@ -51240,6 +53748,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutProjectsInput = {
@@ -51258,6 +53767,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutProjectsInput = {
@@ -51327,6 +53837,22 @@ export namespace Prisma {
     data: XOR<PromptUpdateManyMutationInput, PromptUncheckedUpdateManyWithoutProjectInput>
   }
 
+  export type RegressionReportUpsertWithWhereUniqueWithoutProjectInput = {
+    where: RegressionReportWhereUniqueInput
+    update: XOR<RegressionReportUpdateWithoutProjectInput, RegressionReportUncheckedUpdateWithoutProjectInput>
+    create: XOR<RegressionReportCreateWithoutProjectInput, RegressionReportUncheckedCreateWithoutProjectInput>
+  }
+
+  export type RegressionReportUpdateWithWhereUniqueWithoutProjectInput = {
+    where: RegressionReportWhereUniqueInput
+    data: XOR<RegressionReportUpdateWithoutProjectInput, RegressionReportUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type RegressionReportUpdateManyWithWhereWithoutProjectInput = {
+    where: RegressionReportScalarWhereInput
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyWithoutProjectInput>
+  }
+
   export type OrganizationCreateWithoutPromptsInput = {
     id: string
     name: string
@@ -51343,6 +53869,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutPromptsInput = {
@@ -51361,6 +53888,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutPromptsInput = {
@@ -51377,8 +53905,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutProjectsInput
     createdBy: UserCreateNestedOneWithoutProjectsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutPromptsInput = {
@@ -51392,6 +53922,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutPromptsInput = {
@@ -51461,6 +53993,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutPromptInput = {
@@ -51480,6 +54014,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutPromptInput = {
@@ -51509,6 +54045,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutActiveForInput = {
@@ -51528,11 +54066,80 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutActiveForInput = {
     where: PromptVersionWhereUniqueInput
     create: XOR<PromptVersionCreateWithoutActiveForInput, PromptVersionUncheckedCreateWithoutActiveForInput>
+  }
+
+  export type EvaluationSuiteCreateWithoutAttachedPromptsInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    testCases?: TestCaseCreateNestedManyWithoutSuiteInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutSuiteInput
+  }
+
+  export type EvaluationSuiteUncheckedCreateWithoutAttachedPromptsInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    testCases?: TestCaseUncheckedCreateNestedManyWithoutSuiteInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutSuiteInput
+  }
+
+  export type EvaluationSuiteCreateOrConnectWithoutAttachedPromptsInput = {
+    where: EvaluationSuiteWhereUniqueInput
+    create: XOR<EvaluationSuiteCreateWithoutAttachedPromptsInput, EvaluationSuiteUncheckedCreateWithoutAttachedPromptsInput>
+  }
+
+  export type RegressionReportCreateWithoutPromptInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    workspace: OrganizationCreateNestedOneWithoutRegressionReportsInput
+    project: ProjectCreateNestedOneWithoutRegressionReportsInput
+    suite: EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput
+    baselineVersion: PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput
+    candidateVersion: PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateWithoutPromptInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateOrConnectWithoutPromptInput = {
+    where: RegressionReportWhereUniqueInput
+    create: XOR<RegressionReportCreateWithoutPromptInput, RegressionReportUncheckedCreateWithoutPromptInput>
+  }
+
+  export type RegressionReportCreateManyPromptInputEnvelope = {
+    data: RegressionReportCreateManyPromptInput | RegressionReportCreateManyPromptInput[]
+    skipDuplicates?: boolean
   }
 
   export type OrganizationUpsertWithoutPromptsInput = {
@@ -51562,6 +54169,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutPromptsInput = {
@@ -51580,6 +54188,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type ProjectUpsertWithoutPromptsInput = {
@@ -51602,8 +54211,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutProjectsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutProjectsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutPromptsInput = {
@@ -51617,6 +54228,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutPromptsInput = {
@@ -51714,6 +54327,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutActiveForInput = {
@@ -51733,6 +54348,61 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
+  }
+
+  export type EvaluationSuiteUpsertWithoutAttachedPromptsInput = {
+    update: XOR<EvaluationSuiteUpdateWithoutAttachedPromptsInput, EvaluationSuiteUncheckedUpdateWithoutAttachedPromptsInput>
+    create: XOR<EvaluationSuiteCreateWithoutAttachedPromptsInput, EvaluationSuiteUncheckedCreateWithoutAttachedPromptsInput>
+    where?: EvaluationSuiteWhereInput
+  }
+
+  export type EvaluationSuiteUpdateToOneWithWhereWithoutAttachedPromptsInput = {
+    where?: EvaluationSuiteWhereInput
+    data: XOR<EvaluationSuiteUpdateWithoutAttachedPromptsInput, EvaluationSuiteUncheckedUpdateWithoutAttachedPromptsInput>
+  }
+
+  export type EvaluationSuiteUpdateWithoutAttachedPromptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    testCases?: TestCaseUpdateManyWithoutSuiteNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutSuiteNestedInput
+  }
+
+  export type EvaluationSuiteUncheckedUpdateWithoutAttachedPromptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    testCases?: TestCaseUncheckedUpdateManyWithoutSuiteNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutSuiteNestedInput
+  }
+
+  export type RegressionReportUpsertWithWhereUniqueWithoutPromptInput = {
+    where: RegressionReportWhereUniqueInput
+    update: XOR<RegressionReportUpdateWithoutPromptInput, RegressionReportUncheckedUpdateWithoutPromptInput>
+    create: XOR<RegressionReportCreateWithoutPromptInput, RegressionReportUncheckedCreateWithoutPromptInput>
+  }
+
+  export type RegressionReportUpdateWithWhereUniqueWithoutPromptInput = {
+    where: RegressionReportWhereUniqueInput
+    data: XOR<RegressionReportUpdateWithoutPromptInput, RegressionReportUncheckedUpdateWithoutPromptInput>
+  }
+
+  export type RegressionReportUpdateManyWithWhereWithoutPromptInput = {
+    where: RegressionReportScalarWhereInput
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyWithoutPromptInput>
   }
 
   export type PromptCreateWithoutVersionsInput = {
@@ -51745,10 +54415,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutPromptsInput
     project: ProjectCreateNestedOneWithoutPromptsInput
     createdBy: UserCreateNestedOneWithoutPromptsInput
     activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUncheckedCreateWithoutVersionsInput = {
@@ -51765,6 +54438,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
   }
 
   export type PromptCreateOrConnectWithoutVersionsInput = {
@@ -51788,6 +54464,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutVersionsInput = {
@@ -51806,6 +54483,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutVersionsInput = {
@@ -51875,6 +54553,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutChildVersionsInput = {
@@ -51894,6 +54574,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutChildVersionsInput = {
@@ -51918,6 +54600,8 @@ export namespace Prisma {
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutParentVersionInput = {
@@ -51937,6 +54621,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutParentVersionInput = {
@@ -51959,10 +54645,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
     workspace: OrganizationCreateNestedOneWithoutPromptsInput
     project: ProjectCreateNestedOneWithoutPromptsInput
     createdBy: UserCreateNestedOneWithoutPromptsInput
     versions?: PromptVersionCreateNestedManyWithoutPromptInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
   }
 
   export type PromptUncheckedCreateWithoutActiveVersionInput = {
@@ -51978,7 +54667,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
     versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
   }
 
   export type PromptCreateOrConnectWithoutActiveVersionInput = {
@@ -52208,6 +54900,78 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RegressionReportCreateWithoutBaselineVersionInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    workspace: OrganizationCreateNestedOneWithoutRegressionReportsInput
+    project: ProjectCreateNestedOneWithoutRegressionReportsInput
+    prompt: PromptCreateNestedOneWithoutRegressionReportsInput
+    suite: EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput
+    candidateVersion: PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateWithoutBaselineVersionInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateOrConnectWithoutBaselineVersionInput = {
+    where: RegressionReportWhereUniqueInput
+    create: XOR<RegressionReportCreateWithoutBaselineVersionInput, RegressionReportUncheckedCreateWithoutBaselineVersionInput>
+  }
+
+  export type RegressionReportCreateManyBaselineVersionInputEnvelope = {
+    data: RegressionReportCreateManyBaselineVersionInput | RegressionReportCreateManyBaselineVersionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RegressionReportCreateWithoutCandidateVersionInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    workspace: OrganizationCreateNestedOneWithoutRegressionReportsInput
+    project: ProjectCreateNestedOneWithoutRegressionReportsInput
+    prompt: PromptCreateNestedOneWithoutRegressionReportsInput
+    suite: EvaluationSuiteCreateNestedOneWithoutRegressionReportsInput
+    baselineVersion: PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateWithoutCandidateVersionInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateOrConnectWithoutCandidateVersionInput = {
+    where: RegressionReportWhereUniqueInput
+    create: XOR<RegressionReportCreateWithoutCandidateVersionInput, RegressionReportUncheckedCreateWithoutCandidateVersionInput>
+  }
+
+  export type RegressionReportCreateManyCandidateVersionInputEnvelope = {
+    data: RegressionReportCreateManyCandidateVersionInput | RegressionReportCreateManyCandidateVersionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PromptUpsertWithoutVersionsInput = {
     update: XOR<PromptUpdateWithoutVersionsInput, PromptUncheckedUpdateWithoutVersionsInput>
     create: XOR<PromptCreateWithoutVersionsInput, PromptUncheckedCreateWithoutVersionsInput>
@@ -52229,10 +54993,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
     project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
     activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateWithoutVersionsInput = {
@@ -52249,6 +55016,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
   }
 
   export type OrganizationUpsertWithoutVersionsInput = {
@@ -52278,6 +55048,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutVersionsInput = {
@@ -52296,6 +55067,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutVersionsInput = {
@@ -52377,6 +55149,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutChildVersionsInput = {
@@ -52396,6 +55170,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUpsertWithWhereUniqueWithoutParentVersionInput = {
@@ -52435,10 +55211,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
     project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
     versions?: PromptVersionUpdateManyWithoutPromptNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateWithoutActiveVersionInput = {
@@ -52454,7 +55233,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptReviewUpsertWithWhereUniqueWithoutPromptVersionInput = {
@@ -52505,6 +55287,38 @@ export namespace Prisma {
     data: XOR<CertificateUpdateManyMutationInput, CertificateUncheckedUpdateManyWithoutSelectedPromptVersionInput>
   }
 
+  export type RegressionReportUpsertWithWhereUniqueWithoutBaselineVersionInput = {
+    where: RegressionReportWhereUniqueInput
+    update: XOR<RegressionReportUpdateWithoutBaselineVersionInput, RegressionReportUncheckedUpdateWithoutBaselineVersionInput>
+    create: XOR<RegressionReportCreateWithoutBaselineVersionInput, RegressionReportUncheckedCreateWithoutBaselineVersionInput>
+  }
+
+  export type RegressionReportUpdateWithWhereUniqueWithoutBaselineVersionInput = {
+    where: RegressionReportWhereUniqueInput
+    data: XOR<RegressionReportUpdateWithoutBaselineVersionInput, RegressionReportUncheckedUpdateWithoutBaselineVersionInput>
+  }
+
+  export type RegressionReportUpdateManyWithWhereWithoutBaselineVersionInput = {
+    where: RegressionReportScalarWhereInput
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyWithoutBaselineVersionInput>
+  }
+
+  export type RegressionReportUpsertWithWhereUniqueWithoutCandidateVersionInput = {
+    where: RegressionReportWhereUniqueInput
+    update: XOR<RegressionReportUpdateWithoutCandidateVersionInput, RegressionReportUncheckedUpdateWithoutCandidateVersionInput>
+    create: XOR<RegressionReportCreateWithoutCandidateVersionInput, RegressionReportUncheckedCreateWithoutCandidateVersionInput>
+  }
+
+  export type RegressionReportUpdateWithWhereUniqueWithoutCandidateVersionInput = {
+    where: RegressionReportWhereUniqueInput
+    data: XOR<RegressionReportUpdateWithoutCandidateVersionInput, RegressionReportUncheckedUpdateWithoutCandidateVersionInput>
+  }
+
+  export type RegressionReportUpdateManyWithWhereWithoutCandidateVersionInput = {
+    where: RegressionReportScalarWhereInput
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyWithoutCandidateVersionInput>
+  }
+
   export type OrganizationCreateWithoutReviewsInput = {
     id: string
     name: string
@@ -52521,6 +55335,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutReviewsInput = {
@@ -52539,6 +55354,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutReviewsInput = {
@@ -52563,6 +55379,8 @@ export namespace Prisma {
     activeFor?: PromptCreateNestedOneWithoutActiveVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutReviewsInput = {
@@ -52582,6 +55400,8 @@ export namespace Prisma {
     activeFor?: PromptUncheckedCreateNestedOneWithoutActiveVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutReviewsInput = {
@@ -52661,6 +55481,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutReviewsInput = {
@@ -52679,6 +55500,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type PromptVersionUpsertWithoutReviewsInput = {
@@ -52709,6 +55531,8 @@ export namespace Prisma {
     activeFor?: PromptUpdateOneWithoutActiveVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutReviewsInput = {
@@ -52728,6 +55552,8 @@ export namespace Prisma {
     activeFor?: PromptUncheckedUpdateOneWithoutActiveVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type UserUpsertWithoutReviewsInput = {
@@ -53560,6 +56386,90 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PromptCreateWithoutRegressionSuiteInput = {
+    id?: string
+    title: string
+    description?: string | null
+    purpose?: string | null
+    visibility?: $Enums.PromptVisibility
+    lifecycleStatus?: $Enums.PromptLifecycleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+    workspace: OrganizationCreateNestedOneWithoutPromptsInput
+    project: ProjectCreateNestedOneWithoutPromptsInput
+    createdBy: UserCreateNestedOneWithoutPromptsInput
+    versions?: PromptVersionCreateNestedManyWithoutPromptInput
+    activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutPromptInput
+  }
+
+  export type PromptUncheckedCreateWithoutRegressionSuiteInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    title: string
+    description?: string | null
+    purpose?: string | null
+    visibility?: $Enums.PromptVisibility
+    lifecycleStatus?: $Enums.PromptLifecycleStatus
+    activeVersionId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+    versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutPromptInput
+  }
+
+  export type PromptCreateOrConnectWithoutRegressionSuiteInput = {
+    where: PromptWhereUniqueInput
+    create: XOR<PromptCreateWithoutRegressionSuiteInput, PromptUncheckedCreateWithoutRegressionSuiteInput>
+  }
+
+  export type PromptCreateManyRegressionSuiteInputEnvelope = {
+    data: PromptCreateManyRegressionSuiteInput | PromptCreateManyRegressionSuiteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RegressionReportCreateWithoutSuiteInput = {
+    id?: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+    workspace: OrganizationCreateNestedOneWithoutRegressionReportsInput
+    project: ProjectCreateNestedOneWithoutRegressionReportsInput
+    prompt: PromptCreateNestedOneWithoutRegressionReportsInput
+    baselineVersion: PromptVersionCreateNestedOneWithoutBaselineRegressionReportsInput
+    candidateVersion: PromptVersionCreateNestedOneWithoutCandidateRegressionReportsInput
+  }
+
+  export type RegressionReportUncheckedCreateWithoutSuiteInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateOrConnectWithoutSuiteInput = {
+    where: RegressionReportWhereUniqueInput
+    create: XOR<RegressionReportCreateWithoutSuiteInput, RegressionReportUncheckedCreateWithoutSuiteInput>
+  }
+
+  export type RegressionReportCreateManySuiteInputEnvelope = {
+    data: RegressionReportCreateManySuiteInput | RegressionReportCreateManySuiteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TestCaseUpsertWithWhereUniqueWithoutSuiteInput = {
     where: TestCaseWhereUniqueInput
     update: XOR<TestCaseUpdateWithoutSuiteInput, TestCaseUncheckedUpdateWithoutSuiteInput>
@@ -53588,6 +56498,566 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"TestCase"> | Date | string
   }
 
+  export type PromptUpsertWithWhereUniqueWithoutRegressionSuiteInput = {
+    where: PromptWhereUniqueInput
+    update: XOR<PromptUpdateWithoutRegressionSuiteInput, PromptUncheckedUpdateWithoutRegressionSuiteInput>
+    create: XOR<PromptCreateWithoutRegressionSuiteInput, PromptUncheckedCreateWithoutRegressionSuiteInput>
+  }
+
+  export type PromptUpdateWithWhereUniqueWithoutRegressionSuiteInput = {
+    where: PromptWhereUniqueInput
+    data: XOR<PromptUpdateWithoutRegressionSuiteInput, PromptUncheckedUpdateWithoutRegressionSuiteInput>
+  }
+
+  export type PromptUpdateManyWithWhereWithoutRegressionSuiteInput = {
+    where: PromptScalarWhereInput
+    data: XOR<PromptUpdateManyMutationInput, PromptUncheckedUpdateManyWithoutRegressionSuiteInput>
+  }
+
+  export type RegressionReportUpsertWithWhereUniqueWithoutSuiteInput = {
+    where: RegressionReportWhereUniqueInput
+    update: XOR<RegressionReportUpdateWithoutSuiteInput, RegressionReportUncheckedUpdateWithoutSuiteInput>
+    create: XOR<RegressionReportCreateWithoutSuiteInput, RegressionReportUncheckedCreateWithoutSuiteInput>
+  }
+
+  export type RegressionReportUpdateWithWhereUniqueWithoutSuiteInput = {
+    where: RegressionReportWhereUniqueInput
+    data: XOR<RegressionReportUpdateWithoutSuiteInput, RegressionReportUncheckedUpdateWithoutSuiteInput>
+  }
+
+  export type RegressionReportUpdateManyWithWhereWithoutSuiteInput = {
+    where: RegressionReportScalarWhereInput
+    data: XOR<RegressionReportUpdateManyMutationInput, RegressionReportUncheckedUpdateManyWithoutSuiteInput>
+  }
+
+  export type OrganizationCreateWithoutRegressionReportsInput = {
+    id: string
+    name: string
+    slug: string
+    logo?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    invitations?: InvitationCreateNestedManyWithoutOrganizationInput
+    projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    prompts?: PromptCreateNestedManyWithoutWorkspaceInput
+    versions?: PromptVersionCreateNestedManyWithoutWorkspaceInput
+    reviews?: PromptReviewCreateNestedManyWithoutWorkspaceInput
+    auditEvents?: AuditEventCreateNestedManyWithoutWorkspaceInput
+    settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
+    chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
+    certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutRegressionReportsInput = {
+    id: string
+    name: string
+    slug: string
+    logo?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    invitations?: InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    prompts?: PromptUncheckedCreateNestedManyWithoutWorkspaceInput
+    versions?: PromptVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+    reviews?: PromptReviewUncheckedCreateNestedManyWithoutWorkspaceInput
+    auditEvents?: AuditEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
+    chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
+    certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutRegressionReportsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutRegressionReportsInput, OrganizationUncheckedCreateWithoutRegressionReportsInput>
+  }
+
+  export type ProjectCreateWithoutRegressionReportsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    status?: $Enums.ProjectStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+    workspace: OrganizationCreateNestedOneWithoutProjectsInput
+    createdBy: UserCreateNestedOneWithoutProjectsInput
+    prompts?: PromptCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutRegressionReportsInput = {
+    id?: string
+    workspaceId: string
+    name: string
+    slug: string
+    description?: string | null
+    status?: $Enums.ProjectStatus
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+    prompts?: PromptUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutRegressionReportsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutRegressionReportsInput, ProjectUncheckedCreateWithoutRegressionReportsInput>
+  }
+
+  export type PromptCreateWithoutRegressionReportsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    purpose?: string | null
+    visibility?: $Enums.PromptVisibility
+    lifecycleStatus?: $Enums.PromptLifecycleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+    workspace: OrganizationCreateNestedOneWithoutPromptsInput
+    project: ProjectCreateNestedOneWithoutPromptsInput
+    createdBy: UserCreateNestedOneWithoutPromptsInput
+    versions?: PromptVersionCreateNestedManyWithoutPromptInput
+    activeVersion?: PromptVersionCreateNestedOneWithoutActiveForInput
+    regressionSuite?: EvaluationSuiteCreateNestedOneWithoutAttachedPromptsInput
+  }
+
+  export type PromptUncheckedCreateWithoutRegressionReportsInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    title: string
+    description?: string | null
+    purpose?: string | null
+    visibility?: $Enums.PromptVisibility
+    lifecycleStatus?: $Enums.PromptLifecycleStatus
+    activeVersionId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
+    versions?: PromptVersionUncheckedCreateNestedManyWithoutPromptInput
+  }
+
+  export type PromptCreateOrConnectWithoutRegressionReportsInput = {
+    where: PromptWhereUniqueInput
+    create: XOR<PromptCreateWithoutRegressionReportsInput, PromptUncheckedCreateWithoutRegressionReportsInput>
+  }
+
+  export type EvaluationSuiteCreateWithoutRegressionReportsInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    testCases?: TestCaseCreateNestedManyWithoutSuiteInput
+    attachedPrompts?: PromptCreateNestedManyWithoutRegressionSuiteInput
+  }
+
+  export type EvaluationSuiteUncheckedCreateWithoutRegressionReportsInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    testCases?: TestCaseUncheckedCreateNestedManyWithoutSuiteInput
+    attachedPrompts?: PromptUncheckedCreateNestedManyWithoutRegressionSuiteInput
+  }
+
+  export type EvaluationSuiteCreateOrConnectWithoutRegressionReportsInput = {
+    where: EvaluationSuiteWhereUniqueInput
+    create: XOR<EvaluationSuiteCreateWithoutRegressionReportsInput, EvaluationSuiteUncheckedCreateWithoutRegressionReportsInput>
+  }
+
+  export type PromptVersionCreateWithoutBaselineRegressionReportsInput = {
+    id?: string
+    versionNumber: number
+    encryptedContent: string
+    contentHash: string
+    encryptionStatus: string
+    changeSummary?: string | null
+    lifecycleStatus?: $Enums.PromptVersionStatus
+    createdAt?: Date | string
+    prompt: PromptCreateNestedOneWithoutVersionsInput
+    workspace: OrganizationCreateNestedOneWithoutVersionsInput
+    createdBy: UserCreateNestedOneWithoutVersionsInput
+    parentVersion?: PromptVersionCreateNestedOneWithoutChildVersionsInput
+    childVersions?: PromptVersionCreateNestedManyWithoutParentVersionInput
+    activeFor?: PromptCreateNestedOneWithoutActiveVersionInput
+    reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
+    sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
+    selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
+  }
+
+  export type PromptVersionUncheckedCreateWithoutBaselineRegressionReportsInput = {
+    id?: string
+    promptId: string
+    workspaceId: string
+    versionNumber: number
+    encryptedContent: string
+    contentHash: string
+    encryptionStatus: string
+    parentVersionId?: string | null
+    changeSummary?: string | null
+    lifecycleStatus?: $Enums.PromptVersionStatus
+    createdById: string
+    createdAt?: Date | string
+    childVersions?: PromptVersionUncheckedCreateNestedManyWithoutParentVersionInput
+    activeFor?: PromptUncheckedCreateNestedOneWithoutActiveVersionInput
+    reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
+    sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
+    selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
+  }
+
+  export type PromptVersionCreateOrConnectWithoutBaselineRegressionReportsInput = {
+    where: PromptVersionWhereUniqueInput
+    create: XOR<PromptVersionCreateWithoutBaselineRegressionReportsInput, PromptVersionUncheckedCreateWithoutBaselineRegressionReportsInput>
+  }
+
+  export type PromptVersionCreateWithoutCandidateRegressionReportsInput = {
+    id?: string
+    versionNumber: number
+    encryptedContent: string
+    contentHash: string
+    encryptionStatus: string
+    changeSummary?: string | null
+    lifecycleStatus?: $Enums.PromptVersionStatus
+    createdAt?: Date | string
+    prompt: PromptCreateNestedOneWithoutVersionsInput
+    workspace: OrganizationCreateNestedOneWithoutVersionsInput
+    createdBy: UserCreateNestedOneWithoutVersionsInput
+    parentVersion?: PromptVersionCreateNestedOneWithoutChildVersionsInput
+    childVersions?: PromptVersionCreateNestedManyWithoutParentVersionInput
+    activeFor?: PromptCreateNestedOneWithoutActiveVersionInput
+    reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
+    sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
+    selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+  }
+
+  export type PromptVersionUncheckedCreateWithoutCandidateRegressionReportsInput = {
+    id?: string
+    promptId: string
+    workspaceId: string
+    versionNumber: number
+    encryptedContent: string
+    contentHash: string
+    encryptionStatus: string
+    parentVersionId?: string | null
+    changeSummary?: string | null
+    lifecycleStatus?: $Enums.PromptVersionStatus
+    createdById: string
+    createdAt?: Date | string
+    childVersions?: PromptVersionUncheckedCreateNestedManyWithoutParentVersionInput
+    activeFor?: PromptUncheckedCreateNestedOneWithoutActiveVersionInput
+    reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
+    sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
+    selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+  }
+
+  export type PromptVersionCreateOrConnectWithoutCandidateRegressionReportsInput = {
+    where: PromptVersionWhereUniqueInput
+    create: XOR<PromptVersionCreateWithoutCandidateRegressionReportsInput, PromptVersionUncheckedCreateWithoutCandidateRegressionReportsInput>
+  }
+
+  export type OrganizationUpsertWithoutRegressionReportsInput = {
+    update: XOR<OrganizationUpdateWithoutRegressionReportsInput, OrganizationUncheckedUpdateWithoutRegressionReportsInput>
+    create: XOR<OrganizationCreateWithoutRegressionReportsInput, OrganizationUncheckedCreateWithoutRegressionReportsInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutRegressionReportsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutRegressionReportsInput, OrganizationUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type OrganizationUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    invitations?: InvitationUpdateManyWithoutOrganizationNestedInput
+    projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    prompts?: PromptUpdateManyWithoutWorkspaceNestedInput
+    versions?: PromptVersionUpdateManyWithoutWorkspaceNestedInput
+    reviews?: PromptReviewUpdateManyWithoutWorkspaceNestedInput
+    auditEvents?: AuditEventUpdateManyWithoutWorkspaceNestedInput
+    settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
+    chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
+    certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    invitations?: InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    prompts?: PromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+    versions?: PromptVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    reviews?: PromptReviewUncheckedUpdateManyWithoutWorkspaceNestedInput
+    auditEvents?: AuditEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
+    chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
+    certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type ProjectUpsertWithoutRegressionReportsInput = {
+    update: XOR<ProjectUpdateWithoutRegressionReportsInput, ProjectUncheckedUpdateWithoutRegressionReportsInput>
+    create: XOR<ProjectCreateWithoutRegressionReportsInput, ProjectUncheckedCreateWithoutRegressionReportsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutRegressionReportsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutRegressionReportsInput, ProjectUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type ProjectUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    workspace?: OrganizationUpdateOneRequiredWithoutProjectsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutProjectsNestedInput
+    prompts?: PromptUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    prompts?: PromptUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type PromptUpsertWithoutRegressionReportsInput = {
+    update: XOR<PromptUpdateWithoutRegressionReportsInput, PromptUncheckedUpdateWithoutRegressionReportsInput>
+    create: XOR<PromptCreateWithoutRegressionReportsInput, PromptUncheckedCreateWithoutRegressionReportsInput>
+    where?: PromptWhereInput
+  }
+
+  export type PromptUpdateToOneWithWhereWithoutRegressionReportsInput = {
+    where?: PromptWhereInput
+    data: XOR<PromptUpdateWithoutRegressionReportsInput, PromptUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type PromptUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumPromptVisibilityFieldUpdateOperationsInput | $Enums.PromptVisibility
+    lifecycleStatus?: EnumPromptLifecycleStatusFieldUpdateOperationsInput | $Enums.PromptLifecycleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
+    versions?: PromptVersionUpdateManyWithoutPromptNestedInput
+    activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+  }
+
+  export type PromptUncheckedUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumPromptVisibilityFieldUpdateOperationsInput | $Enums.PromptVisibility
+    lifecycleStatus?: EnumPromptLifecycleStatusFieldUpdateOperationsInput | $Enums.PromptLifecycleStatus
+    activeVersionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+  }
+
+  export type EvaluationSuiteUpsertWithoutRegressionReportsInput = {
+    update: XOR<EvaluationSuiteUpdateWithoutRegressionReportsInput, EvaluationSuiteUncheckedUpdateWithoutRegressionReportsInput>
+    create: XOR<EvaluationSuiteCreateWithoutRegressionReportsInput, EvaluationSuiteUncheckedCreateWithoutRegressionReportsInput>
+    where?: EvaluationSuiteWhereInput
+  }
+
+  export type EvaluationSuiteUpdateToOneWithWhereWithoutRegressionReportsInput = {
+    where?: EvaluationSuiteWhereInput
+    data: XOR<EvaluationSuiteUpdateWithoutRegressionReportsInput, EvaluationSuiteUncheckedUpdateWithoutRegressionReportsInput>
+  }
+
+  export type EvaluationSuiteUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    testCases?: TestCaseUpdateManyWithoutSuiteNestedInput
+    attachedPrompts?: PromptUpdateManyWithoutRegressionSuiteNestedInput
+  }
+
+  export type EvaluationSuiteUncheckedUpdateWithoutRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    testCases?: TestCaseUncheckedUpdateManyWithoutSuiteNestedInput
+    attachedPrompts?: PromptUncheckedUpdateManyWithoutRegressionSuiteNestedInput
+  }
+
+  export type PromptVersionUpsertWithoutBaselineRegressionReportsInput = {
+    update: XOR<PromptVersionUpdateWithoutBaselineRegressionReportsInput, PromptVersionUncheckedUpdateWithoutBaselineRegressionReportsInput>
+    create: XOR<PromptVersionCreateWithoutBaselineRegressionReportsInput, PromptVersionUncheckedCreateWithoutBaselineRegressionReportsInput>
+    where?: PromptVersionWhereInput
+  }
+
+  export type PromptVersionUpdateToOneWithWhereWithoutBaselineRegressionReportsInput = {
+    where?: PromptVersionWhereInput
+    data: XOR<PromptVersionUpdateWithoutBaselineRegressionReportsInput, PromptVersionUncheckedUpdateWithoutBaselineRegressionReportsInput>
+  }
+
+  export type PromptVersionUpdateWithoutBaselineRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    versionNumber?: IntFieldUpdateOperationsInput | number
+    encryptedContent?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    encryptionStatus?: StringFieldUpdateOperationsInput | string
+    changeSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStatus?: EnumPromptVersionStatusFieldUpdateOperationsInput | $Enums.PromptVersionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompt?: PromptUpdateOneRequiredWithoutVersionsNestedInput
+    workspace?: OrganizationUpdateOneRequiredWithoutVersionsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVersionsNestedInput
+    parentVersion?: PromptVersionUpdateOneWithoutChildVersionsNestedInput
+    childVersions?: PromptVersionUpdateManyWithoutParentVersionNestedInput
+    activeFor?: PromptUpdateOneWithoutActiveVersionNestedInput
+    reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
+    sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
+    selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
+  }
+
+  export type PromptVersionUncheckedUpdateWithoutBaselineRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    versionNumber?: IntFieldUpdateOperationsInput | number
+    encryptedContent?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    encryptionStatus?: StringFieldUpdateOperationsInput | string
+    parentVersionId?: NullableStringFieldUpdateOperationsInput | string | null
+    changeSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStatus?: EnumPromptVersionStatusFieldUpdateOperationsInput | $Enums.PromptVersionStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childVersions?: PromptVersionUncheckedUpdateManyWithoutParentVersionNestedInput
+    activeFor?: PromptUncheckedUpdateOneWithoutActiveVersionNestedInput
+    reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
+    sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
+    selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
+  }
+
+  export type PromptVersionUpsertWithoutCandidateRegressionReportsInput = {
+    update: XOR<PromptVersionUpdateWithoutCandidateRegressionReportsInput, PromptVersionUncheckedUpdateWithoutCandidateRegressionReportsInput>
+    create: XOR<PromptVersionCreateWithoutCandidateRegressionReportsInput, PromptVersionUncheckedCreateWithoutCandidateRegressionReportsInput>
+    where?: PromptVersionWhereInput
+  }
+
+  export type PromptVersionUpdateToOneWithWhereWithoutCandidateRegressionReportsInput = {
+    where?: PromptVersionWhereInput
+    data: XOR<PromptVersionUpdateWithoutCandidateRegressionReportsInput, PromptVersionUncheckedUpdateWithoutCandidateRegressionReportsInput>
+  }
+
+  export type PromptVersionUpdateWithoutCandidateRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    versionNumber?: IntFieldUpdateOperationsInput | number
+    encryptedContent?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    encryptionStatus?: StringFieldUpdateOperationsInput | string
+    changeSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStatus?: EnumPromptVersionStatusFieldUpdateOperationsInput | $Enums.PromptVersionStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompt?: PromptUpdateOneRequiredWithoutVersionsNestedInput
+    workspace?: OrganizationUpdateOneRequiredWithoutVersionsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVersionsNestedInput
+    parentVersion?: PromptVersionUpdateOneWithoutChildVersionsNestedInput
+    childVersions?: PromptVersionUpdateManyWithoutParentVersionNestedInput
+    activeFor?: PromptUpdateOneWithoutActiveVersionNestedInput
+    reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
+    sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
+    selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+  }
+
+  export type PromptVersionUncheckedUpdateWithoutCandidateRegressionReportsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    versionNumber?: IntFieldUpdateOperationsInput | number
+    encryptedContent?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    encryptionStatus?: StringFieldUpdateOperationsInput | string
+    parentVersionId?: NullableStringFieldUpdateOperationsInput | string | null
+    changeSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStatus?: EnumPromptVersionStatusFieldUpdateOperationsInput | $Enums.PromptVersionStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childVersions?: PromptVersionUncheckedUpdateManyWithoutParentVersionNestedInput
+    activeFor?: PromptUncheckedUpdateOneWithoutActiveVersionNestedInput
+    reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
+    sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
+    selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+  }
+
   export type EvaluationSuiteCreateWithoutTestCasesInput = {
     id?: string
     workspaceId: string
@@ -53597,6 +57067,8 @@ export namespace Prisma {
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    attachedPrompts?: PromptCreateNestedManyWithoutRegressionSuiteInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutSuiteInput
   }
 
   export type EvaluationSuiteUncheckedCreateWithoutTestCasesInput = {
@@ -53608,6 +57080,8 @@ export namespace Prisma {
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    attachedPrompts?: PromptUncheckedCreateNestedManyWithoutRegressionSuiteInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutSuiteInput
   }
 
   export type EvaluationSuiteCreateOrConnectWithoutTestCasesInput = {
@@ -53635,6 +57109,8 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedPrompts?: PromptUpdateManyWithoutRegressionSuiteNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutSuiteNestedInput
   }
 
   export type EvaluationSuiteUncheckedUpdateWithoutTestCasesInput = {
@@ -53646,6 +57122,8 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedPrompts?: PromptUncheckedUpdateManyWithoutRegressionSuiteNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutSuiteNestedInput
   }
 
   export type OptimizationJobCreateWithoutEvaluationRunsInput = {
@@ -54339,6 +57817,7 @@ export namespace Prisma {
     auditEvents?: AuditEventCreateNestedManyWithoutWorkspaceInput
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutChainProofsInput = {
@@ -54357,6 +57836,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUncheckedCreateNestedManyWithoutWorkspaceInput
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutChainProofsInput = {
@@ -54625,6 +58105,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUpdateManyWithoutWorkspaceNestedInput
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutChainProofsInput = {
@@ -54643,6 +58124,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUncheckedUpdateManyWithoutWorkspaceNestedInput
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OptimizationJobUpsertWithoutChainProofsInput = {
@@ -54827,6 +58309,7 @@ export namespace Prisma {
     auditEvents?: AuditEventCreateNestedManyWithoutWorkspaceInput
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutCertificatesInput = {
@@ -54845,6 +58328,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUncheckedCreateNestedManyWithoutWorkspaceInput
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutCertificatesInput = {
@@ -54946,6 +58430,8 @@ export namespace Prisma {
     activeFor?: PromptCreateNestedOneWithoutActiveVersionInput
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     selectedCertificates?: CertificateCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutSourceCertificatesInput = {
@@ -54965,6 +58451,8 @@ export namespace Prisma {
     activeFor?: PromptUncheckedCreateNestedOneWithoutActiveVersionInput
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     selectedCertificates?: CertificateUncheckedCreateNestedManyWithoutSelectedPromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutSourceCertificatesInput = {
@@ -54989,6 +58477,8 @@ export namespace Prisma {
     activeFor?: PromptCreateNestedOneWithoutActiveVersionInput
     reviews?: PromptReviewCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateCreateNestedManyWithoutSourcePromptVersionInput
+    baselineRegressionReports?: RegressionReportCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionUncheckedCreateWithoutSelectedCertificatesInput = {
@@ -55008,6 +58498,8 @@ export namespace Prisma {
     activeFor?: PromptUncheckedCreateNestedOneWithoutActiveVersionInput
     reviews?: PromptReviewUncheckedCreateNestedManyWithoutPromptVersionInput
     sourceCertificates?: CertificateUncheckedCreateNestedManyWithoutSourcePromptVersionInput
+    baselineRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutBaselineVersionInput
+    candidateRegressionReports?: RegressionReportUncheckedCreateNestedManyWithoutCandidateVersionInput
   }
 
   export type PromptVersionCreateOrConnectWithoutSelectedCertificatesInput = {
@@ -55209,6 +58701,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUpdateManyWithoutWorkspaceNestedInput
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutCertificatesInput = {
@@ -55227,6 +58720,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUncheckedUpdateManyWithoutWorkspaceNestedInput
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OptimizationJobUpsertWithoutCertificatesInput = {
@@ -55340,6 +58834,8 @@ export namespace Prisma {
     activeFor?: PromptUpdateOneWithoutActiveVersionNestedInput
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutSourceCertificatesInput = {
@@ -55359,6 +58855,8 @@ export namespace Prisma {
     activeFor?: PromptUncheckedUpdateOneWithoutActiveVersionNestedInput
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUpsertWithoutSelectedCertificatesInput = {
@@ -55389,6 +58887,8 @@ export namespace Prisma {
     activeFor?: PromptUpdateOneWithoutActiveVersionNestedInput
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutSelectedCertificatesInput = {
@@ -55408,6 +58908,8 @@ export namespace Prisma {
     activeFor?: PromptUncheckedUpdateOneWithoutActiveVersionNestedInput
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type CandidateUpsertWithoutCertificatesInput = {
@@ -55611,6 +59113,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutAuditEventsInput = {
@@ -55629,6 +59132,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedCreateNestedOneWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutAuditEventsInput = {
@@ -55708,6 +59212,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutAuditEventsInput = {
@@ -55726,6 +59231,7 @@ export namespace Prisma {
     settings?: WorkspaceSettingsUncheckedUpdateOneWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutAuditEventsInput = {
@@ -55987,6 +59493,7 @@ export namespace Prisma {
     auditEvents?: AuditEventCreateNestedManyWithoutWorkspaceInput
     chainProofs?: ChainProofCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationUncheckedCreateWithoutSettingsInput = {
@@ -56005,6 +59512,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUncheckedCreateNestedManyWithoutWorkspaceInput
     chainProofs?: ChainProofUncheckedCreateNestedManyWithoutWorkspaceInput
     certificates?: CertificateUncheckedCreateNestedManyWithoutWorkspaceInput
+    regressionReports?: RegressionReportUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type OrganizationCreateOrConnectWithoutSettingsInput = {
@@ -56039,6 +59547,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUpdateManyWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutSettingsInput = {
@@ -56057,6 +59566,7 @@ export namespace Prisma {
     auditEvents?: AuditEventUncheckedUpdateManyWithoutWorkspaceNestedInput
     chainProofs?: ChainProofUncheckedUpdateManyWithoutWorkspaceNestedInput
     certificates?: CertificateUncheckedUpdateManyWithoutWorkspaceNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -56112,6 +59622,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
   }
 
   export type PromptCreateManyCreatedByInput = {
@@ -56127,6 +59638,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
   }
 
   export type PromptVersionCreateManyCreatedByInput = {
@@ -56323,8 +59836,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutProjectsNestedInput
     prompts?: PromptUpdateManyWithoutProjectNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutCreatedByInput = {
@@ -56337,7 +59852,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     prompts?: PromptUncheckedUpdateManyWithoutProjectNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutCreatedByInput = {
@@ -56350,6 +59867,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptUpdateWithoutCreatedByInput = {
@@ -56362,10 +59880,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
     project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
     versions?: PromptVersionUpdateManyWithoutPromptNestedInput
     activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateWithoutCreatedByInput = {
@@ -56381,7 +59902,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateManyWithoutCreatedByInput = {
@@ -56397,6 +59921,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptVersionUpdateWithoutCreatedByInput = {
@@ -56416,6 +59942,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutCreatedByInput = {
@@ -56435,6 +59963,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateManyWithoutCreatedByInput = {
@@ -56604,6 +60134,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionPolicy?: string | null
   }
 
   export type PromptCreateManyWorkspaceInput = {
@@ -56619,6 +60150,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
   }
 
   export type PromptVersionCreateManyWorkspaceInput = {
@@ -56728,6 +60261,19 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type RegressionReportCreateManyWorkspaceInput = {
+    id?: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
   export type MemberUpdateWithoutOrganizationInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
@@ -56788,8 +60334,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: UserUpdateOneRequiredWithoutProjectsNestedInput
     prompts?: PromptUpdateManyWithoutProjectNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
@@ -56802,7 +60350,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     prompts?: PromptUncheckedUpdateManyWithoutProjectNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -56815,6 +60365,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptUpdateWithoutWorkspaceInput = {
@@ -56827,10 +60378,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
     versions?: PromptVersionUpdateManyWithoutPromptNestedInput
     activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateWithoutWorkspaceInput = {
@@ -56846,7 +60400,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -56862,6 +60419,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PromptVersionUpdateWithoutWorkspaceInput = {
@@ -56881,6 +60440,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutWorkspaceInput = {
@@ -56900,6 +60461,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -57197,6 +60760,45 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RegressionReportUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput
+    prompt?: PromptUpdateOneRequiredWithoutRegressionReportsNestedInput
+    suite?: EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput
+    baselineVersion?: PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput
+    candidateVersion?: PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PromptCreateManyProjectInput = {
     id?: string
     workspaceId: string
@@ -57210,6 +60812,21 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     archivedAt?: Date | string | null
+    regressionSuiteId?: string | null
+    regressionPolicy?: string | null
+  }
+
+  export type RegressionReportCreateManyProjectInput = {
+    id?: string
+    workspaceId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
   }
 
   export type PromptUpdateWithoutProjectInput = {
@@ -57222,10 +60839,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
     versions?: PromptVersionUpdateManyWithoutPromptNestedInput
     activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionSuite?: EvaluationSuiteUpdateOneWithoutAttachedPromptsNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateWithoutProjectInput = {
@@ -57241,7 +60861,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
   }
 
   export type PromptUncheckedUpdateManyWithoutProjectInput = {
@@ -57257,6 +60880,47 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionSuiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RegressionReportUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput
+    prompt?: PromptUpdateOneRequiredWithoutRegressionReportsNestedInput
+    suite?: EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput
+    baselineVersion?: PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput
+    candidateVersion?: PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PromptVersionCreateManyPromptInput = {
@@ -57270,6 +60934,19 @@ export namespace Prisma {
     changeSummary?: string | null
     lifecycleStatus?: $Enums.PromptVersionStatus
     createdById: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateManyPromptInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    suiteId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
     createdAt?: Date | string
   }
 
@@ -57290,6 +60967,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutPromptInput = {
@@ -57309,6 +60988,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateManyWithoutPromptInput = {
@@ -57322,6 +61003,45 @@ export namespace Prisma {
     changeSummary?: NullableStringFieldUpdateOperationsInput | string | null
     lifecycleStatus?: EnumPromptVersionStatusFieldUpdateOperationsInput | $Enums.PromptVersionStatus
     createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUpdateWithoutPromptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput
+    suite?: EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput
+    baselineVersion?: PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput
+    candidateVersion?: PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateWithoutPromptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutPromptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -57435,6 +61155,32 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type RegressionReportCreateManyBaselineVersionInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
+  export type RegressionReportCreateManyCandidateVersionInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    suiteId: string
+    baselineVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
   export type PromptVersionUpdateWithoutParentVersionInput = {
     id?: StringFieldUpdateOperationsInput | string
     versionNumber?: IntFieldUpdateOperationsInput | number
@@ -57452,6 +61198,8 @@ export namespace Prisma {
     reviews?: PromptReviewUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateWithoutParentVersionInput = {
@@ -57471,6 +61219,8 @@ export namespace Prisma {
     reviews?: PromptReviewUncheckedUpdateManyWithoutPromptVersionNestedInput
     sourceCertificates?: CertificateUncheckedUpdateManyWithoutSourcePromptVersionNestedInput
     selectedCertificates?: CertificateUncheckedUpdateManyWithoutSelectedPromptVersionNestedInput
+    baselineRegressionReports?: RegressionReportUncheckedUpdateManyWithoutBaselineVersionNestedInput
+    candidateRegressionReports?: RegressionReportUncheckedUpdateManyWithoutCandidateVersionNestedInput
   }
 
   export type PromptVersionUncheckedUpdateManyWithoutParentVersionInput = {
@@ -57773,6 +61523,84 @@ export namespace Prisma {
     safeFailureMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUpdateWithoutBaselineVersionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput
+    prompt?: PromptUpdateOneRequiredWithoutRegressionReportsNestedInput
+    suite?: EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput
+    candidateVersion?: PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateWithoutBaselineVersionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutBaselineVersionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUpdateWithoutCandidateVersionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput
+    prompt?: PromptUpdateOneRequiredWithoutRegressionReportsNestedInput
+    suite?: EvaluationSuiteUpdateOneRequiredWithoutRegressionReportsNestedInput
+    baselineVersion?: PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateWithoutCandidateVersionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutCandidateVersionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    suiteId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CandidateCreateManyOptimizationJobInput = {
@@ -58497,6 +62325,36 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type PromptCreateManyRegressionSuiteInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    title: string
+    description?: string | null
+    purpose?: string | null
+    visibility?: $Enums.PromptVisibility
+    lifecycleStatus?: $Enums.PromptLifecycleStatus
+    activeVersionId?: string | null
+    createdById: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedAt?: Date | string | null
+    regressionPolicy?: string | null
+  }
+
+  export type RegressionReportCreateManySuiteInput = {
+    id?: string
+    workspaceId: string
+    projectId: string
+    promptId: string
+    baselineVersionId: string
+    candidateVersionId: string
+    status: string
+    reportJson: string
+    contentHash: string
+    createdAt?: Date | string
+  }
+
   export type TestCaseUpdateWithoutSuiteInput = {
     id?: StringFieldUpdateOperationsInput | string
     input?: StringFieldUpdateOperationsInput | string
@@ -58518,6 +62376,100 @@ export namespace Prisma {
     input?: StringFieldUpdateOperationsInput | string
     expectedBehavior?: StringFieldUpdateOperationsInput | string
     assertionConfig?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PromptUpdateWithoutRegressionSuiteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumPromptVisibilityFieldUpdateOperationsInput | $Enums.PromptVisibility
+    lifecycleStatus?: EnumPromptLifecycleStatusFieldUpdateOperationsInput | $Enums.PromptLifecycleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    workspace?: OrganizationUpdateOneRequiredWithoutPromptsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutPromptsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutPromptsNestedInput
+    versions?: PromptVersionUpdateManyWithoutPromptNestedInput
+    activeVersion?: PromptVersionUpdateOneWithoutActiveForNestedInput
+    regressionReports?: RegressionReportUpdateManyWithoutPromptNestedInput
+  }
+
+  export type PromptUncheckedUpdateWithoutRegressionSuiteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumPromptVisibilityFieldUpdateOperationsInput | $Enums.PromptVisibility
+    lifecycleStatus?: EnumPromptLifecycleStatusFieldUpdateOperationsInput | $Enums.PromptLifecycleStatus
+    activeVersionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+    versions?: PromptVersionUncheckedUpdateManyWithoutPromptNestedInput
+    regressionReports?: RegressionReportUncheckedUpdateManyWithoutPromptNestedInput
+  }
+
+  export type PromptUncheckedUpdateManyWithoutRegressionSuiteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumPromptVisibilityFieldUpdateOperationsInput | $Enums.PromptVisibility
+    lifecycleStatus?: EnumPromptLifecycleStatusFieldUpdateOperationsInput | $Enums.PromptLifecycleStatus
+    activeVersionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regressionPolicy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RegressionReportUpdateWithoutSuiteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: OrganizationUpdateOneRequiredWithoutRegressionReportsNestedInput
+    project?: ProjectUpdateOneRequiredWithoutRegressionReportsNestedInput
+    prompt?: PromptUpdateOneRequiredWithoutRegressionReportsNestedInput
+    baselineVersion?: PromptVersionUpdateOneRequiredWithoutBaselineRegressionReportsNestedInput
+    candidateVersion?: PromptVersionUpdateOneRequiredWithoutCandidateRegressionReportsNestedInput
+  }
+
+  export type RegressionReportUncheckedUpdateWithoutSuiteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RegressionReportUncheckedUpdateManyWithoutSuiteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    promptId?: StringFieldUpdateOperationsInput | string
+    baselineVersionId?: StringFieldUpdateOperationsInput | string
+    candidateVersionId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reportJson?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

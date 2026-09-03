@@ -1,8 +1,35 @@
 # Live 0G Evidence
 
-Status as of 2026-07-18: `COMPLETE`. This report records the activation
-boundary and current evidence state, including the real Galileo Storage upload
-and registry deployment evidence captured during recovery.
+Status as of 2026-08-31: `COMPLETE`. This report records the activation
+boundary and authenticated Galileo testnet evidence. No public application
+deployment is claimed.
+
+## Real Galileo Storage + Chain closure — 2026-08-31
+
+- Compute: `pnpm og:compute:check` discovered model `qwen2.5-omni` and
+  completed authenticated Router inference successfully. Request ID:
+  `62a369eb-984a-9d50-b056-d3a4d16ee4d2`; latency: 3382 ms. No API key or
+  prompt plaintext is recorded.
+- Storage: the repeatable `pnpm og:live:testnet` flow uploaded a valid encrypted
+  `OptimizationEvidenceManifestV1` of 1,720 bytes. The Merkle root was
+  `0xa774bdf9ec59f11f13434705da94b15f6635b7347307f8828e718d4dc9f146f4` and
+  the Storage transaction was
+  `0x43a1228f8806e71d95d727ba3e0667c42fbf9374f59316a4b2807b787de99d1b`.
+  Indexed replicas were found, proof-enabled download returned the exact
+  bytes, and content/manifest verification passed.
+- Chain: the matching hash-only commitment was registered in proof transaction
+  `0x91f485dde3feceb31d410ff079a39fdd52e09ccccc03514040e270869858931d`,
+  confirmed in block `52402711`, against registry
+  `0xda91a3929107c74f27e2d3288d046e4a37f9b422`. The registrar was
+  `0xf58b0ADBE671AE7d5B224600700eB4d4A0105c46`, and onchain readback matched
+  the complete commitment.
+- Explorer links: [StorageScan Galileo](https://storagescan-galileo.0g.ai/)
+  and [ChainScan Galileo](https://chainscan-galileo.0g.ai/address/0xda91a3929107c74f27e2d3288d046e4a37f9b422).
+
+The diagnostic uses synthetic prompt text encrypted with the configured
+server-side key. It proves the Storage and Chain integration paths, not a
+public product deployment. Compute remains separately evidenced by the
+authenticated Phase 8 record below.
 
 ## Phase 8D completion — 2026-07-18
 
@@ -11,7 +38,10 @@ and registry deployment evidence captured during recovery.
 - Chain: proof ID `0x4d57bf123b8647e0eaa856551e69cb6191ae63baabfdfedcb089011218591724`, transaction `0x2b184562ae611fe11e79906d723cfa726ffd52a0edfde657ed9078ade095643b`, block `44693862`, registry `0xda91a3929107c74f27e2d3288d046e4a37f9b422`; contract readback matched the committed manifest hash and Storage root.
 - Certificate: `cert_1343d8825f8905d881361fa39d7e2a1e`, public slug `optimiera-1343d8825f8905d88136`, verification level `FULLY_VERIFIED`, model `qwen2.5-omni`. Public URL: `/verify/cert_1343d8825f8905d881361fa39d7e2a1e`.
 
-## Phase 8 activation attempt — 2026-07-18
+## Historical Phase 8 activation attempt — 2026-07-18
+
+The following records the earlier recovery attempt and is superseded for
+Storage and Chain by the authenticated closure above.
 
 The Galileo preflight was run with local environment loading enabled. Mainnet
 was not selected. Independent evidence capture was attempted; the all-
@@ -25,9 +55,9 @@ successfully.
 - Chain proof: not registered because the existing Storage object is diagnostic data rather than a verified optimization evidence manifest; no duplicate proof was submitted.
 - Certificate: no live certificate was issued; existing local/test-adapter certificates retain their existing trust classifications.
 
-The failed Compute request and failed Storage upload are recorded as recovery
-evidence only. The registry deployment and role readback are real public chain
-evidence; no proof or certificate is claimed from them alone.
+The failed Compute request and failed diagnostic upload are retained as
+recovery evidence only. The later closure above is the current Storage and
+Chain evidence; no public application deployment is claimed.
 
 ## Unified preflight
 
@@ -60,10 +90,12 @@ pnpm og:live:activate -- --confirm-testnet
 That command must not be run until all listed credentials, a deployed registry,
 and funded testnet signers are configured.
 
-## Allowed network
+## Historical evidence network
 
-Phase 7 permits only 0G Galileo testnet, chain ID `16602`. Mainnet settings,
-mainnet RPC hosts, and other chain IDs are blocked. Official references:
+This evidence record is specifically for 0G Galileo testnet, chain ID `16602`;
+its proof and explorer links must not be interpreted as Aristotle mainnet proof.
+The current production configuration separately supports explicit Aristotle
+mainnet opt-in on chain `16661`. Official Galileo references:
 [0G testnet overview](https://docs.0g.ai/developer-hub/testnet/testnet-overview),
 [ChainScan Galileo](https://chainscan-galileo.0g.ai), and
 [StorageScan Galileo](https://storagescan-galileo.0g.ai).

@@ -307,7 +307,7 @@ h3 {
   color: var(--muted);
   font-size: 12px;
 }
-.testnet-badge {
+.network-badge {
   width: max-content;
   color: var(--accent);
 }

@@ -12,11 +12,12 @@ import {
   type ChainAdapter,
 } from '@optimiera/og-chain';
 import { keccak256 } from 'viem';
-import { readOGChainConfig } from '@optimiera/config';
+import { readOGChainConfig, readOGExecutionMode } from '@optimiera/config';
 import { parseVerifiedManifest } from '@optimiera/og-storage';
 import { requireSession, type Role } from './authorization';
 import { assertLiveWritesEnabled } from './runtime-config';
 import { completeLiveOperation, reserveLiveOperation } from './live-operation-quota';
+import { assertVerificationTransition, getVerificationRecord } from './verification-service';
 
 const testChainAdapter = new TestChainAdapter();
 function chainAdapter(config: ReturnType<typeof readOGChainConfig>) {
@@ -30,11 +31,12 @@ export async function getChainHealth() {
     const config = readOGChainConfig();
     return chainAdapter(config).healthCheck();
   } catch {
+    const mainnet = process.env.OG_CHAIN_NETWORK === 'mainnet';
     return {
       state: 'UNAVAILABLE' as const,
-      network: 'testnet',
-      chainId: 16602,
-      rpcHost: 'evmrpc-testnet.0g.ai',
+      network: mainnet ? 'mainnet' : 'testnet',
+      chainId: mainnet ? 16661 : 16602,
+      rpcHost: mainnet ? 'evmrpc.0g.ai' : 'evmrpc-testnet.0g.ai',
       signerConfigured: false,
       registryConfigured: false,
       deployedBytecode: false,
@@ -73,7 +75,6 @@ async function loadCommitment(optimizationJobId: string, userId: string) {
   if (!artifact?.encryptedManifest) throw new Error('MANIFEST_INVALID');
   const manifest = parseVerifiedManifest(
     new TextEncoder().encode(decryptPrompt(parseEnvelope(artifact.encryptedManifest))),
-    artifact.contentHash ?? undefined,
   );
   const selected = job.candidates.find((candidate) => candidate.recommended) ?? job.candidates[0];
   const score = Number(JSON.parse(selected.scoreData).weightedTotal ?? 0);
@@ -99,7 +100,8 @@ export async function createLocalProofCommitment(optimizationJobId: string) {
     session.user.id,
   );
   const config = readOGChainConfig();
-  const testMode = process.env.OG_CHAIN_TEST_ADAPTER === 'true';
+  const testMode =
+    readOGExecutionMode() === 'LOCAL' && process.env.OG_CHAIN_TEST_ADAPTER === 'true';
   return db.chainProof.upsert({
     where: {
       workspaceId_optimizationJobId: { workspaceId: job.workspaceId, optimizationJobId: job.id },
@@ -110,7 +112,7 @@ export async function createLocalProofCommitment(optimizationJobId: string) {
       artifactId: artifact.id,
       proofId,
       chainId: testMode ? 31337 : config.chainId,
-      network: testMode ? 'test-adapter' : config.network,
+      network: testMode ? 'test-adapter' : readOGExecutionMode(),
       manifestHash: commitment.manifestHash,
       storageRoot: commitment.storageRoot,
       aggregateScore: commitment.aggregateScore,
@@ -120,7 +122,7 @@ export async function createLocalProofCommitment(optimizationJobId: string) {
       artifactId: artifact.id,
       proofId,
       chainId: testMode ? 31337 : config.chainId,
-      network: testMode ? 'test-adapter' : config.network,
+      network: testMode ? 'test-adapter' : readOGExecutionMode(),
       manifestHash: commitment.manifestHash,
       storageRoot: commitment.storageRoot,
       aggregateScore: commitment.aggregateScore,
@@ -137,6 +139,15 @@ export async function registerOptimizationProof(optimizationJobId: string) {
   }
   const local = await createLocalProofCommitment(optimizationJobId);
   const config = readOGChainConfig();
+  if (readOGExecutionMode() === 'LOCAL' && process.env.OG_CHAIN_TEST_ADAPTER !== 'true')
+    return db.chainProof.update({
+      where: { id: local.id },
+      data: {
+        status: 'FAILED',
+        safeErrorCode: 'GALILEO_LIVE_UNAVAILABLE',
+        safeErrorMessage: 'Real 0G execution is not configured.',
+      },
+    });
   if (
     process.env.OG_CHAIN_TEST_ADAPTER !== 'true' &&
     (!config.enabled || !config.privateKey || !config.registryAddress)
@@ -144,6 +155,10 @@ export async function registerOptimizationProof(optimizationJobId: string) {
     return local;
   if (process.env.OG_CHAIN_TEST_ADAPTER !== 'true') assertLiveWritesEnabled();
   if (local.status === 'VERIFIED') return local;
+  if (process.env.OG_CHAIN_TEST_ADAPTER !== 'true') {
+    const currentVerification = await getVerificationRecord(optimizationJobId);
+    assertVerificationTransition(currentVerification.state, 'CHAIN_PENDING');
+  }
   const quotaReservation =
     process.env.OG_CHAIN_TEST_ADAPTER === 'true'
       ? null
@@ -184,6 +199,8 @@ export async function registerOptimizationProof(optimizationJobId: string) {
       await db.chainProof.update({ where: { id: local.id }, data: { status: 'SUBMITTED' } });
     }
     const receipt = await adapter.waitForReceipt(submitted.txHash);
+    if ('status' in (receipt as object) && (receipt as { status?: string }).status !== 'success')
+      throw new Error('TRANSACTION_REVERTED');
     const blockNumber =
       'blockNumber' in (receipt as object)
         ? Number((receipt as { blockNumber: bigint }).blockNumber)
@@ -208,6 +225,7 @@ export async function registerOptimizationProof(optimizationJobId: string) {
             : config.confirmations,
       },
     });
+    assertVerificationTransition('CHAIN_PENDING', 'CHAIN_CONFIRMED');
     if (quotaReservation) await completeLiveOperation(quotaReservation.id);
     return persisted;
   } catch (error) {

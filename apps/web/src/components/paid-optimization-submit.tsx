@@ -11,6 +11,9 @@ export function PaidOptimizationSubmit(props: {
   recipient?: string;
   amountWei: string;
   chainId: number;
+  networkName: string;
+  rpcUrl: string;
+  explorerUrl: string;
 }) {
   const [status, setStatus] = useState('');
   const [busy, setBusy] = useState(false);
@@ -23,7 +26,7 @@ export function PaidOptimizationSubmit(props: {
       return;
     }
     setBusy(true);
-    setStatus('Connect your wallet and confirm 0.0001 0G on Galileo testnet.');
+    setStatus(`Connect your wallet and confirm 0.0001 0G on ${props.networkName}.`);
     try {
       const wallet = (window as unknown as { ethereum?: PaymentEthereumProvider }).ethereum;
       if (!wallet || !props.recipient) throw new Error('A compatible wallet is required.');
@@ -41,10 +44,10 @@ export function PaidOptimizationSubmit(props: {
             params: [
               {
                 chainId: expectedChain,
-                chainName: '0G Galileo Testnet',
+                chainName: props.networkName,
                 nativeCurrency: { name: '0G', symbol: '0G', decimals: 18 },
-                rpcUrls: ['https://evmrpc-testnet.0g.ai'],
-                blockExplorerUrls: ['https://chainscan-galileo.0g.ai'],
+                rpcUrls: [props.rpcUrl],
+                blockExplorerUrls: [props.explorerUrl],
               },
             ],
           });
@@ -87,7 +90,7 @@ export function PaidOptimizationSubmit(props: {
         </button>
       )}
       <p className="muted">
-        Each optimization costs 0.0001 0G on Galileo testnet when usage payments are enabled.
+        Each optimization costs 0.0001 0G on {props.networkName} when usage payments are enabled.
       </p>
       {status && <p role="status">{status}</p>}
     </div>

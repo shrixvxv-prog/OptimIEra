@@ -1,5 +1,5 @@
 import { readOGStorageConfig, type OGStorageConfig } from '@optimiera/config';
-import { parseEnvelope, type EncryptionEnvelope } from '@optimiera/encryption';
+import { decryptPrompt, parseEnvelope, type EncryptionEnvelope } from '@optimiera/encryption';
 import { Indexer, MemData } from '@0gfoundation/0g-storage-ts-sdk';
 import { ethers } from 'ethers';
 import { createHash } from 'node:crypto';
@@ -85,6 +85,7 @@ export const optimizationEvidenceManifestV1Schema = z.object({
     .regex(/^[a-f0-9]{64}$/)
     .nullable(),
   evaluationHash: z.string().regex(/^[a-f0-9]{64}$/),
+  regressionReportHash: z.string().regex(/^[a-f0-9]{64}$/).nullable().optional(),
   dimensionScores: z.record(z.unknown()),
   recommendation: z.string().min(1),
   confidence: z.number().min(0).max(100),
@@ -146,6 +147,22 @@ export function parseVerifiedManifest(bytes: Uint8Array, expectedContentHash?: s
   parseEnvelope(JSON.stringify(parsed.encryptedOriginalPrompt));
   for (const item of parsed.encryptedCandidates) parseEnvelope(JSON.stringify(item.envelope));
   return parsed;
+}
+
+export function verifyEncryptedManifestBytes(bytes: Uint8Array, expectedContentHash: string) {
+  const actualContentHash = createHash('sha256').update(bytes).digest('hex');
+  if (actualContentHash !== expectedContentHash)
+    throw new StorageError(
+      'INTEGRITY_CHECK_FAILED',
+      'Downloaded encrypted artifact content hash did not match.',
+    );
+  try {
+    const plaintext = decryptPrompt(parseEnvelope(new TextDecoder().decode(bytes)));
+    return parseVerifiedManifest(new TextEncoder().encode(plaintext));
+  } catch (error) {
+    if (error instanceof StorageError) throw error;
+    throw new StorageError('MANIFEST_INVALID', 'Downloaded encrypted manifest was invalid.');
+  }
 }
 
 export type StorageErrorCode =
@@ -305,7 +322,12 @@ export class OGStorageAdapter implements StorageAdapter {
         'INTEGRITY_CHECK_FAILED',
         'Downloaded artifact content hash did not match.',
       );
-    parseVerifiedManifest(downloaded.bytes, contentHash);
+    try {
+      verifyEncryptedManifestBytes(downloaded.bytes, contentHash);
+    } catch (error) {
+      if (error instanceof StorageError && error.code !== 'MANIFEST_INVALID') throw error;
+      parseVerifiedManifest(downloaded.bytes, contentHash);
+    }
     return { state: 'ready' as const, storageRoot };
   }
   async getUploadStatus(storageRoot: string) {

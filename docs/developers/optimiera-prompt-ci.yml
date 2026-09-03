@@ -1,0 +1,34 @@
+name: OptimIEra Prompt CI
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  prompt-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.6.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Run local OptimIEra validation
+        run: pnpm optimiera test optimiera.config.json --json > optimiera-report.json
+      - name: Publish safe validation summary
+        if: always()
+        run: |
+          node -e "const r=require('./optimiera-report.json'); console.log('OptimIEra Prompt CI:', r.exitCode === 0 ? 'PASS' : 'BLOCKED/FAILED'); for (const c of r.comparisons) console.log(c.baselineVersionId + ' -> ' + c.candidateVersionId + ': ' + c.policyResult.status);"
+      - name: Upload safe result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: optimiera-prompt-report
+          path: optimiera-report.json

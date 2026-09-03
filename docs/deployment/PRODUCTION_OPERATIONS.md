@@ -3,7 +3,7 @@
 ## Release order
 
 1. Provision isolated managed PostgreSQL databases for Preview and Production.
-2. Configure the Vercel project root as `apps/web` and apply the environment matrix.
+2. Configure the Vercel project root as `apps/web`, set the explicit Aristotle mainnet flag, and apply the environment matrix.
 3. Deploy Preview. Confirm migrations, `/api/health`, `/api/readiness`, and `/api/version`.
 4. Run the full authenticated Rules Engine workflow and the public certificate checks.
 5. Deploy Production and repeat the smoke suite.
@@ -12,7 +12,7 @@
 
 ## Safe mode
 
-Set `OPTIMIERA_PUBLIC_LIVE_0G_ENABLED=false`, `OPTIMIERA_LIVE_WRITES_ENABLED=false`, and `OPTIMIERA_USAGE_PAYMENTS_ENABLED=false`. Rules Engine remains available. External providers remain visibly unavailable and no live write is attempted.
+Local development should set `OPTIMIERA_PUBLIC_LIVE_0G_ENABLED=false` and `OPTIMIERA_LIVE_WRITES_ENABLED=false`. Public Preview/Production defaults to bounded Aristotle mainnet live operations when the explicit mainnet flag and credentials are present; set either flag to `false` to stop new live writes. Rules Engine remains available, and external/server-funded operations remain bounded by the per-user and global quotas. Keep usage payments explicitly configured according to the release plan.
 
 ## Rollback
 

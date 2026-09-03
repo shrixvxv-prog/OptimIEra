@@ -9,6 +9,7 @@ const navigation = [
   ['/app/optimize', 'Optimize'],
   ['/app/prompts', 'Prompt Registry'],
   ['/app/evaluations', 'Evaluations'],
+  ['/app/benchmarks', 'Benchmarks'],
   ['/app/certificates', 'Certificates'],
   ['/app/workspaces', 'Workspaces'],
   ['/app/team', 'Team'],
@@ -33,10 +34,16 @@ export function AppShell({
   children,
   userName,
   workspaces,
+  networkName,
+  chainId,
+  liveWritesEnabled,
 }: {
   children: ReactNode;
   userName: string;
   workspaces: Array<{ slug: string; name: string }>;
+  networkName: string;
+  chainId: number;
+  liveWritesEnabled: boolean;
 }) {
   const pathname = usePathname();
   const [dark, setDark] = useState(false);
@@ -72,15 +79,15 @@ export function AppShell({
           <span>OI//</span> OptimIEra
         </a>
         <span
-          className="status-pill testnet-badge"
-          title="OptimIEra currently operates on the 0G Galileo testnet. Testnet records have no mainnet financial value."
+          className="status-pill network-badge"
+          title={`OptimIEra is configured for ${networkName}. Network-specific balances and records are separate.`}
         >
-          Testnet DApp
+          {networkName}
         </span>
         <Navigation />
         <div className="sidebar-footer muted">
-          <span>0G Galileo Testnet</span>
-          <span>Chain 16602</span>
+          <span>{networkName}</span>
+          <span>Chain {chainId}</span>
         </div>
       </aside>
       <div className="workspace">
@@ -130,8 +137,9 @@ export function AppShell({
           </div>
         </header>
         <div className="global-status" role="status" aria-live="polite">
-          Safe public mode protects server-funded 0G writes unless controlled testnet access is
-          explicitly enabled.
+          {liveWritesEnabled
+            ? `Live ${networkName} operations are enabled with bounded quotas. Rules Engine remains local deterministic, and provider failures never silently switch providers.`
+            : `Safe ${networkName} mode is active. External model execution and funded 0G writes are disabled.`}
         </div>
         {children}
       </div>

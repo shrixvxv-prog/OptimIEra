@@ -22,7 +22,7 @@ export async function GET() {
     nous: { status: nous.state, model: nous.model ?? null },
     usagePayment: {
       enabled: payment.enabled,
-      network: '0G Galileo Testnet',
+      network: payment.networkName,
       chainId: payment.chainId,
       amountWei: payment.amountWei.toString(),
       amountOG: '0.0001',

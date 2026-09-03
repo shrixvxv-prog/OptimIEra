@@ -8,7 +8,7 @@ export default function Architecture() {
           Compute generates and evaluates. Encryption protects evidence. Storage holds encrypted
           artifacts. Chain registers hashes and provenance. Public certificates expose verification
           data without prompt plaintext. Each external boundary is typed, timeout-aware,
-          testnet-enforced, and reports its real configured state.
+          network-guarded, and reports its real configured state.
         </p>
       </section>
     </main>

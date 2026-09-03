@@ -8,6 +8,7 @@ import { NousPromptIntelligenceProvider, OGComputeRouterProvider } from '@optimi
 import { OGStorageAdapter } from '@optimiera/og-storage';
 import { getChainHealth } from '@/lib/chain-proof';
 import { readWave2RuntimeConfig } from '@/lib/runtime-config';
+import { ogNetworkLabel } from '@optimiera/config';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -94,12 +95,14 @@ export default async function Settings() {
         <h2>Production mode</h2>
         <p>
           <strong>
-            {runtimeConfig.liveWritesEnabled ? 'Controlled live testnet' : 'Safe public'}
+            {runtimeConfig.liveWritesEnabled
+              ? `Controlled live ${ogNetworkLabel(chainConfig.network)}`
+              : 'Safe public'}
           </strong>
         </p>
         <p className="muted">
           Test adapters are prohibited in Production. Secret values, private keys, and balances are
-          never shown here.
+          never shown here. Network-specific balances and API keys remain isolated.
         </p>
       </article>
     </main>

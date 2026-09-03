@@ -143,6 +143,7 @@ model Organization {
   settings WorkspaceSettings?
   chainProofs ChainProof[]
   certificates Certificate[]
+  regressionReports RegressionReport[]
 }
 model Member {
   id String @id
@@ -179,9 +180,11 @@ model Project {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   archivedAt DateTime?
+  regressionPolicy String?
   workspace Organization @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   createdBy User @relation(fields: [createdById], references: [id])
   prompts Prompt[]
+  regressionReports RegressionReport[]
   @@unique([workspaceId, slug])
   @@index([workspaceId, status])
 }
@@ -199,11 +202,15 @@ model Prompt {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   archivedAt DateTime?
+  regressionSuiteId String?
+  regressionPolicy String?
   workspace Organization @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdBy User @relation(fields: [createdById], references: [id])
   versions PromptVersion[]
   activeVersion PromptVersion? @relation("activeVersion", fields: [activeVersionId], references: [id])
+  regressionSuite EvaluationSuite? @relation("promptRegressionSuite", fields: [regressionSuiteId], references: [id], onDelete: SetNull)
+  regressionReports RegressionReport[]
   @@index([workspaceId, projectId])
 }
 model PromptVersion {
@@ -228,6 +235,8 @@ model PromptVersion {
   reviews PromptReview[]
   sourceCertificates Certificate[] @relation("sourceCertificateVersion")
   selectedCertificates Certificate[] @relation("selectedCertificateVersion")
+  baselineRegressionReports RegressionReport[] @relation("baselineRegressionVersion")
+  candidateRegressionReports RegressionReport[] @relation("candidateRegressionVersion")
   @@unique([promptId, versionNumber])
   @@index([workspaceId, promptId])
 }
@@ -317,7 +326,30 @@ model EvaluationSuite {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   testCases TestCase[]
+  attachedPrompts Prompt[] @relation("promptRegressionSuite")
+  regressionReports RegressionReport[]
   @@index([workspaceId])
+}
+model RegressionReport {
+  id String @id @default(cuid())
+  workspaceId String
+  projectId String
+  promptId String
+  suiteId String
+  baselineVersionId String
+  candidateVersionId String
+  status String
+  reportJson String
+  contentHash String
+  createdAt DateTime @default(now())
+  workspace Organization @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  suite EvaluationSuite @relation(fields: [suiteId], references: [id], onDelete: Cascade)
+  baselineVersion PromptVersion @relation("baselineRegressionVersion", fields: [baselineVersionId], references: [id], onDelete: Cascade)
+  candidateVersion PromptVersion @relation("candidateRegressionVersion", fields: [candidateVersionId], references: [id], onDelete: Cascade)
+  @@index([workspaceId, promptId, createdAt])
+  @@index([candidateVersionId, status])
 }
 model TestCase {
   id String @id @default(cuid())

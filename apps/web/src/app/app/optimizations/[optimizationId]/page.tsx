@@ -1,5 +1,11 @@
 import { loadOptimizationResult, serializeCandidateForApi } from '@/lib/optimization';
-import { saveCandidate, createEvidence, createProof, revokeProof } from './actions';
+import {
+  saveCandidate,
+  createEvidence,
+  createProof,
+  revokeProof,
+  completeGalileo,
+} from './actions';
 import { getEvidenceForOptimization } from '@/lib/evidence';
 import { readOGStorageConfig } from '@optimiera/config';
 import { OGStorageAdapter } from '@optimiera/og-storage';
@@ -7,6 +13,7 @@ import { getProofForOptimization, getChainHealth } from '@/lib/chain-proof';
 import { db } from '@optimiera/database';
 import { issueCertificate } from '../../certificates/actions';
 import { RedirectingActionForm } from '@/components/redirecting-action-form';
+import { getVerificationRecord } from '@/lib/verification-service';
 
 export default async function OptimizationDetail({
   params,
@@ -32,6 +39,7 @@ export default async function OptimizationDetail({
   const storageHealth = await new OGStorageAdapter(readOGStorageConfig()).healthCheck();
   const chainHealth = await getChainHealth();
   const proof = await getProofForOptimization(optimizationId);
+  const verification = await getVerificationRecord(optimizationId);
   const certificate = await db.certificate.findFirst({
     where: { optimizationJobId: optimizationId },
     orderBy: { createdAt: 'desc' },
@@ -48,7 +56,10 @@ export default async function OptimizationDetail({
           : 'Rules Engine — Local deterministic'}
       </p>
       {result.providerType !== 'OG_COMPUTE' && (
-        <p className="muted">Mode: Deterministic local optimization</p>
+        <p className="muted">
+          Mode: Local Optimization. This works without blockchain activity; a Verified OptimIEra
+          Asset requires the 0G-backed workflow.
+        </p>
       )}
       <section className="grid">
         <div className="card">
@@ -83,8 +94,8 @@ export default async function OptimizationDetail({
           </>
         ) : (
           <p className="muted">
-            Save a candidate, create encrypted evidence, and create a proof commitment before
-            issuing.
+            Local Optimization is available without 0G. A Verified OptimIEra Asset requires an
+            immutable version, encrypted 0G Storage evidence, and a confirmed 0G Chain commitment.
           </p>
         )}
         {!certificate && result.savedPromptVersionId && evidence && proof && (
@@ -95,6 +106,18 @@ export default async function OptimizationDetail({
             </button>
           </form>
         )}
+        {!certificate && result.savedPromptVersionId && (
+          <RedirectingActionForm
+            action={completeGalileo}
+            redirectTo={`/app/optimizations/${optimizationId}`}
+            className="mini-form"
+          >
+            <input type="hidden" name="optimizationJobId" value={optimizationId} />
+            <button className="button" type="submit">
+              Complete Galileo verification
+            </button>
+          </RedirectingActionForm>
+        )}
       </section>
       <section className="card">
         <h3>0G Chain proof</h3>
@@ -103,11 +126,12 @@ export default async function OptimizationDetail({
         </p>
         <p className="muted">
           {proof
-            ? 'Local proof commitment · hash-only onchain design'
-            : 'Create a local deterministic proof commitment from verified encrypted evidence.'}
+            ? '0G commitment · hash-only onchain design'
+            : 'A local optimization has no Verified Asset status until 0G Storage and 0G Chain verification succeed.'}
         </p>
         {proof?.proofId && <p className="mono">Proof ID: {proof.proofId}</p>}
         {proof?.manifestHash && <p className="mono">Manifest hash: {proof.manifestHash}</p>}
+        {proof?.chainId != null && <p className="mono">Chain ID: {proof.chainId}</p>}
         {proof?.aggregateScore != null && (
           <p className="mono">Aggregate score: {proof.aggregateScore}</p>
         )}
@@ -128,7 +152,7 @@ export default async function OptimizationDetail({
             <input type="hidden" name="optimizationJobId" value={optimizationId} />
             <input type="hidden" name="action" value="local" />
             <button className="button" type="submit">
-              Create proof commitment
+              Create local commitment
             </button>
           </RedirectingActionForm>
         )}
@@ -171,15 +195,17 @@ export default async function OptimizationDetail({
         )}
         <p className="muted">
           0G Chain —{' '}
-          {proof?.status === 'VERIFIED' && proof.network === 'test-adapter'
-            ? 'Test chain adapter — Verified'
-            : proof?.status === 'VERIFIED'
-              ? 'Live verified'
-              : chainHealth.state === 'UNCONFIGURED'
-                ? 'Unconfigured'
-                : chainHealth.state === 'AVAILABLE'
-                  ? 'Configured but awaiting verification'
-                  : 'Configured but unavailable'}
+          {verification.state === 'VERIFIED'
+            ? 'Verified OptimIEra Asset'
+            : proof?.status === 'VERIFIED' && proof.network === 'test-adapter'
+              ? 'Test adapter — not a Verified Asset'
+              : proof?.status === 'VERIFIED'
+                ? 'Chain confirmed; certificate requirements remain'
+                : chainHealth.state === 'UNCONFIGURED'
+                  ? 'Unconfigured'
+                  : chainHealth.state === 'AVAILABLE'
+                    ? 'Configured but awaiting Verified Asset flow'
+                    : 'Configured but unavailable'}
         </p>
       </section>
       <section className="card">
@@ -190,7 +216,7 @@ export default async function OptimizationDetail({
         <p className="muted">
           {evidence
             ? `${evidence.storageProvider ?? 'Local encrypted evidence'} · ${evidence.network ?? 'local'} · ${evidence.storageMode ?? 'AES-256-GCM'}`
-            : 'Create an encrypted local evidence manifest before uploading to 0G Storage.'}
+            : 'Local encrypted evidence is available first. Verified Assets require 0G Storage upload and readback verification.'}
         </p>
         {evidence?.contentHash && <p className="mono">Content hash: {evidence.contentHash}</p>}
         {evidence?.byteSize != null && <p className="mono">Byte size: {evidence.byteSize}</p>}

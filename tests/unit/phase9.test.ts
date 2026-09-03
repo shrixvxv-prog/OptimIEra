@@ -14,10 +14,30 @@ describe('Phase 9 production release controls', () => {
     expect(readWave2RuntimeConfig({})).toEqual({ demoMode: true, liveWritesEnabled: false });
   });
 
-  it('requires an explicit opt-in for live writes', () => {
+  it('keeps live writes disabled in public environments without explicit opt-ins', () => {
+    expect(readWave2RuntimeConfig({ VERCEL_ENV: 'preview' })).toEqual({
+      demoMode: true,
+      liveWritesEnabled: false,
+    });
     expect(
       readWave2RuntimeConfig({
+        VERCEL_ENV: 'development',
+      }),
+    ).toEqual({ demoMode: true, liveWritesEnabled: false });
+  });
+
+  it('requires both public and live-write opt-ins', () => {
+    expect(
+      readWave2RuntimeConfig({
+        VERCEL_ENV: 'production',
+        OPTIMIERA_LIVE_WRITES_ENABLED: 'false',
+      }),
+    ).toEqual({ demoMode: true, liveWritesEnabled: false });
+    expect(
+      readWave2RuntimeConfig({
+        VERCEL_ENV: 'production',
         OPTIMIERA_DEMO_MODE: 'false',
+        OPTIMIERA_PUBLIC_LIVE_0G_ENABLED: 'true',
         OPTIMIERA_LIVE_WRITES_ENABLED: 'true',
       }),
     ).toEqual({ demoMode: false, liveWritesEnabled: true });
@@ -29,23 +49,48 @@ describe('Phase 9 production release controls', () => {
     expect(config.privateKey).toBeUndefined();
   });
 
-  it('defaults public live operations to disabled with bounded quotas', () => {
+  it('defaults local live operations to disabled with bounded quotas', () => {
     const config = readPublicLive0GConfig({});
     expect(config.enabled).toBe(false);
     expect(config.userDailyLimits).toEqual({ COMPUTE: 3, STORAGE: 2, CHAIN: 2 });
     expect(config.globalDailyLimits).toEqual({ COMPUTE: 50, STORAGE: 20, CHAIN: 20 });
   });
 
-  it('rejects mainnet configuration in Production', () => {
+  it('enables public live-operation quotas only with both explicit opt-ins', () => {
+    expect(readPublicLive0GConfig({ VERCEL_ENV: 'production' }).enabled).toBe(false);
+    expect(
+      readPublicLive0GConfig({
+        VERCEL_ENV: 'production',
+        OPTIMIERA_PUBLIC_LIVE_0G_ENABLED: 'true',
+        OPTIMIERA_LIVE_WRITES_ENABLED: 'true',
+      }).enabled,
+    ).toBe(true);
+  });
+
+  it('requires an explicit mainnet opt-in in Production', () => {
     expect(() =>
       readOGComputeConfig({ NODE_ENV: 'production', OG_COMPUTE_NETWORK: 'mainnet' }),
-    ).toThrow('PRODUCTION_REQUIRES_0G_TESTNET');
+    ).toThrow('PRODUCTION_REQUIRES_EXPLICIT_0G_MAINNET_ENABLE');
     expect(() =>
       readOGStorageConfig({ NODE_ENV: 'production', OG_STORAGE_NETWORK: 'mainnet' }),
-    ).toThrow('PRODUCTION_REQUIRES_0G_TESTNET');
+    ).toThrow('PRODUCTION_REQUIRES_EXPLICIT_0G_MAINNET_ENABLE');
     expect(() =>
       readOGChainConfig({ NODE_ENV: 'production', OG_CHAIN_NETWORK: 'mainnet' }),
-    ).toThrow('PRODUCTION_REQUIRES_0G_TESTNET');
+    ).toThrow('PRODUCTION_REQUIRES_EXPLICIT_0G_MAINNET_ENABLE');
+  });
+
+  it('accepts aligned Aristotle mainnet configuration after explicit opt-in', () => {
+    const env = {
+      NODE_ENV: 'production',
+      OPTIMIERA_0G_MAINNET_ENABLED: 'true',
+      OG_COMPUTE_NETWORK: 'mainnet',
+      OG_STORAGE_NETWORK: 'mainnet',
+      OG_CHAIN_NETWORK: 'mainnet',
+      OG_CHAIN_CHAIN_ID: '16661',
+    };
+    expect(readOGComputeConfig(env).baseUrl).toBe('https://router-api.0g.ai/v1');
+    expect(readOGStorageConfig(env).rpcUrl).toBe('https://evmrpc.0g.ai');
+    expect(readOGChainConfig(env).chainId).toBe(16661);
   });
 
   it('rejects invalid quota limits', () => {
@@ -73,5 +118,5 @@ describe('Phase 9 production release controls', () => {
     );
     expect(result.status).not.toBe(0);
     expect(`${result.stdout}${result.stderr}`).toContain('RESTORE_REQUIRES_PRODUCTION_DATABASE');
-  });
+  }, 20_000);
 });

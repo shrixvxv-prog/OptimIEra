@@ -12,7 +12,8 @@
     "foundry:build": "node ../../scripts/foundry-run.mjs build",
     "foundry:test": "node ../../scripts/foundry-run.mjs test",
     "foundry:deploy:testnet": "node ../../scripts/foundry-run.mjs script script/DeployOptimIEraRegistry.s.sol:DeployOptimIEraRegistry --rpc-url 0g_testnet",
-    "foundry:verify:testnet": "node ../../scripts/foundry-run.mjs verify-contract --chain-id 16602 --verifier custom --verifier-url https://chainscan-galileo.0g.ai/open/api"
+    "foundry:verify:testnet": "node ../../scripts/foundry-run.mjs verify-contract --chain-id 16602 --verifier custom --verifier-url https://chainscan-galileo.0g.ai/open/api",
+    "foundry:deploy:mainnet": "node ../../scripts/foundry-run.mjs script script/DeployOptimIEraRegistryMainnet.s.sol:DeployOptimIEraRegistryMainnet --rpc-url 0g_mainnet --broadcast"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.6.1",

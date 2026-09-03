@@ -11,6 +11,11 @@ export default async function Verify({ params }: { params: Promise<{ certificate
         </section>
       </main>
     );
+  const mainnet = result.certificate.network === 'mainnet' || result.certificate.chainId === 16661;
+  const storageExplorer = mainnet
+    ? 'https://storagescan.0g.ai'
+    : 'https://storagescan-galileo.0g.ai';
+  const chainExplorer = mainnet ? 'https://chainscan.0g.ai' : 'https://chainscan-galileo.0g.ai';
   return (
     <main className="site">
       <section className="section">
@@ -37,7 +42,7 @@ export default async function Verify({ params }: { params: Promise<{ certificate
             <p className="mono">Root: {result.certificate.storageRoot ?? 'Local evidence'}</p>
             {result.certificate.storageTransactionHash && (
               <a
-                href={`https://storagescan-galileo.0g.ai/transaction/${result.certificate.storageTransactionHash}`}
+                href={`${storageExplorer}/transaction/${result.certificate.storageTransactionHash}`}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -55,7 +60,7 @@ export default async function Verify({ params }: { params: Promise<{ certificate
             <p>Block: {result.proofBlock ?? 'Not submitted'}</p>
             {result.certificate.chainTransactionHash && (
               <a
-                href={`https://chainscan-galileo.0g.ai/tx/${result.certificate.chainTransactionHash}`}
+                href={`${chainExplorer}/tx/${result.certificate.chainTransactionHash}`}
                 target="_blank"
                 rel="noreferrer"
               >
